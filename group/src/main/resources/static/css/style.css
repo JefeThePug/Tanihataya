@@ -1,0 +1,75 @@
+@charset "UTF-8";
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: #f8f8f8;
+}
+
+.logo {
+    height: 40px;
+}
+
+.navbar-right .btn {
+    margin-left: 10px;
+    padding: 6px 12px;
+    border: 1px solid #555;
+    background: white;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.navbar-right .btn-primary {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+
+/* Dropdown menu */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    padding: 6px 12px;
+    border: 1px solid #555;
+    background: white;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: #fff;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    min-width: 160px;
+    z-index: 1;
+}
+
+.dropdown-content a,
+.dropdown-content form {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: black;
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
