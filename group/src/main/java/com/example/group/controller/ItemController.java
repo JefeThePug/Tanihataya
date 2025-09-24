@@ -55,7 +55,8 @@ public class ItemController {
     // 出品処理  	
     @PostMapping("/add_item")
     public String addItem(@ModelAttribute ItemForm itemForm) {
-        return "redirect:/add_item";
-        //出品画面へ移動（出品一覧？/solditems）
+    	itemService.insert(itemForm);
+    	return "redirect:/list?type=sell&userId=" + itemForm.userId();
+        //出品一覧へ移行　（出品画面へ移動の方がいい？）
     }
 }
