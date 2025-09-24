@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Potta+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Potta+One&display=swap');
+
 :root {
 	/* 色名　*/
 	--light-text: #606c38ff;
@@ -34,6 +37,13 @@ body {
 
 .logo {
 	height: 50px;
+}
+
+span.title {
+  font-family: "Potta One", system-ui;
+  font-size: 38pt;
+  font-style: normal;
+  font-weight: 400;
 }
 
 /* 一般ボタン */
