@@ -118,7 +118,7 @@ public class GroupForm {
 		this.tel=tel;
 	}
 	
-	public void setIsActive(boolean Active) {
+	public void setIsActive(boolean isActive) {
 		this.isActive=isActive;
 	}
 	
