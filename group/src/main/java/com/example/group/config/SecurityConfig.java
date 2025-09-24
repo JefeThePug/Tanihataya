@@ -13,16 +13,29 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http.formLogin(form -> form.loginPage("/login") // ログイン画面のURL
+		http.formLogin(form -> form
+				.loginPage("/user/login") // ログイン画面のURL
 				.loginProcessingUrl("/authenticate") // ユーザー名とパスワードを送信するURL
-				.defaultSuccessUrl("/loginsuccess", true) // 認証成功後のリダイレクト先URL
-				.failureUrl("/login?failure") // 認証失敗後のリダイレクト先URL
+				.defaultSuccessUrl("/loginsuccess") // 認証成功後のリダイレクト先URL
+				.failureUrl("/user/login?failure") // 認証失敗後のリダイレクト先URL
 				.permitAll() // ログイン画面は未認証でもアクセス可能
-		).logout(logout -> logout.logoutSuccessUrl("/login?logout") // ログアウト成功後のリダイレクト先URL
+		).logout(logout -> logout
+				.logoutSuccessUrl("/user/login?logout") // ログアウト成功後のリダイレクト先URL
 		).authorizeHttpRequests(authz -> authz
-				.requestMatchers("/login").permitAll() // 「/login」は全て許可
-				.anyRequest().authenticated() // その他のURLはログイン後のみアクセス可能
-		).exceptionHandling((exceptionHandling) -> exceptionHandling
+				.requestMatchers(
+						"/",
+						"/item",
+						"/user/login",
+						"/user/register").permitAll() // 誰でもアクセス可能なURL
+				.requestMatchers(
+						"/purchases",
+						"/item/purchase",
+						"/item/purchase/success",
+						"/item/add_item",
+						"/user/info",
+						"/user/update").authenticated() // ログイン必須のURL
+				.anyRequest().authenticated() // その他は全て認証必須
+		).exceptionHandling(ex -> ex
 				.accessDeniedPage("/error") // エラー発生時に表示する画面
 		);
 		return http.build();
