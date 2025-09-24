@@ -41,10 +41,10 @@ body {
 }
 
 span.title {
-  font-family: "Potta One", system-ui;
-  font-size: 38pt;
-  font-style: normal;
-  font-weight: 400;
+	font-family: "Potta One", system-ui;
+	font-size: 38pt;
+	font-style: normal;
+	font-weight: 400;
 }
 
 /* 一般ボタン */
@@ -161,28 +161,31 @@ a:focus {
 /* コンテンツ */
 section {
 	background-color: var(--background);
+	border-radius: 8px;
 	color: var(--text);
 	flex: 1 0 auto;
-	padding: 2rem;
-	border-radius: 8px;
 	margin-bottom: 1.5rem;
+	padding: 2rem;
 }
 
-/* Categories grid */
+/* カテゴリー */
 .categories {
 	display: grid;
-	gap: 1.5rem;
+	gap: 0.5rem;
 	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-	margin-left: auto;
-	margin-right: auto;
+	justify-content: center;
+	margin: 0 auto;
 	max-width: calc((120px * 4) + (1.5rem * 3));
 	text-align: center;
 }
 
 .category {
+	align-items: center;
 	background: var(--background);
 	border-radius: 10px;
 	cursor: pointer;
+	display: flex;
+	flex-direction: column;
 	padding: 1rem;
 	transition: transform 0.2s ease, box-shadow 0.2s ease;
 	z-index: 5;
@@ -196,14 +199,16 @@ section {
 }
 
 .category .icon {
-	color: var(--pakistan-green);
+	height: 100px;
 	margin-bottom: 0.5rem;
+	width: 110px;
 }
 
 .category p {
 	font-size: 1rem;
 	font-weight: 500;
 	margin: 0;
+	text-align: center;
 }
 
 /* h1 ヘディング */
@@ -242,23 +247,24 @@ h1 {
 	z-index: -1;
 }
 
+/* ブラウザウィンドウのサイズ設定 */
 @media screen and (max-width: 600px) {
-	.fancy-heading {
+	.heading {
 		font-size: 32px;
 	}
 
-	.fancy-heading::after {
+	.heading::after {
 		left: 18%;
 		width: 64%;
 	}
 }
 
 @media screen and (max-width: 360px) {
-	.fancy-heading {
+	.heading {
 		font-size: 24px;
 	}
 
-	.fancy-heading::after {
+	.heading::after {
 		left: 20%;
 		width: 60%;
 	}
