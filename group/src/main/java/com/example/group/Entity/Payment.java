@@ -1,8 +1,5 @@
 package com.example.group.Entity;
 
-public class GroupEntity {
+public class Payment {
 
-	
-	}
-	
-
+}
