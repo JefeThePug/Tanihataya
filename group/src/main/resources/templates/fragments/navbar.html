@@ -6,7 +6,8 @@
 		<nav class="navbar">
 			<div class="navbar-left">
 				<a href="@{/}">
-					タニハタ屋<img src="/images/logo.png" alt="Logo" class="logo" />
+					<span class="title">タニハタ屋</span>
+					<img src="/images/logo.png" alt="Logo" class="logo" />
 				</a>
 			</div>
 
@@ -19,10 +20,10 @@
 				<div sec:authorize="isAuthenticated()" class="dropdown">
 					<button class="dropbtn">メニュー ▾</button>
 					<div class="dropdown-content">
-						<a th:href="@{/account}">アカウント情報</a>
+						<a th:href="@{/info}">アカウント情報</a>
 						<a th:href="@{/purchases}">購入一覧</a>
-						<a th:href="@{/my-items}">出品一覧</a>
-						<form th:action="@{/logout}" method="post">
+						<a th:href="@{/solditems}">出品一覧</a>
+						<form th:action="@/logout}" method="post">
 							<button type="submit" class="logout-btn">ログアウト</button>
 						</form>
 					</div>

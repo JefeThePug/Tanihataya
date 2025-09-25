@@ -13,31 +13,31 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 	private final ItemMapper itemMapper;
 
-	List<Item> findAllByCategory(Integer category) {
+	public List<Item> findAllByCategory(Integer category) {
 		return itemMapper.findAllByCategory(category);
 	}
 
-	List<Item> findPurchasesByUserId(Integer userId) {
+	public List<Item> findPurchasesByUserId(Integer userId) {
 		return itemMapper.findPurchasesByUserId(userId);
 	}
 
-	List<Item> findSalesByUserId(Integer userId) {
+	public List<Item> findSalesByUserId(Integer userId) {
 		return itemMapper.findSalesByUserId(userId);
 	}
 
-	Item findById(Integer itemId) {
+	public Item findById(Integer itemId) {
 		return itemMapper.findById(itemId);
 	}
 
-	void insert(Item item) {
+	public void insert(ItemForm item) {
 		itemMapper.insert(item);
 	}
 
-	void update(Item item) {
+	public void update(ItemForm item) {
 		itemMapper.update(item);
 	}
 
-	void markForDelete(Integer itemId) {
+	public void markForDelete(Integer itemId) {
 		itemMapper.markForDelete(itemId);
 	}
 }
