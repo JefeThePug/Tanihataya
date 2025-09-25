@@ -1,10 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
-
+	<head>
+		<meta charset="UTF-8">
+		<title>ログイン画面</title>
+		<link rel="stylesheet" href="../static/css/style.css"> 
+	</head>
 <body>
 	<section th:fragment="content">
 
-		<!-- HTMLはここに… -->
+		<!-- ログインエラーのときはメッセージを表示 -->
+		<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
+		<!-- ログインフォーム -->
+		<!-- th:actionはSecurityConfigのloginProcessingUrlで指定したURL -->
+		<form th:action="@{authenticate}" method="post">
+		<table>
+		<tr>
+		<th>ID</th>
+		<td><input type="text" name="username" /></td>
+		</tr>
+		<tr>
+		<th>PASSWORD</th>
+		<td><input type="password" name="password" /></td>
+		</tr>
+		</table>
+		<input type="submit" value="ログイン" />
+		
+		<form th:action="@{/register}">
+		<input type="submit" value="新規作成" />
+		</form>
+
+		
 
 	</section>
 </body>
