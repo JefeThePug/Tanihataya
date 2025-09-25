@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-	private final UserMapper userMapper;
+	private final UsersMapper userMapper;
 
 	public List<Users> findAll() {
 		return userMapper.findAll();

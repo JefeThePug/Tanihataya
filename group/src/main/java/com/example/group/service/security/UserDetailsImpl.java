@@ -6,7 +6,7 @@ import java.util.Collections;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.group.entity.Users;
+import com.example.group.Entity.Users;
 
 import lombok.AllArgsConstructor;
 

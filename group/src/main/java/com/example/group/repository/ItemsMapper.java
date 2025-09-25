@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.example.group.Entity.Items;
+
 @Mapper
 public interface ItemsMapper {
 
@@ -12,19 +14,20 @@ public interface ItemsMapper {
 	
 	//特定ユーザーの購入履歴一覧表示
 	List<Items>findPurchasesByUserId();
+	
+	//特定ユーザーのすべての販売履歴
+	List<Items>findSalesByUserId();
 
 	//アイテムIDでアイテムを1件取得
-	void findById(Item item);
+	void findById(Items items);
 
 	//アイテムを追加
-	void insert(Item item);
+	void insert(Items items);
 
 	//アイテムを更新
-	void update(Item item);
+	void update(Items items);
 
 	//アイテムに削除フラグを付与
-	void markForDelete(Item items);
-	
-	
+	void markForDelete(Items item_id);
 	
 }
