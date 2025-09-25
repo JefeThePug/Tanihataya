@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Form {
 
-	private Integer user_id;
+	private Integer userId;
 
 	private String name;
 
@@ -27,9 +27,9 @@ public class Form {
 
 	private boolean isActive;
 
-	private Date created_at;
+	private Date createdAt;
 
-	private Date updated_at;
+	private Date updatedAt;
 	
 	
 

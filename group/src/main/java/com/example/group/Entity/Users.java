@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Users {
 
-	private Integer id;
+	private Integer userId;
 
 	private String name;
 
@@ -25,9 +25,9 @@ public class Users {
 
 	private boolean isActive;
 
-	private Date created_at;
+	private Date createdAt;
 
-	private Date updated_at;
+	private Date updatedAt;
 	
 	}
 	

@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Payment {
 
-	private Integer card_id;
+	private Integer cardId;
 	
-	private Integer user_id;
+	private Integer userId;
 	
-	private Integer card_number;
+	private Integer cardNumber;
 	
 	private String name;
 	
-	private Integer security_code;
+	private Integer securityCode;
 
-	private Date exp_date;
+	private Date expDate;
 }
