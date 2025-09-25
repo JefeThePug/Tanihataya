@@ -5,13 +5,16 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.group.Entity.Item;
+import com.example.group.repository.ItemsMapper;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class ItemService {
-	private final ItemMapper itemMapper;
+	private final ItemsMapper itemMapper;
 
 	public List<Item> findAllByCategory(Integer category) {
 		return itemMapper.findAllByCategory(category);
