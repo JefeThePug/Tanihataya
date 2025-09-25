@@ -54,8 +54,16 @@ public class UserController {
 	@PostMapping("/update")
 	public String UserUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
-		return "redirect:/user/info/{userid}";
+		return "redirect:/user/info/"+userform.userid();
 		//ユーザー情報一覧に戻る？
 	}
 
+	
+	//ユーザー情報の削除
+    @GetMapping("/update")
+	public String showUserUpdate(@PathVariable int userid) {
+    	userService.delete(userid);
+    	return "user/user_update";
+	}
+	
 }

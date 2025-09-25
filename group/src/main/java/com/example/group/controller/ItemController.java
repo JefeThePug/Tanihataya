@@ -18,7 +18,7 @@ public class ItemController {
 	
 	private ItemService itemService;
 
-	// 商品詳細画面
+	// 詳細画面
     @GetMapping("/{itemId}")
     public String showItemDetail(@PathVariable int itemId, Model model) {
     	//アイテムIDでアイテムを1件取得
@@ -29,13 +29,14 @@ public class ItemController {
     // 購入画面表示
     @GetMapping("/purchase")
     public String showPurchaseScreen(@RequestParam int itemId, Model model) {
-    	itemService.findPurchasesByUserId(itemId);
+    	model.addAllAttributes("items",itemService.findById(itemId));
         return "item/purchase";
     } 
 
     // 購入処理情報を送信
     @PostMapping("/purchase")
     public String purchase(@RequestParam int itemId, Model model) {
+    	//★PurchaseService購入した情報送信のメソッド
         return "redirect:/item/purchase/success"; 
         //purchase/successのURLへアクセス
     }
@@ -46,16 +47,23 @@ public class ItemController {
         return "item/success";
     }
 
-    // 出品画面表示
+    // 出品登録/変更画面表示
     @GetMapping("/add_item")
     public String showAddItem(Model model) {
+
+        
         return "item/add_item";
     }
 
+
     // 出品処理  	
     @PostMapping("/add_item")
-    public String addItem(@ModelAttribute ItemForm itemForm) {
-    	itemService.insert(itemForm);
+    public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
+        if ("insert".equals(type)) {//新規登録
+        	itemService.insert(itemForm);
+        } else if ("update".equals(type)) {//変更登録
+            itemService.update(itemForm);
+        }
     	return "redirect:/list?type=sell&userId=" + itemForm.userId();
         //出品一覧へ移行　（出品画面へ移動の方がいい？）
     }
