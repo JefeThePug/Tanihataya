@@ -6,13 +6,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.example.group.Entity.Users;
+import com.example.group.repository.UsersMapper;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
-	private final UserMapper userMapper;
+	private final UsersMapper userMapper;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

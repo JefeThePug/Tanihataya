@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.group.Entity.Users;
+import com.example.group.repository.UsersMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-	private final UserMapper userMapper;
+	private final UsersMapper userMapper;
 
 	public List<Users> findAll() {
 		return userMapper.findAll();

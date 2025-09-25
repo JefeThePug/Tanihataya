@@ -32,7 +32,7 @@ public class UserController {
 	
 	//新規登録をする
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute UserForm userForm) {	
+	public String register(@Valid @ModelAttribute UsrForm userForm) {	
 		userService.insert(userForm); 
 		return "redirect:user/register";
 	}
