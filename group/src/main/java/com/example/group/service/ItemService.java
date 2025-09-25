@@ -13,19 +13,19 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 	private final ItemMapper itemMapper;
 
-	public List<Item> findAllByCategory(Integer category) {
+	public List<Items> findAllByCategory(Integer category) {
 		return itemMapper.findAllByCategory(category);
 	}
 
-	public List<Item> findPurchasesByUserId(Integer userId) {
+	public List<Items> findPurchasesByUserId(Integer userId) {
 		return itemMapper.findPurchasesByUserId(userId);
 	}
 
-	public List<Item> findSalesByUserId(Integer userId) {
+	public List<Items> findSalesByUserId(Integer userId) {
 		return itemMapper.findSalesByUserId(userId);
 	}
 
-	public Item findById(Integer itemId) {
+	public Items findById(Integer itemId) {
 		return itemMapper.findById(itemId);
 	}
 

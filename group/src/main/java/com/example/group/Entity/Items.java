@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Item {
+public class Items {
 
 private Integer item_id;
 	
