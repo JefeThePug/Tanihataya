@@ -3,9 +3,19 @@
 
 <body>
 	<section th:fragment="content">
-
-		<!-- HTMLはここに… -->
-
+		<h1 class="heading" th:text="${header}">ヘッダー</h1>
+		<div class="list-scroll" th:each="item : ${items}">
+			<div class="list-item">
+				<div class="img-container">
+					<img th:src="${item.images_path[0]}" th:alt="${item.name}" />
+					<div th:unless="${item.sale_status}" class="sold">SOLD</div>
+				</div>
+				<div class="list-text">
+					<h2 th:text="${item.name}">タイトル</h2>
+					<p>¥<span th:text="${item.price}">00000</span></p>
+				</div>
+			</div>
+		</div>
 	</section>
 </body>
 
