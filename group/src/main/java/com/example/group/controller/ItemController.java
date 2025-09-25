@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.group.service.ItemService;
+
 
 @Controller
 @RequestMapping("/item")
@@ -24,35 +26,37 @@ public class ItemController {
         return "item";
     }
 
+    // 購入画面表示
     @GetMapping("/purchase")
     public String showPurchaseScreen(@RequestParam int itemId, Model model) {
-        // 購入画面表示
+    	itemService.findPurchasesByUserId(itemId);
         return "item/purchase";
     } 
 
+    // 購入処理情報を送信
     @PostMapping("/purchase")
     public String purchase(@RequestParam int itemId, Model model) {
-        // 購入処理情報を送信
         return "redirect:/item/purchase/success"; 
         //purchase/successのURLへアクセス
     }
 
+    // 購入完了画面
     @GetMapping("/purchase/success")
     public String showPurchaseSuccess() {
-        // 購入完了画面
         return "item/success";
     }
 
+    // 出品画面表示
     @GetMapping("/add_item")
     public String showAddItem(Model model) {
-        // 出品画面表示
         return "item/add_item";
     }
 
+    // 出品処理  	
     @PostMapping("/add_item")
     public String addItem(@ModelAttribute ItemForm itemForm) {
-        // 出品処理  	
-        return "redirect:/add_item";
-        //出品画面へ移動（出品一覧？/solditems）
+    	itemService.insert(itemForm);
+    	return "redirect:/list?type=sell&userId=" + itemForm.userId();
+        //出品一覧へ移行　（出品画面へ移動の方がいい？）
     }
 }

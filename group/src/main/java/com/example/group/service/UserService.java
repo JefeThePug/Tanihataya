@@ -13,23 +13,23 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserMapper userMapper;
 
-	List<Users> findAll() {
+	public List<Users> findAll() {
 		return userMapper.findAll();
 	}
 
-	Users findById(Integer userId) {
+	public Users findById(Integer userId) {
 		return userMapper.findById(userId);
 	}
 
-	void insert(Users user) {
+	public void insert(UserForm user) {
 		userMapper.insert(user);
 	}
 
-	void update(Users user) {
+	public void update(UserForm user) {
 		userMapper.update(user);
 	}
 
-	void delete(Integer userId) {
+	public void delete(Integer userId) {
 		userMapper.delete(userId);
 	}
 }
