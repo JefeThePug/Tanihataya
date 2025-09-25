@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.group.Entity.Users;
 import com.example.group.service.UserService;
 import com.example.group.service.security.UserDetailsImpl;
 
@@ -40,7 +41,8 @@ public class UserController {
 		// ユーザー名
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
-		UserService user = userService.findAll(principal.getUsername());//Detailsを通れたユーザー情報を取得
+		Users user = userService.findById(principal.getUsername());//Detailsを通れたユーザー情報を取得
+		//useremail
 		
 		model.addAttribute("user", user);//ユーザー情報を格納
 		return "purchase";
@@ -54,7 +56,7 @@ public class UserController {
 
 	//新規登録をする
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute UsrForm userForm) {	
+	public String register(@Valid @ModelAttribute UserForm userForm) {	
 		userService.insert(userForm); 
 		return "redirect:user/register";
 	}
@@ -76,7 +78,7 @@ public class UserController {
 	@PostMapping("/update")
 	public String UserUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
-		return "redirect:/user/info/"+userform.userid();
+		return "redirect:/user/info/"+userForm.userId();
 		//ユーザー情報一覧に戻る？
 	}
 
