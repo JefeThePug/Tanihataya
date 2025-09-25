@@ -9,11 +9,14 @@ import com.example.group.Entity.Users;
 @Mapper
 public interface UsersMapper {
 	
-	//ユーザー情報取得
-	List<Users>findAll();
+	//emailde情報取得
+	List<Users>findByEmail();
 	
 	//ユーザーキーで取得
 	List<Users>findById(Integer id);
+	
+	//ユーザー名で取得
+	List<Users>findByName(String username);
 	
 	//ユーザー情報の特録
 	void insert(Users users);
