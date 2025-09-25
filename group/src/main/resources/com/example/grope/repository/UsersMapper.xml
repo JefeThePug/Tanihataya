@@ -22,8 +22,18 @@
 	
 	<!-- ユーザー情報の更新 -->
 	<update>
-	UPDATE users (name,email,password,postcode,address,tel,is_active,updated_at)
-	SET (#{name},#{email},#[password},#{postcode},#{address},#{tel},#{isActive},CURRENT_TIMESTAMP)
+	 UPDATE users 
+	    SET 
+	        name = #{name}, 
+	        email = #{email}, 
+	        password = #{password}, 
+	        postcode = #{postcode}, 
+	        address = #{address}, 
+	        tel = #{tel}, 
+	        isActive = #{isActive}, 
+	        updated_at = CURRENT_TIMESTAMP
+	    WHERE 
+	        id = #{id}
 	</update>
 	
 	<delete id = "delete">

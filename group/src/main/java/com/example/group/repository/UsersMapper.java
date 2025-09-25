@@ -2,7 +2,6 @@ package com.example.group.repository;
 
 import java.util.List;
 
-import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.group.Entity.Users;
@@ -14,7 +13,7 @@ public interface UsersMapper {
 	List<Users>findAll();
 	
 	//ユーザーキーで取得
-	List<Users>findById();
+	List<Users>findById(Integer id);
 	
 	//ユーザー情報の特録
 	void insert(Users users);
@@ -23,8 +22,6 @@ public interface UsersMapper {
 	void update(Users users);
 	
 	//ユーザー情報の削除
-	void delete(User users);
-	
-	
+	void delete(Integer id);
 
 }
