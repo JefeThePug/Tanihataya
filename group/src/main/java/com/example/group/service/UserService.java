@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.group.Entity.Users;
+import com.example.group.repository.UserMapper;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
