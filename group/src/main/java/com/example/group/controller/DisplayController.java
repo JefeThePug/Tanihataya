@@ -4,35 +4,35 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @Controller
+@RequestMapping("/")
 public class DisplayController {
 
-	//DI★サービス名称確認要★
-//	private final ItemService itemService;
-	
-	//カテゴリ表示　トップ画面
-	@GetMapping
-	public String show() {
-		return "index";
-	}
+    @GetMapping
+    public String show(Model model) {
+        // トップ画面：カテゴリ一覧表示
+        return "index";
+    }
 
-	//商品一覧（カテゴリ一覧）
-	@GetMapping("/{category}")
-	public String showCategory(@PathVariable String category ,Model model) {
-		//Listをまとめて★名称確認要カテゴリソートしたメソッド★
-//		model.addAttribute("category",itemServiceAll());
-		return "list";
+    @GetMapping("/{category}")
+    public String showCategory(@PathVariable String category, Model model) {
+        // 指定カテゴリの商品一覧表示
+        return "list";
+    }
 
+    @GetMapping("/purchases")
+    public String showPurchases(Model model) {
+        // 購入済み商品の一覧表示
+        return "list";
+    }
 
-	}@GetMapping("/purchases")
-	public String showPurchases(Model model) {
-		return "list";
-	}
-	@GetMapping("/solditems")
-	public String showSoldItems() {
-		return "list";
-	}
-
+    @GetMapping("/solditems")
+    public String showSoldItems(Model model) {
+        // 出品済み商品の一覧表示
+        return "list";
+    }
 }
+
