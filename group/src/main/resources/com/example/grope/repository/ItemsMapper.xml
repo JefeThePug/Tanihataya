@@ -1,31 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace='com.example.grope.repository.ItemsMappe'>
+<mapper namespace='com.example.group.repository.ItemsMapper'>
 
 	<!-- 同じカテゴリーのアイテムを全権取得 -->
-	<select id=findAllByCategory
-		resultType="com.example.grope.entity.Items">
-		SELECT * FROM users where item_id = {ItemId};
+	<select id="findAllByCategory"
+		resultType="com.example.group.entity.Items">
+		SELECT * FROM items WHERE category = #{category};
 	</select>
 
 	<!-- 特定ユーザーの購入履歴一覧表示 -->
 	<select id="findPurchasesByUserId"
-		resultType="com.example.grope.entity.Items">
-
+		resultType="com.example.group.entity.Items">
+	SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
+			sale_status, images_path, created_at, updated_at
+	FROM items  WHERE buy_user = #{buyUser};
 	</select>
+	<!-- whereのパラメータbuyUser？ userId? -->
 
 	<!-- アイテムを追加 -->
-	<insert id="insert">
-		INSERT INTO Items(
-		VALUES()
-	</insert>
+<insert id="insertItem" parameterType="com.example.Item">
+    INSERT INTO items (
+		users_id, name, category, detail, price,
+        sale_status, buy_user, images_path, created_at, updated_at
+         ) VALUES (
+        #{usersId}, #{name}, #{category}, #{detail}, #{price},
+        #{saleStatus}, #{buyUser},
+        #{imagesPath, jdbcType=ARRAY, typeHandler=your.package.ByteaArrayTypeHandler},
+        now(),now());
+</insert>
+        <!-- imagesPathなんか必要そう？？よくわからん -->
+
 
 	<!--アイテムを更新 -->
 	<update id="update">
-		update Items set
+		UPDATE items SET name=#{name}, category= #{category}, detail =#{detail},
+    price=#{price}, images_path=#{imagesPath, jdbcType=ARRAY, typeHandler=your.package.ByteaArrayTypeHandler},
+     updated_at=now() WHERE item_id =#{itemId};
 	</update>
 
-	<!-- アイテムに削除フラグを付与 -->
+	<!-- アイテムに販売状況を変更　販売終了へ -->
 	<update id="markForDelete">
+	UPDATE items SET sale_status = false, buy_user = #{buyUser} WHERE item_id = #{itemId};
 	</update>
+
 </mapper>
