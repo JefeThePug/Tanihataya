@@ -10,7 +10,7 @@ import com.example.group.Entity.Users;
 public interface UsersMapper {
 	
 	//emailde情報取得
-	List<Users>findByEmail();
+	List<Users>findByEmail(String email);
 	
 	//ユーザーキーで取得
 	List<Users>findById(Integer id);

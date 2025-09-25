@@ -1,7 +1,5 @@
 package com.example.group.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,12 +14,16 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UsersMapper userMapper;
 
-	public List<Users> findAll() {
-		return userMapper.findAll();
+	public Users findByEmail(String email) {
+		return userMapper.findByEmail(email).get(0);
 	}
-
+	
 	public Users findById(Integer userId) {
-		return userMapper.findById(userId);
+		return userMapper.findById(userId).get(0);
+	}
+	
+	public Users findByName(String username) {
+		return userMapper.findByName(username).get(0);
 	}
 
 	public void insert(UserForm user) {
