@@ -5,9 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.group.Entity.Items;
-import com.example.group.repository.ItemsMapper;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -16,16 +13,16 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 	private final ItemMapper itemMapper;
 
-	public List<Items> findAllByCategory(Integer category) {
-		return ItemsMapper.findAllByCategory(category);
+	public List<Item> findAllByCategory(Integer category) {
+		return itemMapper.findAllByCategory(category);
 	}
 
-	public List<Items> findPurchasesByUserId(Integer userId) {
-		return ItemsMapper.findPurchasesByUserId(userId);
+	public List<Item> findPurchasesByUserId(Integer userId) {
+		return itemMapper.findPurchasesByUserId(userId);
 	}
 
-	public List<Items> findSalesByUserId(Integer userId) {
-		return ItemsMapper.findSalesByUserId(userId);
+	public List<Item> findSalesByUserId(Integer userId) {
+		return itemMapper.findSalesByUserId(userId);
 	}
 
 	public Item findById(Integer itemId) {
@@ -33,14 +30,14 @@ public class ItemService {
 	}
 
 	public void insert(ItemForm item) {
-		ItemsMapper.insert(item);
+		itemMapper.insert(item);
 	}
 
 	public void update(ItemForm item) {
-		ItemsMapper.update(item);
+		itemMapper.update(item);
 	}
 
 	public void markForDelete(Integer itemId) {
-		ItemsMapper.markForDelete(itemId);
+		itemMapper.markForDelete(itemId);
 	}
 }

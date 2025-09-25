@@ -5,13 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.group.Entity.Users;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-	private final UsersMapper userMapper;
+	private final UserMapper userMapper;
 
 	public List<Users> findAll() {
 		return userMapper.findAll();
