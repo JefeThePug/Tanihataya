@@ -30,4 +30,6 @@ public interface ItemsMapper {
 	//アイテムに削除フラグを付与
 	void markForDelete(Items item_id);
 	
+	
+	
 }
