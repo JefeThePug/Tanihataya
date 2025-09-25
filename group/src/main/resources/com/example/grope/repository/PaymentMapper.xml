@@ -2,30 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.group.repository.PaymentMapper">
+	<!-- クレジットカード情報の登録 -->
 	<insert id="insertPayment"
 		parameterType="com.example.group.Entity.Payment">
-		INSERT INTO payments (
-		user_id,
-		card_number,
-		name,
-		security_code,
-		exp_date
-		) VALUES (
-		#{userId},
-		#{cardNumber},
-		#{name},
-		#{securityCode},
-		#{expDate}
-		)
+		INSERT INTO payments (user_id,card_number,name,security_code,exp_date) 
+		VALUES (#{userId},#{cardNumber},#{name},#{securityCode},#{expDate})
 	</insert>
 
-	<delete id="deletePaymentByUserId" parameterType="int"> DELETE FROM
+	<!-- クレジットカード情報の削除 -->
+	<delete id="deletePaymentByUserId" parameterType="int">
+		DELETE FROM
 		payments
 		WHERE user_id = #{userId}
 	</delete>
 
+    <!-- カード情報の更新 -->
 	<update id="updatePayment"
-		parameterType="com.example.group.Entity.Payment"> UPDATE payments
+		parameterType="com.example.group.Entity.Payment">
+		UPDATE payments
 		SET
 		card_number = #{cardNumber},
 		name = #{name},
@@ -33,7 +27,8 @@
 		exp_date = #{expDate}
 		WHERE
 		card_id = #{cardId}
-		AND user_id = #{userId}
+		AND
+		user_id = #{userId}
 	</update>
 
 </mapper>

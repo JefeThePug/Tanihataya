@@ -4,13 +4,13 @@
 <mapper namespace='com.example.grope.repository'>
 
 	<!-- ユーザー除法の種お得 -->
-	<select id="findAll" resultType="com.example.grope.entity.Users">
+	<select id="findAll" resultType="com.example.group.entity.Users">
 		SELECT * FROM users;
 	</select>
 
 	<!-- ユーザーキーで情報取得 -->
 	<select id="findById"
-		resultType="com.example.grope.entity.Users">
+		resultType="com.example.group.entity.Users">
 		SELECT * FROM users WHERE user_id = #{user_id};
 	</select>
 
