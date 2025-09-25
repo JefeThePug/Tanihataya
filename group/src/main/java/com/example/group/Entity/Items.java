@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Items {
 
-private Integer item_id;
+private Integer itemId;
 	
-	private Integer user_id;
+	private Integer userId;
 	
 	private String name;
 	
@@ -21,13 +21,13 @@ private Integer item_id;
 	
 	private Integer price;
 	
-	private String sale_status;
+	private String saleStatus;
 	
-	private String buy_user;
+	private String buyUser;
 	
-	private String images_path;
+	private String imagesPath;
 	
-	private LocalDateTime created_at;
+	private LocalDateTime createdAt;
 	
-	private LocalDateTime updated_at;
+	private LocalDateTime updatedAt;
 }
