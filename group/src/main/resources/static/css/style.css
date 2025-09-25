@@ -11,6 +11,10 @@
 	--strong-select: #bc6c25ff;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
 	font-family: "Noto Sans JP", "Yu Gothic UI", sans-serif;
@@ -22,6 +26,8 @@ body {
 body {
 	display: flex;
 	flex-direction: column;
+  margin: 0;
+  padding: 0;
 }
 
 /* メニュー */
@@ -32,7 +38,12 @@ body {
 	display: flex;
 	flex: 0 0 auto;
 	justify-content: space-between;
-	padding: 0.75rem 1.5rem;
+	margins: 0;
+  padding: 0.75rem 1.5rem;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 }
 
 .logo {
@@ -164,7 +175,7 @@ section {
 	border-radius: 8px;
 	color: var(--text);
 	flex: 1 0 auto;
-	margin-bottom: 1.5rem;
+	margin: 1.5rem 0;
 	padding: 2rem;
 }
 
@@ -249,7 +260,7 @@ h1 {
 
 /* ブラウザウィンドウのサイズ設定 */
 @media screen and (max-width: 600px) {
-	.heading {
+	.heading, span.title {
 		font-size: 32px;
 	}
 
@@ -260,7 +271,7 @@ h1 {
 }
 
 @media screen and (max-width: 360px) {
-	.heading {
+	.heading, span.title {
 		font-size: 24px;
 	}
 
