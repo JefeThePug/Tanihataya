@@ -29,7 +29,7 @@ public class ItemController {
     // 購入画面表示
     @GetMapping("/purchase")
     public String showPurchaseScreen(@RequestParam int itemId, Model model) {
-    	model.addAllAttributes("items",itemService.findById(itemId));
+    	model.addAttribute("items",itemService.findById(itemId));
         return "item/purchase";
     } 
 
