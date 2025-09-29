@@ -1,4 +1,4 @@
-package com.example.group.Entity;
+package com.example.group.form;
 
 
 import java.time.LocalDateTime;
@@ -12,10 +12,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-
-public class Users {
-
-	
+public class UserForm {
+   
 	private Integer userId;
 
 	private String name;
@@ -41,6 +39,5 @@ public class Users {
 
 	private LocalDateTime updatedAt;
 	
-	}
-	
 
+}

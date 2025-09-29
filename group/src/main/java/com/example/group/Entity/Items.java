@@ -21,7 +21,8 @@ private Integer itemId;
 	
 	private Integer price;
 	
-	private String saleStatus;
+	//StringになっていたのでBooleanに変更しました。
+	private Boolean saleStatus;
 	
 	private String buyUser;
 	

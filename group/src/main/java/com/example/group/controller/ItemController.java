@@ -1,5 +1,7 @@
 package com.example.group.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.group.Entity.Items;
 import com.example.group.Entity.Users;
+import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
 import com.example.group.service.UserService;
 
@@ -22,6 +25,7 @@ public class ItemController {
 	/**
 	 * 大体30行目まで変更しました(一応変更箇所にメモ作成しました)
 	 */
+	
 	private final ItemService itemService; //finalに変更
 	private final UserService userService; //finalに変更
 
@@ -31,8 +35,8 @@ public class ItemController {
         this.userService = userService;
     }
     /**
-     *  @author　田辺
      * ここまで変更しました
+     * @author　田辺
      */
 
 	// 詳細画面
@@ -50,13 +54,17 @@ public class ItemController {
     // 購入画面表示
     @GetMapping("/purchase")
     public String showPurchaseSuccess(@RequestParam int itemId, Model model) {
-    	Items item = itemService.findById(itemId);
+        Items item = itemService.findById(itemId);
         Users seller = userService.findById(item.getUserId());
+
+        // item.getImagesPaths() は List<String> を想定
+        List<String> images = item.getImagesPaths();
 
         model.addAttribute("item", item);
         model.addAttribute("seller", seller);
-        model.addAttribute("images", item.getImagaPaths()); 
+        model.addAttribute("images", images);
 
+        // もし購入日時などを表示したければここで model.addAttribute("purchaseTime", LocalDateTime.now()) など追加
         return "item/success";
     }
 

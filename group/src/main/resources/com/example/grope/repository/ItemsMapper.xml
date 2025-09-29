@@ -16,6 +16,12 @@
 	FROM items  WHERE buy_user = #{buyUser};
 	</select>
 	<!-- whereのパラメータbuyUser？ userId? -->
+	
+	<select id="findById" parameterType="int" resultType="com.example.group.Entity.Items">
+        SELECT *
+        FROM items
+        WHERE item_id = #{itemId}
+    </select>
 
 	<!-- アイテムを追加 -->
 <insert id="insertItem" parameterType="com.example.Item">
@@ -25,22 +31,20 @@
          ) VALUES (
         #{usersId}, #{name}, #{category}, #{detail}, #{price},
         #{saleStatus}, #{buyUser},
-        #{imagesPath, jdbcType=ARRAY, typeHandler=your.package.ByteaArrayTypeHandler},
-        now(),now());
+        #{imagesPath}, now(),now());
 </insert>
-        <!-- imagesPathなんか必要そう？？よくわからん -->
-
+ 
 
 	<!--アイテムを更新 -->
 	<update id="update">
 		UPDATE items SET name=#{name}, category= #{category}, detail =#{detail},
-    price=#{price}, images_path=#{imagesPath, jdbcType=ARRAY, typeHandler=your.package.ByteaArrayTypeHandler},
+    price=#{price}, images_path=#{imagesPath},
      updated_at=now() WHERE item_id =#{itemId};
 	</update>
 
 	<!-- アイテムに販売状況を変更　販売終了へ -->
 	<update id="markForDelete">
-	UPDATE items SET sale_status = false, buy_user = #{buyUser} WHERE item_id = #{itemId};
+	UPDATE items SET sale_status = false, buy_user = #{buyUser},updated_at=now() WHERE item_id = #{itemId};
 	</update>
 
 </mapper>

@@ -1,11 +1,13 @@
 package com.example.group.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.group.Entity.Items;
+import com.example.group.form.ItemForm;
 import com.example.group.repository.ItemsMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -28,16 +30,22 @@ public class ItemService {
 		return itemMapper.findSalesByUserId(userId);
 	}
 
-	public Items findById(Integer itemId) {
-		return itemMapper.findById(itemId);
-	}
-
-	public void insert(ItemForm item) {
+	public void insert(ItemForm form) {
+		Items item = new Items();
+		item.setUserId(form.getUserId());
+		item.setName(form.getName());
+		item.setDetail(form.getDetail());
+		item.setPrice(form.getPrice());
+		item.setSaleStatus(true);
+		item.setBuyUser(null);
+		// images
+		item.setCreatedAt(LocalDateTime.now());
+		item.setUpdatedAt(LocalDateTime.now());
 		itemMapper.insert(item);
 	}
 
 	public void update(ItemForm item) {
-		itemMapper.update(item);
+		//itemMapper.update(item);
 	}
 
 	public void markForDelete(Integer itemId) {
