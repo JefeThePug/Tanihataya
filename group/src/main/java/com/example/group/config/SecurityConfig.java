@@ -16,6 +16,7 @@ public class SecurityConfig {
 		http.formLogin(form -> form
 				.loginPage("/user/login") // ログイン画面のURL
 				.loginProcessingUrl("/authenticate") // ユーザー名とパスワードを送信するURL
+			    .usernameParameter("email")   // フォームのemailをusernameとして渡す
 				.defaultSuccessUrl("/loginsuccess") // 認証成功後のリダイレクト先URL
 				.failureUrl("/user/login?failure") // 認証失敗後のリダイレクト先URL
 				.permitAll() // ログイン画面は未認証でもアクセス可能
