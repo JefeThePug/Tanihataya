@@ -1,5 +1,7 @@
 package com.example.group.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.group.Entity.Items;
+import com.example.group.Entity.Users;
 import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
+import com.example.group.service.UserService;
+import com.example.group.service.security.UserDetailsImpl;
 
 
 @Controller
@@ -19,6 +24,7 @@ import com.example.group.service.ItemService;
 public class ItemController {
 	
 	private ItemService itemService;
+	private UserService userService;
 
 	// 詳細画面
     @GetMapping("/{itemId}")
@@ -38,7 +44,11 @@ public class ItemController {
     // 購入処理情報を送信
     @PostMapping("/purchase")
     public String purchase(@RequestParam int itemId, Model model) {
-    	//★PurchaseService購入した情報送信のメソッド
+    	  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    	   UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+    	   Users user = userService.findByEmail(userDetails.getUsername());
+
+    	    model.addAttribute("user", user);  // userに住所や名前など全部入ってる想定
         return "redirect:/item/purchase/success"; 
         //purchase/successのURLへアクセス
     }
