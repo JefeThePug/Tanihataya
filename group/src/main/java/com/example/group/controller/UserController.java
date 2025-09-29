@@ -2,6 +2,8 @@ package com.example.group.controller;
 
 import jakarta.validation.Valid;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,12 +12,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.group.Entity.Users;
 import com.example.group.service.UserService;
+import com.example.group.service.security.UserDetailsImpl;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-	
+
 	private UserService userService;
 
 	//ログイン画面を表示	
@@ -23,47 +27,66 @@ public class UserController {
 	public String loginForm() {
 		return "user/login";
 	}
+	// SecurityConfigのfailureUrlで指定したURLと?のうしろのパラメータ
+	@GetMapping(value="/login", params="failure")
+	public String loginFail(Model model) {
+		model.addAttribute("failureMessage", "ログインに失敗しました");
+		// ログイン画面を表示
+		return "login";
+	}
 	
+	// SecurityConfigのdefaultSuccessUrlで指定したURL
+	@GetMapping("loginsuccess")
+	public String loginSuccess(Model model) {
+		// ユーザー名
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
+		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
+		
+		model.addAttribute("user", user);//ユーザー情報を格納
+		return "purchase";
+	}
+
 	//新規登録画面を表示
 	@GetMapping("/register")
 	public String showRegister() {
 		return "user/register";
 	}
-	
+
 	//新規登録をする
 	@PostMapping("/register")
 	public String register(@Valid @ModelAttribute UserForm userForm) {	
 		userService.insert(userForm); 
 		return "redirect:user/register";
 	}
-	
+
 	//ユーザー情報一覧
 	@GetMapping("/info/{userid}")
 	public String showUserInfo(@PathVariable int userid , Model model) {
 		model.addAttribute("user",userService.findById(userid));
 		return "user/user";
 	}
-	
+
 	//ユーザー情報の変更表示
-    @GetMapping("/update")
+	@GetMapping("/update")
 	public String showUserUpdate() {
-    	return "user/user_update";
+		return "user/user_update";
 	}
-	
-    //ユーザー情報の変更
+
+	//ユーザー情報の変更
 	@PostMapping("/update")
 	public String UserUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
-		return "redirect:/user/info/"+userform.userid();
+		return "redirect:/user/info/"+userForm.userId();
 		//ユーザー情報一覧に戻る？
 	}
 
-	
+
 	//ユーザー情報の削除
-    @GetMapping("/update")
+	@GetMapping("/update")
 	public String showUserUpdate(@PathVariable int userid) {
-    	userService.delete(userid);
-    	return "user/user_update";
+		userService.delete(userid);
+		return "user/user_update";
 	}
-	
+
 }
