@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
 
 
@@ -64,7 +65,7 @@ public class ItemController {
         } else if ("update".equals(type)) {//変更登録
             itemService.update(itemForm);
         }
-    	return "redirect:/list?type=sell&userId=" + itemForm.userId();
+    	return "redirect:/list?type=sell&userId=" + itemForm.getUserId();
         //出品一覧へ移行　（出品画面へ移動の方がいい？）
     }
 }

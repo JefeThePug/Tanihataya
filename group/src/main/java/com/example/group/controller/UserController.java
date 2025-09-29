@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.group.Entity.Users;
+import com.example.group.form.UserForm;
 import com.example.group.service.UserService;
 import com.example.group.service.security.UserDetailsImpl;
 
@@ -84,7 +85,7 @@ public class UserController {
 	@PostMapping("/update")
 	public String UserUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
-		return "redirect:/user/info/"+userForm.userId();
+		return "redirect:/user/info/"+userForm.getUserId();
 		//ユーザー情報一覧に戻る？
 	}
 
