@@ -1,4 +1,6 @@
-package com.example.group.Entity;
+package com.example.group.form;
+
+
 
 import java.util.Date;
 
@@ -9,9 +11,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Payment {
+public class PaymentForm {
 
-	private Integer cardId;
+private Integer cardId;
 	
 	private Integer userId;
 	
@@ -23,4 +25,9 @@ public class Payment {
 	private Integer securityCode;
 
 	private Date expDate;
+	
+	
+
+
+	
 }
