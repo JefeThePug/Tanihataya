@@ -1,6 +1,7 @@
 package com.example.group.Entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.AssertTrue;
@@ -33,7 +34,7 @@ public class Items {
 
 	private String buyUser;
 
-	private String imagesPath;
+	private List<String> imagesPath;
 
 	private LocalDateTime createdAt;
 
