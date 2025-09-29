@@ -34,7 +34,7 @@ public class UserController {
 	public String loginFail(Model model) {
 		model.addAttribute("failureMessage", "ログインに失敗しました");
 		// ログイン画面を表示
-		return "login";
+		return "user/login";
 	}
 
 	// SecurityConfigのdefaultSuccessUrlで指定したURL
@@ -46,7 +46,7 @@ public class UserController {
 		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
 
 		model.addAttribute("user", user);//ユーザー情報を格納
-		return "purchase";
+		return "index";
 	}
 
 	// 新規登録画面（isEdit = false）
@@ -65,7 +65,7 @@ public class UserController {
 			return "user/register"; 
 		}
 		userService.insert(userForm);
-		return "redirect:/user/register";
+		return "redirect:/user/login";
 	}
 
 
