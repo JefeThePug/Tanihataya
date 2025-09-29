@@ -34,7 +34,7 @@ public class UserController {
 	public String loginFail(Model model) {
 		model.addAttribute("failureMessage", "ログインに失敗しました");
 		// ログイン画面を表示
-		return "login";
+		return "user/login";
 	}
 
 	// SecurityConfigのdefaultSuccessUrlで指定したURL
@@ -46,7 +46,7 @@ public class UserController {
 		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
 
 		model.addAttribute("user", user);//ユーザー情報を格納
-		return "purchase";
+		return "index";
 	}
 
 	// 新規登録画面（isEdit = false）
@@ -58,14 +58,14 @@ public class UserController {
 
 	//新規登録をする
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute UserForm userForm, Model model,BindingResult result) {
-		if (result.hasErrors()) {
-			model.addAttribute("Message", "入力誤り");
-			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
-			return "user/register"; 
-		}
-		userService.insert(userForm);
-		return "redirect:/user/register";
+	public String register(@Valid @ModelAttribute UserForm userForm, Model model, BindingResult result) {
+	    if (result.hasErrors()) {
+	        model.addAttribute("Message", "入力誤り");
+	        model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
+	        return "user/register"; 
+	    }
+	    userService.insert(userForm);
+	    return "redirect:/user/login"; // 登録完了後にログイン画面へ
 	}
 
 

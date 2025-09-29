@@ -1,7 +1,6 @@
 package com.example.group.Entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import jakarta.validation.constraints.AssertFalse;
 import jakarta.validation.constraints.AssertTrue;
@@ -27,15 +26,16 @@ public class Items {
 	private String detail;
 
 	private Integer price;
-
+	
 	@AssertTrue(message="販売中")
 	@AssertFalse(message="販売終了")
 	private boolean saleStatus;
 
 	private String buyUser;
-
-	private List<String> imagesPath;
-
+	
+	// 画像パス配列に変更 9/29(月)
+    private String[] imagaPaths;
+	
 	private LocalDateTime createdAt;
 
 	private LocalDateTime updatedAt;

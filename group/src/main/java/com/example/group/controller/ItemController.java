@@ -1,5 +1,7 @@
 package com.example.group.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,15 +12,32 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.group.Entity.Items;
+import com.example.group.Entity.Users;
 import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
+import com.example.group.service.UserService;
 
 
 @Controller
 @RequestMapping("/item")
 public class ItemController {
 	
-	private ItemService itemService;
+	/**
+	 * 大体30行目まで変更しました(一応変更箇所にメモ作成しました)
+	 */
+	
+	private final ItemService itemService; //finalに変更
+	private final UserService userService; //finalに変更
+
+    // コンストラクタインジェクション（Lombokの@RequiredArgsConstructorでも可）
+    public ItemController(ItemService itemService, UserService userService) {
+        this.itemService = itemService;
+        this.userService = userService;
+    }
+    /**
+     * ここまで変更しました
+     * @author　田辺
+     */
 
 	// 詳細画面
     @GetMapping("/{itemId}")
@@ -28,18 +47,33 @@ public class ItemController {
         return "item";
     }
 
+    /*
+     * @author 田辺
+     * showPurchaseSuccessメソッドを大幅に変更しました　9/29(月曜日)
+     */
     // 購入画面表示
     @GetMapping("/purchase")
-    public String showPurchaseScreen(@RequestParam int itemId, Model model) {
-    	model.addAttribute("items",itemService.findById(itemId));
-        return "item/purchase";
-    } 
+    public String showPurchaseSuccess(@PathVariable int itemId, Model model) {
+        Items item = itemService.findById(itemId);
+        Users seller = userService.findById(item.getUserId());
+
+        // item.getImagesPaths() は List<String> を想定
+        List<String> images = item.getImagesPaths();
+
+        model.addAttribute("item", item);
+        model.addAttribute("seller", seller);
+        model.addAttribute("images", images);
+
+        // もし購入日時などを表示したければここで model.addAttribute("purchaseTime", LocalDateTime.now()) など追加
+        return "item/success";
+    }
 
     // 購入処理情報を送信
     @PostMapping("/purchase")
     public String purchase(@RequestParam int itemId, Model model) {
     	//★PurchaseService購入した情報送信のメソッド
-        return "redirect:/item/purchase/success"; 
+    	// 完了ページに itemId を渡すためにリダイレクト
+        return "redirect:/item/purchase/success?itemId=" + itemId;
         //purchase/successのURLへアクセス
     }
 
@@ -52,26 +86,12 @@ public class ItemController {
     // 出品登録/変更画面表示
     @GetMapping("/add_item")
     public String showAddItem(Model model) {
-    	ItemForm form = new ItemForm();
-        model.addAttribute("itemForm", form);
-        model.addAttribute("type", "insert");
-        model.addAttribute("pageTitle", "商品登録");
+
+        
         return "item/add_item";
     }
 
-    @GetMapping("/add_item/{id}")
-    public String showUpdateItem(@PathVariable Integer id, Model model) {
-        Items item = itemService.findById(id);
-        if (item == null) {
-            throw new RuntimeException("Item not found: " + id);
-        }
-        ItemForm form = itemService.toItemForm(item);
-        model.addAttribute("itemForm", form);
-        model.addAttribute("type", "update");
-        model.addAttribute("pageTitle", "商品変更");
-        return "item/add_item";
-    }
-    
+
     // 出品処理  	
     @PostMapping("/add_item")
     public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
@@ -80,7 +100,7 @@ public class ItemController {
         } else if ("update".equals(type)) {//変更登録
             itemService.update(itemForm);
         }
-    	return "redirect:/list?type=sell&userId=" + itemForm.getUserId();
+    	return "redirect:/list?type=sell&userId=" + itemForm.userId();
         //出品一覧へ移行　（出品画面へ移動の方がいい？）
     }
 }

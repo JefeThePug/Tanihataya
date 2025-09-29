@@ -14,42 +14,44 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-	private final UsersMapper userMapper;
-	private final PasswordEncoder passwordEncoder;
 
-	public Users findByEmail(String email) {
-		return userMapper.findByEmail(email).get(0);
-	}
+    private final UsersMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-	public Users findById(Integer userId) {
-		return userMapper.findById(userId).get(0);
-	}
+    public Users findByEmail(String email) {
+        return userMapper.findByEmail(email).get(0);
+    }
 
-	public Users findByName(String username) {
-		return userMapper.findByName(username).get(0);
-	}
+    public Users findById(Integer userId) {
+        return userMapper.findById(userId).get(0);
+    }
 
-	public void insert(UserForm form) {
-		Users user = new Users();
-		// フォームの生パスワードをハッシュ化
-		String encodedPassword = passwordEncoder.encode(form.getPassword());
+    public Users findByName(String username) {
+        return userMapper.findByName(username).get(0);
+    }
 
-		user.setUserId(form.getUserId());
-		user.setName(form.getName());
-		user.setEmail(form.getEmail());
-		user.setPassword(encodedPassword); // ハッシュ化済みパスワードをセット
-		user.setPostcode(form.getPostcode());
-		user.setAddress(form.getAddress());
-		user.setTel(form.getTel());
+    public void insert(UserForm form) {
+        Users user = new Users();
 
-		userMapper.insert(user);
-	}
+        // フォームの生パスワードをハッシュ化
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-	public void update(UserForm user) {
-		//userMapper.update(user);
-	}
+        user.setUserId(form.getUserId());
+        user.setName(form.getName());
+        user.setEmail(form.getEmail());
+        user.setPassword(encodedPassword); // ハッシュ化済みパスワード
+        user.setPostcode(form.getPostcode());
+        user.setAddress(form.getAddress());
+        user.setTel(form.getTel());
 
-	public void delete(Integer userId) {
-		userMapper.delete(userId);
-	}
+        userMapper.insert(user);
+    }
+
+    public void update(UserForm user) {
+        userMapper.update(user);
+    }
+
+    public void delete(Integer userId) {
+        userMapper.delete(userId);
+    }
 }
