@@ -114,4 +114,22 @@ public class ItemService {
 	public void markForDelete(Integer itemId) {
 		itemMapper.markForDelete(itemId);
 	}
+
+	public ItemForm toItemForm(Items item) {
+		if (item == null) {
+			return new ItemForm();
+		}
+
+		ItemForm form = new ItemForm();
+		form.setItemId(item.getItemId());
+		form.setUserId(item.getUserId());
+		form.setName(item.getName());
+		form.setCategory(item.getCategory());
+		form.setDetail(item.getDetail());
+		form.setPrice(item.getPrice());
+		form.setSaleStatus(item.isSaleStatus());
+		form.setBuyUser(item.getBuyUser());
+		form.setExistingImgSrcs(item.getImagesPath());
+		return form;
+	}
 }

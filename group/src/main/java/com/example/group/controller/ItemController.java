@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.group.Entity.Items;
 import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
 
@@ -51,12 +52,26 @@ public class ItemController {
     // 出品登録/変更画面表示
     @GetMapping("/add_item")
     public String showAddItem(Model model) {
-
-        
+    	ItemForm form = new ItemForm();
+        model.addAttribute("itemForm", form);
+        model.addAttribute("type", "insert");
+        model.addAttribute("pageTitle", "商品登録");
         return "item/add_item";
     }
 
-
+    @GetMapping("/add_item/{id}")
+    public String showUpdateItem(@PathVariable Integer id, Model model) {
+        Items item = itemService.findById(id);
+        if (item == null) {
+            throw new RuntimeException("Item not found: " + id);
+        }
+        ItemForm form = itemService.toItemForm(item);
+        model.addAttribute("itemForm", form);
+        model.addAttribute("type", "update");
+        model.addAttribute("pageTitle", "商品変更");
+        return "item/add_item";
+    }
+    
     // 出品処理  	
     @PostMapping("/add_item")
     public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
