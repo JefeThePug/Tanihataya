@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+	
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../static/css/style.css">
+	</head>
 
 <body>
 	<section th:fragment="content">
-		<h2>新規登録</h2>
+		
+		<h2 th:text="${isEdit} ? '登録変更' : '新規登録'"></h2>
 		
 		<!-- エラーがあるときだけ表示 -->
 		<div th:if="${Message != null}" th:text="${Message}"></div>
@@ -12,35 +18,37 @@
 			<li th:each="err : ${#fields.errors()}" th:text="${err}"></li>
 		</div>
 		
-		  <form action="/register" method="post">
+		<form th:action="${isEdit} ? @{/user/update} : @{/user/register}" method="post" th:object="${userForm}">
+			
 		    <table>
 		      <tr>
 		        <th>名前<span style="color:red;">*</span></th>
-		        <td><input type="text" name="name" required /></td>
+		        <td><input type="text" name="name" th:field="*{name}" required/></td>
 		      </tr>
 		      <tr>
 		        <th>メールアドレス<span style="color:red;">*</span></th>
-		        <td><input type="email" name="email" required /></td>
+		        <td><input type="email" name="email" th:field="*{email}" required/></td>
 		      </tr>
 		      <tr>
 		        <th>パスワード<span style="color:red;">*</span></th>
-		        <td><input type="password" name="password" required /></td>
+		        <td><input type="password" name="password"  th:field="*{password}" required/></td>
 		      </tr>
 		      <tr>
 		        <th>郵便番号</th>
-		        <td><input type="text" name="postcode" pattern="\d{3}-?\d{4}" placeholder="123-4567" /></td>
+		        <td><input type="text" name="postcode" th:field="*{postcode}" pattern="\d{3}-?\d{4}" placeholder="123-4567" /></td>
 		      </tr>
 		      <tr>
 		        <th>住所</th>
-		        <td><input type="text" name="address" /></td>
+		        <td><input type="text" name="address" th:field="*{address}" /></td>
 		      </tr>
 		      <tr>
 		        <th>電話番号</th>
-		        <td><input type="tel" name="tel" pattern="0\d{1,4}-?\d{1,4}-?\d{4}" placeholder="090-1234-5678" /></td>
+		        <td><input type="tel" name="tel" th:field="*{tel}" pattern="0\d{1,4}-?\d{1,4}-?\d{4}" placeholder="090-1234-5678" /></td>
 		      </tr>
 		      <tr>
 		        <td colspan="2" style="text-align:center;">
-		          <button type="submit">新規登録</button>
+				  <input th:if="${isEdit}" type="submit" value="登録変更">
+				  <input th:unless="${isEdit}" type="submit" value="新規登録">
 		        </td>
 		      </tr>
 		    </table>
