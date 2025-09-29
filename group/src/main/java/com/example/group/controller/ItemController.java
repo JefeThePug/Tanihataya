@@ -57,7 +57,7 @@ public class ItemController {
         Users seller = userService.findById(item.getUserId());
 
         // Items.imagePaths が String[] の場合
-        String[] images = item.getImagaPaths(); // ← 型を合わせることが重要
+        String[] images = item.getImagePaths(); // ← 型を合わせることが重要
 
         model.addAttribute("item", item);
         model.addAttribute("seller", seller);
