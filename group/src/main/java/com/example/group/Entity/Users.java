@@ -1,14 +1,18 @@
 package com.example.group.Entity;
 
-import java.util.Date;
+
+import java.time.LocalDateTime;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Entity
+@Table(name="users")
 public class Users {
 
+	
 	private Integer userId;
 
 	private String name;
@@ -17,7 +21,7 @@ public class Users {
 
 	private String password;
 
-	private Integer postcode;
+	private String postcode;
 
 	private String address;
 
@@ -25,9 +29,9 @@ public class Users {
 
 	private boolean isActive;
 
-	private Date createdAt;
+	private LocalDateTime createdAt;
 
-	private Date updatedAt;
+	private LocalDateTime updatedAt;
 	
 	}
 	
