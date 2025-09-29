@@ -35,4 +35,6 @@ public class ItemForm {
 	private String buyUser;
 
 	private List<MultipartFile> imagesPath;
+	
+	private List<String> existingImgSrcs;
 }
