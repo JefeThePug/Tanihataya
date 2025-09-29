@@ -1,6 +1,5 @@
 package com.example.group.form;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.validation.constraints.AssertFalse;
@@ -36,9 +35,4 @@ public class ItemForm {
 	private String buyUser;
 
 	private List<MultipartFile> imagesPath;
-
-	private LocalDateTime createdAt;
-
-	private LocalDateTime updatedAt;
-
 }
