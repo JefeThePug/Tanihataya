@@ -1,10 +1,17 @@
 package com.example.group.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.group.Entity.Items;
 import com.example.group.form.ItemForm;
@@ -38,7 +45,23 @@ public class ItemService {
 		item.setPrice(form.getPrice());
 		item.setSaleStatus(true);
 		item.setBuyUser(null);
-		// images
+		File uploadDir = new File("src/main/resources/static/images/user_imgs");
+		if (!uploadDir.exists())
+			uploadDir.mkdirs();
+		List<String> savedPaths = new ArrayList<>();
+		for (MultipartFile file : form.getImagesPath()) {
+			if (file != null && !file.isEmpty()) {
+				String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+				Path path = Paths.get(uploadDir.getAbsolutePath(), filename);
+				try {
+					file.transferTo(path);
+				} catch (IOException e) {
+					throw new RuntimeException("Failed to save uploaded file", e);
+				}
+				savedPaths.add(filename);
+			}
+		}
+		item.setImagesPath(savedPaths);
 		item.setCreatedAt(LocalDateTime.now());
 		item.setUpdatedAt(LocalDateTime.now());
 		itemMapper.insert(item);
