@@ -9,14 +9,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.group.Entity.Items;
+import com.example.group.Entity.Users;
 import com.example.group.service.ItemService;
+import com.example.group.service.UserService;
 
 
 @Controller
 @RequestMapping("/item")
 public class ItemController {
 	
-	private ItemService itemService;
+	/**
+	 * 大体30行目まで変更しました(一応変更箇所にメモ作成しました)
+	 */
+	private final ItemService itemService; //finalに変更
+	private final UserService userService; //finalに変更
+
+    // コンストラクタインジェクション（Lombokの@RequiredArgsConstructorでも可）
+    public ItemController(ItemService itemService, UserService userService) {
+        this.itemService = itemService;
+        this.userService = userService;
+    }
+    /**
+     *  @author　田辺
+     * ここまで変更しました
+     */
 
 	// 詳細画面
     @GetMapping("/{itemId}")
@@ -26,18 +43,29 @@ public class ItemController {
         return "item";
     }
 
+    /*
+     * @author 田辺
+     * showPurchaseSuccessメソッドを大幅に変更しました　9/29(月曜日)
+     */
     // 購入画面表示
     @GetMapping("/purchase")
-    public String showPurchaseScreen(@RequestParam int itemId, Model model) {
-    	model.addAttribute("items",itemService.findById(itemId));
-        return "item/purchase";
-    } 
+    public String showPurchaseSuccess(@RequestParam int itemId, Model model) {
+    	Items item = itemService.findById(itemId);
+        Users seller = userService.findById(item.getUserId());
+
+        model.addAttribute("item", item);
+        model.addAttribute("seller", seller);
+        model.addAttribute("images", item.getImagaPaths()); 
+
+        return "item/success";
+    }
 
     // 購入処理情報を送信
     @PostMapping("/purchase")
     public String purchase(@RequestParam int itemId, Model model) {
     	//★PurchaseService購入した情報送信のメソッド
-        return "redirect:/item/purchase/success"; 
+    	// 完了ページに itemId を渡すためにリダイレクト
+        return "redirect:/item/purchase/success?itemId=" + itemId;
         //purchase/successのURLへアクセス
     }
 

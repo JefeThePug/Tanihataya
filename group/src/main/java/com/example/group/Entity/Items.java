@@ -25,7 +25,8 @@ private Integer itemId;
 	
 	private String buyUser;
 	
-	private String imagesPath;
+	// 画像パス配列に変更 9/29(月)
+    private String[] imagaPaths;
 	
 	private LocalDateTime createdAt;
 	
