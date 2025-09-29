@@ -41,8 +41,7 @@ public class UserController {
 		// ユーザー名
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
-		Users user = userService.findById(principal.getUsername());//Detailsを通れたユーザー情報を取得
-		//useremail
+		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
 		
 		model.addAttribute("user", user);//ユーザー情報を格納
 		return "purchase";
