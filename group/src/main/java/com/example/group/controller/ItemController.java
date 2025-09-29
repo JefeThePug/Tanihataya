@@ -53,7 +53,7 @@ public class ItemController {
      */
     // 購入画面表示
     @GetMapping("/purchase")
-    public String showPurchaseSuccess(@RequestParam int itemId, Model model) {
+    public String showPurchaseSuccess(@PathVariable int itemId, Model model) {
         Items item = itemService.findById(itemId);
         Users seller = userService.findById(item.getUserId());
 

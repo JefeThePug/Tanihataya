@@ -29,6 +29,10 @@ public class ItemService {
 	public List<Items> findSalesByUserId(Integer userId) {
 		return itemMapper.findSalesByUserId(userId);
 	}
+	
+	public List<Items> findById(Integer userId) {
+		return itemMapper.findById(userId);
+	}
 
 	public void insert(ItemForm form) {
 		Items item = new Items();
