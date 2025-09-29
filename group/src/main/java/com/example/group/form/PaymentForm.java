@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class Form {
+public class PaymentForm {
 
 	private Integer userId;
 

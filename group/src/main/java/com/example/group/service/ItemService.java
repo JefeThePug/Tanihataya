@@ -35,7 +35,7 @@ public class ItemService {
 		itemMapper.insert(item);
 	}
 
-	public void update(ItemForm item) {
+	public void update(Item item) {
 		itemMapper.update(item);
 	}
 
