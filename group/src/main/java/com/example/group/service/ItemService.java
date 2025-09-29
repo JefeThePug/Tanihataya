@@ -38,6 +38,10 @@ public class ItemService {
 		return itemMapper.findSalesByUserId(userId);
 	}
 
+	public Items findById(Integer id) {
+		return itemMapper.findById(id);
+	}
+
 	public void insert(ItemForm form) {
 		Items item = new Items();
 		item.setUserId(form.getUserId());
