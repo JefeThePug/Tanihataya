@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.group.Entity.Items;
+import com.example.group.form.ItemForm;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +36,7 @@ public class ItemService {
 		itemMapper.insert(item);
 	}
 
-	public void update(Item item) {
+	public void update(ItemForm item) {
 		itemMapper.update(item);
 	}
 
