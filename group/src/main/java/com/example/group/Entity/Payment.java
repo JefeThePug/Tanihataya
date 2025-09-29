@@ -2,6 +2,8 @@ package com.example.group.Entity;
 
 import java.util.Date;
 
+import jakarta.validation.constraints.Size;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,7 @@ public class Payment {
 	
 	private String name;
 	
+	 @Size(max = 3)
 	private Integer securityCode;
 
 	private Date expDate;
