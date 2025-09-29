@@ -34,7 +34,7 @@ public class UserController {
 	public String loginFail(Model model) {
 		model.addAttribute("failureMessage", "ログインに失敗しました");
 		// ログイン画面を表示
-		return "login";
+		return "user/login";
 	}
 
 	// SecurityConfigのdefaultSuccessUrlで指定したURL
@@ -46,25 +46,26 @@ public class UserController {
 		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
 
 		model.addAttribute("user", user);//ユーザー情報を格納
-		return "purchase";
+		return "index";
 	}
 
-	//新規登録画面を表示
+	// 新規登録画面（isEdit = false）
 	@GetMapping("/register")
-	public String showRegister() {
-		return "user/register";
+	public String showRegister(Model model) {
+	    model.addAttribute("isEdit", false); 
+	    return "user/register";
 	}
 
 	//新規登録をする
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute UserForm userForm, Model model,BindingResult result) {
-		if (result.hasErrors()) {
-			model.addAttribute("Message", "入力誤り");
-			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
-			return "user/register"; 
-		}
-		userService.insert(userForm);
-		return "redirect:/user/register";
+	public String register(@Valid @ModelAttribute UserForm userForm, Model model, BindingResult result) {
+	    if (result.hasErrors()) {
+	        model.addAttribute("Message", "入力誤り");
+	        model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
+	        return "user/register"; 
+	    }
+	    userService.insert(userForm);
+	    return "redirect:/user/login"; // 登録完了後にログイン画面へ
 	}
 
 
@@ -75,10 +76,13 @@ public class UserController {
 		return "user/user";
 	}
 
-	//ユーザー情報の変更表示
-	@GetMapping("/update")
-	public String showUserUpdate() {
-		return "user/user_update";
+
+	// ユーザー情報の変更画面
+	@GetMapping("/update/{userid}")
+	public String showUserUpdate(@PathVariable int userid , Model model) {
+	    model.addAttribute("isEdit", true);
+		model.addAttribute("user",userService.findById(userid));
+	    return "user/register";
 	}
 
 	//ユーザー情報の変更
@@ -91,8 +95,8 @@ public class UserController {
 
 
 	//ユーザー情報の削除
-	@GetMapping("/update")
-	public String showUserUpdate(@PathVariable int userid) {
+	@GetMapping("/delete")
+	public String showUserDelete(@PathVariable int userid) {
 		userService.delete(userid);
 		return "user/user_update";
 	}

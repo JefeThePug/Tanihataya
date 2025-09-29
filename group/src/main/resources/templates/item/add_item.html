@@ -3,134 +3,117 @@
 
 <body>
 	<section th:fragment="content">
-		<form action="/submit" method="post" enctype="multipart/form-data" class="product-form">
-			<!-- FIX insert or update?... -->
-			<!-- FIX adjust the form fields -->
-			<input type="hidden" name="type" value="insert" />
-			
+		<form action="@{/submit}" th:object="${itemForm}" method="post" enctype="multipart/form-data"
+			class="product-form">
+			<input type="hidden" name="type" th:value="${type}" />
+			<input type="hidden" th:field="*{itemId}" th:value="${id}" />
 			<div class="form-left">
 				<!-- Main image -->
 				<label>商品の写真</label>
 				<div class="main-image upload-box">
-					<input type="file" id="mainImage" accept="image/*"
+					<input type="file" th:field="*{imagesPath}" accept="image/*"
 						onchange="previewImage(event, 'mainPreview', 'mainDelete')">
-					<img id="mainPreview" src="" alt="">
+					<img id="mainPreview" alt="" th:if="${itemForm.existingImgSrcs.size() > 0}"
+						th:src="@{'/images/user_imgs/' + ${itemForm.existingImgSrcs[0]}}">
+					<img id="mainPreview" alt="" th:unless="${itemForm.existingImgSrcs.size() > 0}" th:src="">
 					<span class="placeholder">⊕商品の写真</span>
 					<i id="mainDelete" class="fas fa-trash-alt delete-icon"></i>
 				</div>
 
 				<!-- Smaller images -->
 				<div class="small-images">
-					<div class="upload-box">
-						<input type="file" id="image1" accept="image/*"
-							onchange="previewImage(event, 'preview1', 'delete1')">
-						<img id="preview1" src="" alt="">
+					<div class="upload-box" th:each="i : ${#numbers.sequence(1,4)}">
+						<input type="file" th:id="'image' + ${i}" th:field="*{imagesPath}" accept="image/*"
+							th:onchange="'previewImage(event, \'preview' + ${i} + '\', \'delete' + ${i} + '\')'">
+						<img th:id="'preview' + ${i}" alt="" th:if="${itemForm.existingImgSrcs.size() > i}"
+							th:src="@{'/images/user_imgs/' + ${itemForm.existingImgSrcs[i]}}">
+						<img th:id="'preview' + ${i}" alt="" th:unless="${itemForm.existingImgSrcs.size() > i}"
+							th:src="">
 						<span class="placeholder">⊕</span>
-						<i id="delete1" class="fas fa-trash-alt delete-icon"></i>
-					</div>
-					<div class="upload-box">
-						<input type="file" id="image2" accept="image/*"
-							onchange="previewImage(event, 'preview2', 'delete2')">
-						<img id="preview2" src="" alt="">
-						<span class="placeholder">⊕</span>
-						<i id="delete2" class="fas fa-trash-alt delete-icon"></i>
-					</div>
-					<div class="upload-box">
-						<input type="file" id="image3" accept="image/*"
-							onchange="previewImage(event, 'preview3', 'delete3')">
-						<img id="preview3" src="" alt="">
-						<span class="placeholder">⊕</span>
-						<i id="delete3" class="fas fa-trash-alt delete-icon"></i>
-					</div>
-					<div class="upload-box">
-						<input type="file" id="image4" accept="image/*"
-							onchange="previewImage(event, 'preview4', 'delete4')">
-						<img id="preview4" src="" alt="">
-						<span class="placeholder">⊕</span>
-						<i id="delete4" class="fas fa-trash-alt delete-icon"></i>
+						<i th:id="'delete' + ${i}" class="fas fa-trash-alt delete-icon"></i>
 					</div>
 				</div>
 			</div>
 
 			<div class="form-right">
 				<label>タイトル</label>
-				<input type="text" name="title" required>
+				<input type="text" th:field="*{name}" required>
 
 				<label>値段</label>
 				<div class="currency-input">
-					<input type="number" name="price" required>
+					<input type="number" th:field="*{price}" required>
 				</div>
 
 				<label>商品説明</label>
-				<textarea name="description" rows="4"></textarea>
+				<textarea th:field="*{detail}" rows="4"></textarea>
 
 				<label>カテゴリー</label>
 				<div class="category-options">
-					<label><input type="radio" name="category" value="clothing">衣類</label>
-					<label><input type="radio" name="category" value="toys">おもちゃ</label>
-					<label><input type="radio" name="category" value="electronics">電気製品</label>
-					<label><input type="radio" name="category" value="sports">スポーツ品</label>
-					<label><input type="radio" name="category" value="pets">ペット品</label>
-					<label><input type="radio" name="category" value="beauty">美容品</label>
-					<label><input type="radio" name="category" value="books">書籍</label>
-					<label><input type="radio" name="category" value="other">その他</label>
+					<label><input type="radio" th:field="*{category}" value="clothing">衣類</label>
+					<label><input type="radio" th:field="*{category}" value="toys">おもちゃ</label>
+					<label><input type="radio" th:field="*{category}" value="electronics">電気製品</label>
+					<label><input type="radio" th:field="*{category}" value="sports">スポーツ品</label>
+					<label><input type="radio" th:field="*{category}" value="pets">ペット品</label>
+					<label><input type="radio" th:field="*{category}" value="beauty">美容品</label>
+					<label><input type="radio" th:field="*{category}" value="books">書籍</label>
+					<label><input type="radio" th:field="*{category}" value="other">その他</label>
 				</div>
 				<button type="submit">登録</button>
 			</div>
 		</form>
-		
+
 		<script>
 			function previewImage(event, previewId, deleteId) {
-			    const input = event.target;
-			    const preview = document.getElementById(previewId);
-			    const deleteIcon = document.getElementById(deleteId);
-			    const parentBox = input.closest('.upload-box');
-			    const placeholder = parentBox ? parentBox.querySelector('.placeholder') : null;
+				const input = event.target;
+				const preview = document.getElementById(previewId);
+				const deleteIcon = document.getElementById(deleteId);
+				const parentBox = input.closest('.upload-box');
+				const placeholder = parentBox ? parentBox.querySelector('.placeholder') : null;
 
-			    if (input.files && input.files[0]) {
-			        const reader = new FileReader();
-			        reader.onload = function(e) {
-			            preview.src = e.target.result;
-			            preview.style.display = "block";
-			            
-			            // プレースホルダーを非表示にし、削除アイコンを表示
-			            if (placeholder) {
-			                placeholder.textContent = ""; 
-			                placeholder.style.display = "none"; 
-			            }
-			            if (deleteIcon) {
-			                deleteIcon.style.display = "block"; 
-			                // アイコンが表示されたときにクリック処理を割り当てる
-			                deleteIcon.onclick = () => removeImage(input.id, previewId, deleteId);
-			            }
-			        };
-			        reader.readAsDataURL(input.files[0]);
-			    } 
+				if (input.files && input.files[0]) {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						preview.src = e.target.result;
+						preview.style.display = "block";
+
+						// プレースホルダーを非表示にし、削除アイコンを表示
+						if (placeholder) {
+							placeholder.textContent = "";
+							placeholder.style.display = "none";
+						}
+						if (deleteIcon) {
+							deleteIcon.style.display = "block";
+							// アイコンが表示されたときにクリック処理を割り当てる
+							deleteIcon.onclick = () => removeImage(input.id, previewId, deleteId);
+						}
+					};
+					reader.readAsDataURL(input.files[0]);
+				}
 			}
 
 			// 画像を削除する関数
 			function removeImage(inputId, previewId, deleteId) {
-			    const input = document.getElementById(inputId);
-			    const preview = document.getElementById(previewId);
-			    const deleteIcon = document.getElementById(deleteId);
-			    
-			    // 1. ファイル入力をリセット（重要なステップ！）
-			    input.value = ''; 
-			    // 2. プレビュー画像を消去
-			    preview.src = "";
-			    preview.style.display = "none";
-			    // 3. ゴミ箱アイコンを非表示にする
-			    if (deleteIcon) {
-			        deleteIcon.style.display = "none";
-			    }
-			    // 4. プレースホルダーのテキストやアイコンを復元
-			    const parentBox = input.closest('.upload-box');
-			    const placeholder = parentBox ? parentBox.querySelector('.placeholder') : null; 
-			    if (placeholder) {
-			        const defaultText = (inputId === 'mainImage') ? '⊕商品の写真' : '⊕';
-			        placeholder.textContent = defaultText;
-			        placeholder.style.display = "block";
-			    }
+				const input = document.getElementById(inputId);
+				const preview = document.getElementById(previewId);
+				const deleteIcon = document.getElementById(deleteId);
+
+				// 1. ファイル入力をリセット（重要なステップ！）
+				input.value = '';
+				// 2. プレビュー画像を消去
+				preview.src = "";
+				preview.style.display = "none";
+				// 3. ゴミ箱アイコンを非表示にする
+				if (deleteIcon) {
+					deleteIcon.style.display = "none";
+				}
+				// 4. プレースホルダーのテキストやアイコンを復元
+				const parentBox = input.closest('.upload-box');
+				const placeholder = parentBox ? parentBox.querySelector('.placeholder') : null;
+				if (placeholder) {
+					const defaultText = (inputId === 'mainImage') ? '⊕商品の写真' : '⊕';
+					placeholder.textContent = defaultText;
+					placeholder.style.display = "block";
+				}
 			}
 		</script>
 	</section>
