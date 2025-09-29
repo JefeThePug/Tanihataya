@@ -1,44 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<html xmlns="http://www.thymeleaf.org" th:insert="~{layout ::layout(~{::title}, ~{::section})}">
 
-<head>
-	<meta charset="UTF-8">
-	<title>ログイン画面</title>
-	<link rel="stylesheet" href="../static/css/style.css">
-</head>
+<th:block th:fragment="title">
+<title th:text="${pageTitle}"></title>
+</th:block>
 
-<body>
-	<section th:fragment="content">
-
-		<!-- ログインエラーのときはメッセージを表示 -->
-		<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
-		<!-- ログインフォーム -->
-		<!-- th:actionはSecurityConfigのloginProcessingUrlで指定したURL -->
-		<form th:action="@{authenticate}" method="post">
-			<table>
-				<tr>
-					<th>Email</th>
-					<td><input type="text" name="email" /></td>
-				</tr>
-				<tr>
-					<th>PASSWORD</th>
-					<td><input type="password" name="password" /></td>
-				</tr>
-				<tr>
-					<th></th>
-					<td>
-						<input type="submit" class="btn" value="ログイン" />
-					</td>
-				</tr>
-				<tr>
-					<th></th>
-					<td>
-						<input type="button" class="btn secondary" value="新規作成"
-							th:onclick="|location.href='@{/register}'|" />
-					</td>
-				</tr>
-			</table>
-	</section>
-</body>
-
+<th:block th:fragment="section">
+<section>
+	<!-- ログインエラーのときはメッセージを表示 -->
+	<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
+	<!-- ログインフォーム -->
+	<!-- th:actionはSecurityConfigのloginProcessingUrlで指定したURL -->
+	<form th:action="@{authenticate}" method="post">
+		<table>
+			<tr>
+				<th>Email</th>
+				<td><input type="text" name="email" /></td>
+			</tr>
+			<tr>
+				<th>PASSWORD</th>
+				<td><input type="password" name="password" /></td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="submit" class="btn" value="ログイン" />
+				</td>
+			</tr>
+			<tr>
+				<th></th>
+				<td>
+					<input type="button" class="btn secondary" value="新規作成"
+						th:onclick="|location.href='@{/register}'|" />
+				</td>
+			</tr>
+		</table>
+	</form>
+</section>
+</th:block>
 </html>

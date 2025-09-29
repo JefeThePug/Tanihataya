@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+th:fragment="layout(title, content)">
 
 <head>
 	<meta charset="UTF-8">
-	<title th:text="${pageTitle}">Default Title</title>
+	<title th:replace="${title}">Default Title</title>
 	<link rel="stylesheet" th:href="@{/css/style.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 		integrity="sha512-yzXo+...==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-	<div th:replace:="fragments/navbar :: navbar"></div>
-	<section th:replace="~{::content}"></section>
+	<div th:replace="~{fragments/navbar :: navbar}"></div>
+	<section th:replace="${content}"></section>
 </body>
 
 </html>
