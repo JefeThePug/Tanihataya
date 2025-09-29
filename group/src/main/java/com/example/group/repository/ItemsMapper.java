@@ -17,6 +17,9 @@ public interface ItemsMapper {
 	
 	//特定ユーザーのすべての販売履歴
 	List<Items>findSalesByUserId(Integer userId);
+	
+	//アイテムIDでアイテムを1件取得
+	Items findById(Integer id);
 
 	//アイテムを追加
 	void insert(Items items);
