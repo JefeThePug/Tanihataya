@@ -20,10 +20,10 @@ public interface ItemsMapper {
 	List<Items>findSalesByUserId(Integer userId);
 	
 	// アイテムIDで1件取得
-    List<Items> findById(Integer itemId);
+	Items findById(Integer itemId);
 
 	//アイテムを追加
-	void insert(Items items);
+	void insertItem(Items items);
 
 	//アイテムを更新
 	void update(ItemForm item);

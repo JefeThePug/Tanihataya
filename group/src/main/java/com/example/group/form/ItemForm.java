@@ -35,7 +35,7 @@ public class ItemForm {
 
 	private String buyUser;
 
-	private String imagesPath;
+	private String[] imagesPath;
 
 	private LocalDateTime createdAt;
 

@@ -30,9 +30,9 @@ public class ItemService {
 		return itemMapper.findSalesByUserId(userId);
 	}
 	
-	public List<Items> findById(Integer userId) {
-		return itemMapper.findById(userId);
-	}
+	public Items findById(int itemId) {
+        return itemMapper.findById(itemId); // 1件返す
+    }
 
 	public void insert(ItemForm form) {
 		Items item = new Items();
@@ -45,11 +45,11 @@ public class ItemService {
 		// images
 		item.setCreatedAt(LocalDateTime.now());
 		item.setUpdatedAt(LocalDateTime.now());
-		itemMapper.insert(item);
+		itemMapper.insertItem(item);
 	}
 
 	public void update(ItemForm item) {
-		//itemMapper.update(item);
+		itemMapper.update(item);
 	}
 
 	public void markForDelete(Integer itemId) {

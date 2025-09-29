@@ -21,7 +21,7 @@
 		resultType="com.example.group.entity.Items">
 		SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
 		sale_status, images_path, created_at, updated_at
-		FROM items WHERE id = #{id};
+		FROM items WHERE item_id = #{itemId};
 	</select>
 
 	<!-- アイテムを追加 -->

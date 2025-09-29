@@ -1,7 +1,5 @@
 package com.example.group.controller;
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,21 +49,21 @@ public class ItemController {
      * @author 田辺
      * showPurchaseSuccessメソッドを大幅に変更しました　9/29(月曜日)
      */
-    // 購入画面表示
+    
+    // 購入画面表示（例： GET /item/purchase?itemId=1 ）
     @GetMapping("/purchase")
-    public String showPurchaseSuccess(@PathVariable int itemId, Model model) {
-        Items item = itemService.findById(itemId);
+    public String showPurchase(@RequestParam int itemId, Model model) {
+    	Items item = itemService.findById(itemId);
         Users seller = userService.findById(item.getUserId());
 
-        // item.getImagesPaths() は List<String> を想定
-        List<String> images = item.getImagesPaths();
+        // Items.imagePaths が String[] の場合
+        String[] images = item.getImagaPaths(); // ← 型を合わせることが重要
 
         model.addAttribute("item", item);
         model.addAttribute("seller", seller);
         model.addAttribute("images", images);
 
-        // もし購入日時などを表示したければここで model.addAttribute("purchaseTime", LocalDateTime.now()) など追加
-        return "item/success";
+        return "item/purchase"; // 表示したいテンプレートに合わせる
     }
 
     // 購入処理情報を送信
@@ -100,7 +98,7 @@ public class ItemController {
         } else if ("update".equals(type)) {//変更登録
             itemService.update(itemForm);
         }
-    	return "redirect:/list?type=sell&userId=" + itemForm.userId();
+    	return "redirect:/list?type=sell&userId=" + itemForm.getUserId();
         //出品一覧へ移行　（出品画面へ移動の方がいい？）
     }
 }
