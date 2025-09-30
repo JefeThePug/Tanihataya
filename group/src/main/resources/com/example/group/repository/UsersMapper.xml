@@ -25,20 +25,20 @@
 	</insert>
 	
 	<!-- ユーザー情報の更新 -->
-<!--	<update id="update" parameterType="com.example.group.entity.Users">-->
-<!--	 UPDATE users -->
-<!--	    SET -->
-<!--	        name = #{name}, -->
-<!--	        email = #{email}, -->
-<!--	        password = #{password}, -->
-<!--	        postcode = #{postcode}, -->
-<!--	        address = #{address}, -->
-<!--	        tel = #{tel}, -->
-<!--	        isActive = #{isActive}, -->
-<!--	        updated_at = CURRENT_TIMESTAMP-->
-<!--	    WHERE -->
-<!--	        id = #{id}-->
-<!--	</update>-->
+	<update id="update" parameterType="com.example.group.entity.Users">
+	 UPDATE users 
+	    SET 
+	        name = #{name}, 
+	        email = #{email}, 
+	        password = #{password}, 
+	        postcode = #{postcode}, 
+	        address = #{address}, 
+	        tel = #{tel}, 
+	        isActive = #{isActive}, 
+	        updated_at = CURRENT_TIMESTAMP
+	    WHERE 
+	        id = #{id}
+	</update>
 	
 	<delete id = "delete" parameterType="com.example.group.entity.Users">
 	DELETE FROM users WHERE user_id = #{userId}
