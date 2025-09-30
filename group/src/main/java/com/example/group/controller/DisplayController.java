@@ -26,7 +26,7 @@ public class DisplayController {
         return "index";
     }
     // カテゴリ一覧表示
-    @GetMapping("/{category}")
+    @GetMapping("/c/{category}")
     public String showCategories(@PathVariable int category, Model model) {
     	String cat = switch (category) {
     	case 1 -> "衣類";
