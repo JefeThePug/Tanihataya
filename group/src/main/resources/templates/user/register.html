@@ -11,6 +11,7 @@
 			<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
 		</div>
 		<table>
+			
 			<tr>
 				<th>名前<span style="color:red;">*</span></th>
 				<td><input type="text" name="name" required /></td>
@@ -37,7 +38,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align:center;">
-					<button class="btn" type="submit">新規登録</button>
+				    <input type="hidden" th:if="${isEdit}" th:field="*{userId}" />
+				    <button class="btn" type="submit" th:text="${isEdit} ? '更新する' : '新規登録'"></button>
 				</td>
 			</tr>
 		</table>
