@@ -2,16 +2,14 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	<h2>新規登録</h2>
-
-	<!-- エラーがあるときだけ表示 -->
-	<div th:if="${Message != null}" th:text="${Message}"></div>
-	<div th:if="${#fields.hasErrors()}">
-		<!-- 全てのエラーメッセージをリスト表示 -->
-		<li th:each="err : ${#fields.errors()}" th:text="${err}"></li>
-	</div>
-
-	<form action="/register" method="post">
+	<h1>新規登録</h1>
+	<form th:action="@{/register}" th:object="${userForm}" method="post" class="form-right">
+		<!-- エラーがあるときだけ表示 -->
+		<div th:if="${Message} != null" th:text="${Message}" style="color: blue;"></div>
+		<div th:if="${#fields.hasErrors('*')}">
+			<!-- 全てのエラーメッセージをリスト表示 -->
+			<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+		</div>
 		<table>
 			<tr>
 				<th>名前<span style="color:red;">*</span></th>
@@ -39,13 +37,12 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align:center;">
-					<button type="submit">新規登録</button>
+					<button class="btn" type="submit">新規登録</button>
 				</td>
 			</tr>
 		</table>
 	</form>
 
-	<!-- HTMLはここに… -->
 </section>
 
 </html>

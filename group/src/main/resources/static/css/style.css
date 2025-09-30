@@ -47,8 +47,12 @@ body {
 }
 
 .logo {
-	height: 90px;
+	height: 5rem;
 	margin: -20px 20px;
+}
+
+.navbar-left a {
+	text-decoration: none;
 }
 
 span.title {
@@ -175,7 +179,7 @@ section {
 	border-radius: 8px;
 	color: var(--text);
 	flex: 1 0 auto;
-	margin: 1.5rem 0;
+	margin: 2rem 0;
 	padding: 2rem;
 }
 
@@ -395,9 +399,9 @@ h1 {
 }
 
 /* 新しい商品のフォーム */
-form {
-	margin-top: 4rem;
-}
+/*form {*/
+/*	margin-top: 4rem;*/
+/*}*/
 
 .product-form {
 	display: flex;
@@ -556,21 +560,21 @@ form {
 
 /* 一般のフォーム */
 table {
-  margin-left: auto;
-  margin-right: auto;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .btn {
- background-color: var(--select);
-  padding: 0.75rem;
+	background-color: var(--select);
+	padding: 0.75rem;
 }
 
 .btn:hover {
-  background-color: var(--strong-select);
+	background-color: var(--strong-select);
 }
 
 .secondary {
-  padding: 0.25rem 0.75rem;
+	padding: 0.25rem 0.75rem;
 }
 
 
