@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-	private UserService userService;
+	private final UserService userService;
 
 	//ログイン画面を表示	
 	@GetMapping("/login")

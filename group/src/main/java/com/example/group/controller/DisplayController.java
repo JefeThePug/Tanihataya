@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DisplayController {
 	
-	private ItemService itemService;
+	private final ItemService itemService;
 
     @GetMapping
     public String show(Model model) {
