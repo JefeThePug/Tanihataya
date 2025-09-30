@@ -18,8 +18,11 @@ import com.example.group.form.UserForm;
 import com.example.group.service.UserService;
 import com.example.group.service.security.UserDetailsImpl;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequestMapping("/user")
+@RequiredArgsConstructor
 public class UserController {
 
 	private UserService userService;

@@ -9,9 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.group.service.ItemService;
 
+import lombok.RequiredArgsConstructor;
+
 
 @Controller
 @RequestMapping("/")
+@RequiredArgsConstructor
 public class DisplayController {
 	
 	private ItemService itemService;
