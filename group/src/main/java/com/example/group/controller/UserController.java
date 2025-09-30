@@ -29,12 +29,14 @@ public class UserController {
 
 	//ログイン画面を表示	
 	@GetMapping("/login")
-	public String loginForm() {
+	public String loginForm(Model model) {
+		model.addAttribute("pageTitle", "ログイン");
 		return "user/login";
 	}
 	// SecurityConfigのfailureUrlで指定したURLと?のうしろのパラメータ
 	@GetMapping(value="/login", params="failure")
 	public String loginFail(Model model) {
+		model.addAttribute("pageTitle", "ログイン");
 		model.addAttribute("failureMessage", "ログインに失敗しました");
 		// ログイン画面を表示
 		return "user/login";
@@ -47,7 +49,7 @@ public class UserController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
-
+		model.addAttribute("pageTitle", "タニハタ屋");
 		model.addAttribute("user", user);//ユーザー情報を格納
 		return "index";
 	}
@@ -55,7 +57,9 @@ public class UserController {
 	// 新規登録画面（isEdit = false）
 	@GetMapping("/register")
 	public String showRegister(Model model) {
-	    model.addAttribute("isEdit", false); 
+	    model.addAttribute("isEdit", false);
+	    model.addAttribute("pageTitle", "登録");
+	    model.addAttribute("userForm", new UserForm()); 
 	    return "user/register";
 	}
 
@@ -75,6 +79,7 @@ public class UserController {
 	//ユーザー情報一覧
 	@GetMapping("/info/{userid}")
 	public String showUserInfo(@PathVariable int userid , Model model) {
+		model.addAttribute("pageTitle", "ユーザー情報");
 		model.addAttribute("user",userService.findById(userid));
 		return "user/user";
 	}
@@ -84,6 +89,7 @@ public class UserController {
 	@GetMapping("/update/{userid}")
 	public String showUserUpdate(@PathVariable int userid , Model model) {
 	    model.addAttribute("isEdit", true);
+	    model.addAttribute("pageTitle", "ユーザー情報");
 		model.addAttribute("user",userService.findById(userid));
 	    return "user/register";
 	}
