@@ -2,7 +2,7 @@ package com.example.group.repository;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.group.Entity.Payment;
+import com.example.group.entity.Payment;
 
 @Mapper
 public interface PyamentMapper {

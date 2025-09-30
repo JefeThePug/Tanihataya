@@ -1,11 +1,12 @@
 package com.example.group.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
-import com.example.group.Entity.Items;
-import com.example.group.form.ItemForm;
+import com.example.group.entity.Items;
 
 @Mapper
 public interface ItemsMapper {
@@ -26,10 +27,20 @@ public interface ItemsMapper {
 	void insertItem(Items items);
 
 	//アイテムを更新
-	void update(ItemForm item);
+	//引数ItemFromからItemsに変更　9/30(田辺)
+	void update(Items items);
 
 	//アイテムに削除フラグを付与
 	void markForDelete(Integer item_id);
+	
+	/**
+	 * 購入情報を更新し、販売ステータスを販売終了にします。
+	 */
+	void updatePurchaseInfo(
+        @Param("itemId") Integer itemId, 
+        @Param("buyerId") Integer buyerId, 
+        @Param("purchaseDate") LocalDateTime purchaseDate
+    );
 	
 
 }

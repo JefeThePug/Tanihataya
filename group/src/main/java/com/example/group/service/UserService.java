@@ -4,7 +4,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.group.Entity.Users;
+import com.example.group.entity.Users;
 import com.example.group.form.UserForm;
 import com.example.group.repository.UsersMapper;
 

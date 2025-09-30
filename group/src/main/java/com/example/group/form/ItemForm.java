@@ -1,10 +1,6 @@
 package com.example.group.form;
 
 
-import java.time.LocalDateTime;
-
-import jakarta.validation.constraints.AssertFalse;
-import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Pattern;
 
 import lombok.Data;
@@ -13,7 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ItemForm {
-
 
 	private Integer itemId;
 
@@ -29,16 +24,6 @@ public class ItemForm {
 
 	private Integer price;
 
-	@AssertTrue(message="販売中")
-	@AssertFalse(message="販売終了")
-	private boolean saleStatus;
-
-	private String buyUser;
-
 	private String[] imagesPath;
-
-	private LocalDateTime createdAt;
-
-	private LocalDateTime updatedAt;
 
 }
