@@ -15,7 +15,7 @@
 		imagePaths,
 		created_at as createdAt,
 		updated_at as updatedAt,
-		purchase_date as purchaseDate,
+		purchase_date as purchaseDate
 	</sql>
 
 	<!-- 同じカテゴリーのアイテムを全権取得 -->
