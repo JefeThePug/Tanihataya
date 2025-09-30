@@ -1,5 +1,4 @@
-package com.example.group.Entity;
-
+package com.example.group.entity;
 
 import java.time.LocalDateTime;
 
@@ -15,23 +14,21 @@ import lombok.NoArgsConstructor;
 
 public class Users {
 
-	
 	private Integer userId;
 
 	private String name;
 
 	private String email;
 
-	 @Size(max = 12, message = "パスワードは12文字以内で入力してください")
+	@Size(max = 12, message = "パスワードは12文字以内で入力してください")
 	private String password;
 
-	 @Pattern(regexp = "^[0-9]{7}$", message = "郵便番号はハイフンなしの7桁の数字で入力してください")
+	@Pattern(regexp = "^[0-9]{7}$", message = "郵便番号はハイフンなしの7桁の数字で入力してください")
 	private String postcode;
 
 	private String address;
 
-	@Pattern(regexp = "^[0-9]{10,11}$", 
-	         message = "電話番号はハイフンなしの10～11桁の数字で入力してください")
+	@Pattern(regexp = "^[0-9]{10,11}$", message = "電話番号はハイフンなしの10～11桁の数字で入力してください")
 	private Integer tel;
 
 	@AssertTrue(message = "アカウントが有効である必要があります")
@@ -41,6 +38,9 @@ public class Users {
 
 	private LocalDateTime updatedAt;
 	
-	}
-	
+	@Override
+    public String toString() {
+        return "User{id=" + this.userId + ", name='" + this.name + "', email='" + this.email + "'}";
+    }
 
+}

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.group.Entity.Items;
-import com.example.group.Entity.Users;
+import com.example.group.entity.Items;
+import com.example.group.entity.Users;
 import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
 import com.example.group.service.UserService;

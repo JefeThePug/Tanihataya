@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.group.Entity.Users;
+import com.example.group.entity.Users;
 import com.example.group.form.UserForm;
 import com.example.group.service.UserService;
 import com.example.group.service.security.UserDetailsImpl;

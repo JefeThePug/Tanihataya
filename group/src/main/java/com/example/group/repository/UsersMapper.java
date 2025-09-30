@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.example.group.Entity.Users;
+import com.example.group.entity.Users;
 import com.example.group.form.UserForm;
 
 @Mapper

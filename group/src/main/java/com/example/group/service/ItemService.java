@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.group.Entity.Items;
+import com.example.group.entity.Items;
 import com.example.group.form.ItemForm;
 import com.example.group.repository.ItemsMapper;
 
