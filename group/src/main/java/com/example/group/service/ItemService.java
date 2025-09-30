@@ -19,7 +19,6 @@ public class ItemService {
 	private final ItemsMapper itemMapper;
 
 	 // --- 検索系メソッド ---
-	
 	public List<Items> findAllByCategory(Integer category) {
 		return itemMapper.findAllByCategory(category);
 	}
@@ -37,7 +36,6 @@ public class ItemService {
     }
 
 	 // --- データ操作系メソッド ---
-	
 	public void insert(ItemForm form) {
 		Items item = new Items();
 		
