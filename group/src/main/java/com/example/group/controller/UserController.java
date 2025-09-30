@@ -58,14 +58,14 @@ public class UserController {
 
 	//新規登録をする
 	@PostMapping("/register")
-	public String register(@Valid @ModelAttribute UserForm userForm, Model model,BindingResult result) {
-		if (result.hasErrors()) {
-			model.addAttribute("Message", "入力誤り");
-			model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
-			return "user/register"; 
-		}
-		userService.insert(userForm);
-		return "redirect:/user/login";
+	public String register(@Valid @ModelAttribute UserForm userForm, Model model, BindingResult result) {
+	    if (result.hasErrors()) {
+	        model.addAttribute("Message", "入力誤り");
+	        model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
+	        return "user/register"; 
+	    }
+	    userService.insert(userForm);
+	    return "redirect:/user/login"; // 登録完了後にログイン画面へ
 	}
 
 

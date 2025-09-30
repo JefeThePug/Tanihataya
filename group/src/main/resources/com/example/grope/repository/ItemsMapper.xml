@@ -11,42 +11,42 @@
 	<!-- 特定ユーザーの購入履歴一覧表示 -->
 	<select id="findPurchasesByUserId"
 		resultType="com.example.group.entity.Items">
-	SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
-			sale_status, images_path, created_at, updated_at
-	FROM items  WHERE buy_user = #{buyUser};
+		SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
+		sale_status, images_path, created_at, updated_at
+		FROM items WHERE buy_user = #{buyUser};
 	</select>
 	<!-- whereのパラメータbuyUser？ userId? -->
-	
+
 	<select id="findById"
 		resultType="com.example.group.entity.Items">
-	SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
-			sale_status, images_path, created_at, updated_at
-	FROM items  WHERE id = #{id};
+		SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
+		sale_status, images_path, created_at, updated_at
+		FROM items WHERE item_id = #{itemId};
 	</select>
-	
 
 	<!-- アイテムを追加 -->
-<insert id="insertItem" parameterType="com.example.Item">
-    INSERT INTO items (
+	<insert id="insertItem" parameterType="com.example.Item">
+		INSERT INTO items (
 		users_id, name, category, detail, price,
-        sale_status, buy_user, images_path, created_at, updated_at
-         ) VALUES (
-        #{usersId}, #{name}, #{category}, #{detail}, #{price},
-        #{saleStatus}, #{buyUser},
-        #{imagesPath}, now(),now());
-</insert>
- 
+		sale_status, buy_user, images_path, created_at, updated_at
+		) VALUES (
+		#{usersId}, #{name}, #{category}, #{detail}, #{price},
+		#{saleStatus}, #{buyUser},
+		#{imagesPath}, now(),now());
+	</insert>
 
 	<!--アイテムを更新 -->
 	<update id="update">
-		UPDATE items SET name=#{name}, category= #{category}, detail =#{detail},
-    price=#{price}, images_path=#{imagesPath},
-     updated_at=now() WHERE item_id =#{itemId};
+		UPDATE items SET name=#{name}, category= #{category},
+		detail =#{detail},
+		price=#{price}, images_path=#{imagesPath},
+		updated_at=now() WHERE item_id =#{itemId};
 	</update>
 
 	<!-- アイテムに販売状況を変更　販売終了へ -->
 	<update id="markForDelete">
-	UPDATE items SET sale_status = false, buy_user = #{buyUser},updated_at=now() WHERE item_id = #{itemId};
+		UPDATE items SET sale_status = false, buy_user = #{buyUser},updated_at=now()
+		WHERE item_id = #{itemId};
 	</update>
 
 </mapper>

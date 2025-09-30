@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.example.group.Entity.Users;
+import com.example.group.form.UserForm;
 
 @Mapper
 public interface UsersMapper {
@@ -22,7 +23,7 @@ public interface UsersMapper {
 	void insert(Users users);
 	
 	//ユーザー情報の更新
-	void update(Users users);
+	void update(UserForm user);
 	
 	//ユーザー情報の削除
 	void delete(Integer id);
