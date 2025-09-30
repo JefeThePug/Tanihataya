@@ -1,12 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org" th:insert="~{layout ::layout(~{::title}, ~{::section})}">
+<html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
-<th:block th:fragment="title">
-<title th:text="${pageTitle}"></title>
-</th:block>
-
-<th:block th:fragment="section">
-<section>
+<section th:fragment="content">
 	<!-- ログインエラーのときはメッセージを表示 -->
 	<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
 	<!-- ログインフォーム -->
@@ -37,5 +32,5 @@
 		</table>
 	</form>
 </section>
-</th:block>
+
 </html>

@@ -27,7 +27,10 @@ public class SecurityConfig {
 						"/",
 						"/item",
 						"/user/login",
-						"/user/register").permitAll() // 誰でもアクセス可能なURL
+						"/user/register",
+						"/css/**",
+						"/js/**",
+						"/images/**").permitAll() // 誰でもアクセス可能なURL
 				.requestMatchers(
 						"/purchases",
 						"/item/purchase",
@@ -44,6 +47,7 @@ public class SecurityConfig {
 
 	@Bean
 	PasswordEncoder passwordEncoder() {
+		System.out.println(new BCryptPasswordEncoder().encode("admin"));
 		return new BCryptPasswordEncoder();
 	}
 }
