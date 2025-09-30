@@ -28,7 +28,7 @@
 
 	<!-- 特定ユーザーの購入履歴一覧表示 -->
 	<select id="findPurchasesByUserId"
-		resultType="com.example.group.Entity.Items">
+		resultType="com.example.group.entity.Items">
 		SELECT
 		<include refid="Base_Column_List" />
 		FROM items
@@ -45,7 +45,7 @@
 
 	<!-- アイテムを追加 -->
 	<insert id="insertItem"
-		parameterType="com.example.group.Entity.Items" useGeneratedKeys="true"
+		parameterType="com.example.group.entity.Items" useGeneratedKeys="true"
 		keyProperty="itemId">
 		INSERT INTO items (
 		users_id, name, category, detail,
