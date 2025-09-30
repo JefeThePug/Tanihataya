@@ -2,51 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace='com.example.group.repository.ItemsMapper'>
 
+	<sql id="Base_Column_List">
+		item_id as itemId,
+		users_id as userId,
+		name,
+		category,
+		detail,
+		price,
+		sale_status as saleStatus,
+		buy_user as buyUser,
+		images_path as
+		imagePaths,
+		created_at as createdAt,
+		updated_at as updatedAt
+		purchase_date as purchaseDate,
+	</sql>
+
 	<!-- 同じカテゴリーのアイテムを全権取得 -->
 	<select id="findAllByCategory"
 		resultType="com.example.group.entity.Items">
-		SELECT * FROM items WHERE category = #{category};
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM items WHERE category = #{category};
 	</select>
 
 	<!-- 特定ユーザーの購入履歴一覧表示 -->
 	<select id="findPurchasesByUserId"
-		resultType="com.example.group.entity.Items">
-		SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
-		sale_status, images_path, created_at, updated_at
-		FROM items WHERE buy_user = #{buyUser};
+		resultType="com.example.group.Entity.Items">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM items
+		WHERE buy_user = #{userId};
 	</select>
 	<!-- whereのパラメータbuyUser？ userId? -->
 
 	<select id="findById"
 		resultType="com.example.group.entity.Items">
-		SELECT item_id as itemId ,users_id as userId, name, category, detail, price,
-		sale_status, images_path, created_at, updated_at
-		FROM items WHERE item_id = #{itemId};
+		SELECT <include refid="Base_Column_List" />
+		FROM items 
+		WHERE item_id = #{itemId};
 	</select>
 
 	<!-- アイテムを追加 -->
-	<insert id="insertItem" parameterType="com.example.group.entity.Items">
+	<insert id="insertItem"
+		parameterType="com.example.group.Entity.Items" useGeneratedKeys="true"
+		keyProperty="itemId">
 		INSERT INTO items (
-		users_id, name, category, detail, price,
-		sale_status, buy_user, images_path, created_at, updated_at
+		users_id, name, category, detail,
+		price, sale_status, buy_user,
+		purchase_date, images_path,
+		created_at,updated_at
 		) VALUES (
-		#{usersId}, #{name}, #{category}, #{detail}, #{price},
-		#{saleStatus}, #{buyUser},
-		#{imagesPath}, now(),now());
+		#{usersId}, #{name}, #{category},
+		#{detail}, #{price},#{saleStatus}, #{buyUser},
+		#{purchaseDate}, #{imagesPath}, #{createdAt}, {#updatedAt});
 	</insert>
 
 	<!--アイテムを更新 -->
-	<update id="update" parameterType="com.example.group.entity.Items">
+	<update id="update">
 		UPDATE items SET name=#{name}, category= #{category},
 		detail =#{detail},
 		price=#{price}, images_path=#{imagesPath},
-		updated_at=now() WHERE item_id =#{itemId};
+		updated_at={updatedAt} WHERE item_id =#{itemId};
 	</update>
 
 	<!-- アイテムに販売状況を変更　販売終了へ -->
-	<update id="markForDelete" parameterType="com.example.group.entity.Items">
-		UPDATE items SET sale_status = false, buy_user = #{buyUser},updated_at=now()
+	<update id="markForDelete">
+		UPDATE items SET sale_status = false, buy_user =
+		#{buyUser},updated_at=now()
 		WHERE item_id = #{itemId};
+	</update>
+
+	<!-- -->
+	<update id="updatePurchaseInfo">
+		UPDATE items SET
+		sale_status = false,
+		buy_user = #{buyerId},
+		purchase_date = #{purchaseDate},
+		updated_at = NOW()
+		WHERE
+		item_id = #{itemId};
 	</update>
 
 </mapper>
