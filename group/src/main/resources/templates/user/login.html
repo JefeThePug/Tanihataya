@@ -5,8 +5,9 @@
 	<h1> </h1>
 	<!-- ログインフォーム -->
 	<!-- th:actionはSecurityConfigのloginProcessingUrlで指定したURL -->
-	<form th:action="@{authenticate}" method="post" class="form-right">
+	<form th:action="@{/authenticate}" method="post" class="form-right">
 		<!-- ログインエラーのときはメッセージを表示 -->
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 		<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
 		<table>
 			<tr>

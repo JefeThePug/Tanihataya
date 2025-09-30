@@ -19,7 +19,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		System.out.println("before mapper:" + email);
 	    List<Users> users = userMapper.findByEmail(email);
+	    System.out.println("after mapper:" + users);
 	    if (users == null || users.isEmpty()) {
 	        throw new UsernameNotFoundException("User with email " + email + " does not exist");
 	    }
