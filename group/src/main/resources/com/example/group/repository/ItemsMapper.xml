@@ -25,7 +25,7 @@
 	</select>
 
 	<!-- アイテムを追加 -->
-	<insert id="insertItem" parameterType="com.example.Item">
+	<insert id="insertItem" parameterType="com.example.group.entity.Items">
 		INSERT INTO items (
 		users_id, name, category, detail, price,
 		sale_status, buy_user, images_path, created_at, updated_at
@@ -36,7 +36,7 @@
 	</insert>
 
 	<!--アイテムを更新 -->
-	<update id="update">
+	<update id="update" parameterType="com.example.group.entity.Items">
 		UPDATE items SET name=#{name}, category= #{category},
 		detail =#{detail},
 		price=#{price}, images_path=#{imagesPath},
@@ -44,7 +44,7 @@
 	</update>
 
 	<!-- アイテムに販売状況を変更　販売終了へ -->
-	<update id="markForDelete">
+	<update id="markForDelete" parameterType="com.example.group.entity.Items">
 		UPDATE items SET sale_status = false, buy_user = #{buyUser},updated_at=now()
 		WHERE item_id = #{itemId};
 	</update>

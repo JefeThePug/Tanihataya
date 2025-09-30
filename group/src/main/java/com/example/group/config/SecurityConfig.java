@@ -17,7 +17,7 @@ public class SecurityConfig {
 				.loginPage("/user/login") // ログイン画面のURL
 				.loginProcessingUrl("/authenticate") // ユーザー名とパスワードを送信するURL
 			    .usernameParameter("email")   // フォームのemailをusernameとして渡す
-				.defaultSuccessUrl("/loginsuccess") // 認証成功後のリダイレクト先URL
+				.defaultSuccessUrl("/user/loginsuccess", true) // 認証成功後のリダイレクト先URL
 				.failureUrl("/user/login?failure") // 認証失敗後のリダイレクト先URL
 				.permitAll() // ログイン画面は未認証でもアクセス可能
 		).logout(logout -> logout
@@ -25,6 +25,7 @@ public class SecurityConfig {
 		).authorizeHttpRequests(authz -> authz
 				.requestMatchers(
 						"/",
+						"/c/*",
 						"/item",
 						"/user/login",
 						"/user/register",
