@@ -170,7 +170,7 @@ a {
 a:hover,
 a:focus {
 	color: var(--light-text);
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 /* コンテンツ */
