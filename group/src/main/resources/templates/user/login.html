@@ -2,11 +2,12 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	<!-- ログインエラーのときはメッセージを表示 -->
-	<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
+	<h1> </h1>
 	<!-- ログインフォーム -->
 	<!-- th:actionはSecurityConfigのloginProcessingUrlで指定したURL -->
-	<form th:action="@{authenticate}" method="post">
+	<form th:action="@{authenticate}" method="post" class="form-right">
+		<!-- ログインエラーのときはメッセージを表示 -->
+		<div th:if="${failureMessage != null}" th:text="${failureMessage}"></div>
 		<table>
 			<tr>
 				<th>Email</th>
@@ -26,7 +27,7 @@
 				<th></th>
 				<td>
 					<input type="button" class="btn secondary" value="新規作成"
-						th:onclick="|location.href='@{/register}'|" />
+						th:onclick="|location.href='@{/user/register}'|" />
 				</td>
 			</tr>
 		</table>
