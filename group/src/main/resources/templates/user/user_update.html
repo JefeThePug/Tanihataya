@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
-<body>
-	<section th:fragment="content">
+<section th:fragment="content">
 
-		<!-- HTMLはここに… -->
+	<!-- HTMLはここに… -->
 
-	</section>
-</body>
+</section>
 
 </html>

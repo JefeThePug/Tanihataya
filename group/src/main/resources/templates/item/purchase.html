@@ -1,96 +1,68 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+<html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
-<head>
-	<meta charset="UTF-8">
-	<link rel="stylesheet" href="../static/css/style.css">
-</head>
+<section th:fragment="content">
+	<h2>購入確認画面</h2>
 
-<body>
-	<section th:fragment="content">
-		<!DOCTYPE html>
-		<html xmlns:th="http://www.thymeleaf.org" th:replace="layout :: layout">
+	<table>
+		<tr>
+			<th>名前</th>
+			<td th:text="${user.name}">名前</td>
+		</tr>
+		<tr>
+			<th>住所</th>
+			<td th:text="${user.address}">住所</td>
+		</tr>
+		<tr>
+			<th>メールアドレス</th>
+			<td th:text="${user.email}">メールアドレス</td>
+		</tr>
+	</table>
 
-		<head>
-			<meta charset="UTF-8" />
-			<title>購入画面</title>
-			<link rel="stylesheet" href="../static/css/style.css" />
-		</head>
+	<form th:action="@{/item/success}" method="post" th:object="${purchaseForm}">
 
-		<body>
-			<section th:fragment="content">
+		<h3>お支払い方法</h3>
+		<label>
+			<input type="radio" name="paymentMethod" value="credit" onclick="toggleCreditForm(true)" required />
+			クレジットカード
+		</label>
+		<label>
+			<input type="radio" name="paymentMethod" value="convenience" onclick="toggleCreditForm(false)" />
+			コンビニ払い
+		</label>
+		<label>
+			<input type="radio" name="paymentMethod" value="carrier" onclick="toggleCreditForm(false)" />
+			キャリア払い
+		</label>
 
-				<h2>購入確認画面</h2>
+		<div id="creditCardForm" style="display:none; margin-top: 1em;">
+			<h4>クレジットカード情報</h4>
+			<label>カード番号:
+				<input type="text" name="cardNumber" th:field="*{cardNumber}" pattern="\d{13,16}"
+					placeholder="1234 5678 9012 3456" />
+			</label><br />
+			<label>有効期限:
+				<input type="month" name="expiryDate" th:field="*{expiryDate}" />
+			</label><br />
+			<label>セキュリティコード:
+				<input type="text" name="securityCode" th:field="*{securityCode}" pattern="\d{3,4}" placeholder="123" />
+			</label>
+		</div>
 
-				<table>
-					<tr>
-						<th>名前</th>
-						<td th:text="${user.name}">名前</td>
-					</tr>
-					<tr>
-						<th>住所</th>
-						<td th:text="${user.address}">住所</td>
-					</tr>
-					<tr>
-						<th>メールアドレス</th>
-						<td th:text="${user.email}">メールアドレス</td>
-					</tr>
-				</table>
+		<h3>支払金額</h3>
+		<p th:text="${paymentAmount} + ' 円'">0 円</p>
 
-				<form th:action="@{/item/success}" method="post" th:object="${purchaseForm}">
+		<div style="margin-top: 1em;">
+			<button type="submit">確定</button>
+		</div>
 
-					<h3>お支払い方法</h3>
-					<label>
-						<input type="radio" name="paymentMethod" value="credit" onclick="toggleCreditForm(true)"
-							required />
-						クレジットカード
-					</label>
-					<label>
-						<input type="radio" name="paymentMethod" value="convenience"
-							onclick="toggleCreditForm(false)" />
-						コンビニ払い
-					</label>
-					<label>
-						<input type="radio" name="paymentMethod" value="carrier" onclick="toggleCreditForm(false)" />
-						キャリア払い
-					</label>
-
-					<div id="creditCardForm" style="display:none; margin-top: 1em;">
-						<h4>クレジットカード情報</h4>
-						<label>カード番号:
-							<input type="text" name="cardNumber" th:field="*{cardNumber}" pattern="\d{13,16}"
-								placeholder="1234 5678 9012 3456" />
-						</label><br />
-						<label>有効期限:
-							<input type="month" name="expiryDate" th:field="*{expiryDate}" />
-						</label><br />
-						<label>セキュリティコード:
-							<input type="text" name="securityCode" th:field="*{securityCode}" pattern="\d{3,4}"
-								placeholder="123" />
-						</label>
-					</div>
-
-					<h3>支払金額</h3>
-					<p th:text="${paymentAmount} + ' 円'">0 円</p>
-
-					<div style="margin-top: 1em;">
-						<button type="submit">確定</button>
-					</div>
-
-				</form>
-
-			</section>
-
-			<!--クレカチェックで開く-->
-			<script>
-				function toggleCreditForm(show) {
-					const form = document.getElementById('creditCardForm');
-					form.style.display = show ? 'block' : 'none';
-				}
-			</script>
-			<!-- HTMLはここに… -->
-
-	</section>
-</body>
+	</form>
+	<script>
+		function toggleCreditForm(show) {
+			const form = document.getElementById('creditCardForm');
+			form.style.display = show ? 'block' : 'none';
+		}
+	</script>
+</section>
 
 </html>
