@@ -35,8 +35,9 @@ public class UserController {
 		model.addAttribute("pageTitle", "ログイン");
 		return "user/login";
 	}
+
 	// SecurityConfigのfailureUrlで指定したURLと?のうしろのパラメータ
-	@GetMapping(value="/login", params="failure")
+	@GetMapping(value = "/login", params = "failure")
 	public String loginFail(Model model) {
 		model.addAttribute("pageTitle", "ログイン");
 		model.addAttribute("failureMessage", "ログインに失敗しました");
@@ -59,51 +60,48 @@ public class UserController {
 	// 新規登録画面（isEdit = false）
 	@GetMapping("/register")
 	public String showRegister(Model model) {
-	    model.addAttribute("isEdit", false);
-	    model.addAttribute("pageTitle", "登録");
-	    model.addAttribute("userForm", new UserForm()); 
-	    return "user/register";
+		model.addAttribute("isEdit", false);
+		model.addAttribute("pageTitle", "登録");
+		model.addAttribute("userForm", new UserForm());
+		return "user/register";
 	}
 
 	//新規登録をする
 	@PostMapping("/register")
-	public String register(@Validated(RegisterUserGroup.class) @ModelAttribute UserForm userForm, Model model, BindingResult result) {
-	    if (result.hasErrors()) {
-	        model.addAttribute("Message", "入力誤り");
-	        model.addAttribute("org.springframework.validation.BindingResult.userForm", result);
-	        return "user/register"; 
-	    }
-	    userService.insert(userForm);
-	    return "redirect:/user/login"; // 登録完了後にログイン画面へ
+	public String register(@Validated(RegisterUserGroup.class) @ModelAttribute UserForm userForm,
+			BindingResult result, Model model) {
+		if (result.hasErrors()) {
+			model.addAttribute("Message", "入力誤り");
+			return "user/register";
+		}
+		userService.insert(userForm);
+		return "redirect:/user/login"; // 登録完了後にログイン画面へ
 	}
-
 
 	//ユーザー情報一覧
 	@GetMapping("/info/{userid}")
-	public String showUserInfo(@PathVariable int userid , Model model) {
+	public String showUserInfo(@PathVariable int userid, Model model) {
 		model.addAttribute("pageTitle", "ユーザー情報");
-		model.addAttribute("user",userService.findById(userid));
+		model.addAttribute("user", userService.findById(userid));
 		return "user/user";
 	}
 
-
 	// ユーザー情報の変更画面
 	@GetMapping("/update/{userid}")
-	public String showUserUpdate(@PathVariable int userid , Model model) {
-	    model.addAttribute("isEdit", true);
-	    model.addAttribute("pageTitle", "ユーザー情報");
-		model.addAttribute("user",userService.findById(userid));
-	    return "user/register";
+	public String showUserUpdate(@PathVariable int userid, Model model) {
+		model.addAttribute("isEdit", true);
+		model.addAttribute("pageTitle", "ユーザー情報");
+		model.addAttribute("user", userService.findById(userid));
+		return "user/register";
 	}
 
 	//ユーザー情報の変更
 	@PostMapping("/update")
 	public String UserUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
-		return "redirect:/user/info/"+userForm.getUserId();
+		return "redirect:/user/info/" + userForm.getUserId();
 		//ユーザー情報一覧に戻る？
 	}
-
 
 	//ユーザー情報の削除
 	@GetMapping("/delete")

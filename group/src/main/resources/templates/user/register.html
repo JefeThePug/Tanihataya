@@ -6,40 +6,53 @@
 	<form th:action="@{/user/register}" th:object="${userForm}" method="post" class="form-right">
 		<!-- エラーがあるときだけ表示 -->
 		<div th:if="${Message} != null" th:text="${Message}" style="color: blue;"></div>
-		<div th:if="${#fields.hasErrors('*')}">
-			<!-- 全てのエラーメッセージをリスト表示 -->
-			<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
-		</div>
 		<table>
-			
 			<tr>
 				<th>名前<span style="color:red;">*</span></th>
-				<td><input type="text" name="name" required /></td>
+				<td>
+					<input type="text" th:field="*{name}" required />
+					<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color:red"></div>
+				</td>
 			</tr>
 			<tr>
 				<th>メールアドレス<span style="color:red;">*</span></th>
-				<td><input type="email" name="email" required /></td>
+				<td>
+					<input type="email" th:field="*{email}" required />
+					<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red"></div>
+				</td>
 			</tr>
 			<tr>
 				<th>パスワード<span style="color:red;">*</span></th>
-				<td><input type="password" name="password" required /></td>
+				<td>
+					<input type="password" th:field="*{password}" required />
+					<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red"></div>
+				</td>
 			</tr>
 			<tr>
 				<th>郵便番号</th>
-				<td><input type="text" name="postcode" pattern="\d{3}-?\d{4}" placeholder="123-4567" /></td>
+				<td>
+					<input type="text" th:field="*{postcode}" placeholder="1234567" />
+					<div th:if="${#fields.hasErrors('postcode')}" th:errors="*{postcode}" style="color:red"></div>
+				</td>
 			</tr>
 			<tr>
 				<th>住所</th>
-				<td><input type="text" name="address" /></td>
+				<td>
+					<input type="text" th:field="*{address}" />
+					<div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" style="color:red"></div>
+				</td>
 			</tr>
 			<tr>
 				<th>電話番号</th>
-				<td><input type="text" name="tel" pattern="0\d{1,4}-?\d{1,4}-?\d{4}" placeholder="090-1234-5678" /></td>
+				<td>
+					<input type="text" th:field="*{tel}" placeholder="09012345678" />
+					<div th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}" style="color:red"></div>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align:center;">
-				    <input type="hidden" th:if="${isEdit}" th:field="*{userId}" />
-				    <button class="btn" type="submit" th:text="${isEdit} ? '更新する' : '新規登録'"></button>
+					<input type="hidden" th:if="${isEdit}" th:field="*{userId}" />
+					<button class="btn" type="submit" th:text="${isEdit} ? '更新する' : '新規登録'"></button>
 				</td>
 			</tr>
 		</table>
