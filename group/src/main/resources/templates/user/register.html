@@ -2,11 +2,16 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	<h1>新規登録</h1>
-	<form th:action="@{/user/register}" th:object="${userForm}" method="post" class="form-right">
+	
+	<h1 th:text="${isEdit} ? '登録変更' : '新規登録'"></h1>
+	
+	<form th:action="${isEdit} ? @{/user/update} : @{/user/register}"
+		  th:object="${userForm}" method="post" class="form-right">
+		  
 		<!-- エラーがあるときだけ表示 -->
 		<div th:if="${Message} != null" th:text="${Message}" style="color: blue;"></div>
 		<table>
+			
 			<tr>
 				<th>名前<span style="color:red;">*</span></th>
 				<td>
@@ -51,8 +56,8 @@
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align:center;">
-					<input type="hidden" th:if="${isEdit}" th:field="*{userId}" />
-					<button class="btn" type="submit" th:text="${isEdit} ? '更新する' : '新規登録'"></button>
+					<input type="hidden" th:field="*{userId}" />
+				  <button class="btn" type="submit" th:text="${isEdit} ? '更新する' : '新規登録'"></button>
 				</td>
 			</tr>
 		</table>
