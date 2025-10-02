@@ -32,9 +32,16 @@
 		SELECT
 		<include refid="Base_Column_List" />
 		FROM items
-		WHERE buy_user = #{userId};
+		WHERE buy_user = #{usersId};
 	</select>
 	<!-- whereのパラメータbuyUser？ userId? -->
+	<select id="findSalesByUserId"
+		resultType="com.example.group.entity.Items">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM items
+		WHERE users_id = #{usersId};
+	</select>
 
 	<select id="findById"
 		resultType="com.example.group.entity.Items">

@@ -34,6 +34,7 @@ public class SecurityConfig {
 						"/images/**")
 				.permitAll() // 誰でもアクセス可能なURL
 				.requestMatchers(
+						"/info/*",
 						"/purchases",
 						"/item/purchase",
 						"/item/purchase/success",
