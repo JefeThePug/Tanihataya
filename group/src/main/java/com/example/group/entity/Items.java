@@ -45,7 +45,6 @@ public class Items {
 
 	/**
 	 * 販売者が商品情報を更新した時間
-	 * 質問→最初の商品登録の時はcreatedAtと同じ値になるって認識であってますか？
 	 */
 	private LocalDateTime updatedAt;
 	

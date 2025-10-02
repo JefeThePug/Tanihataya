@@ -14,13 +14,13 @@ public interface ItemsMapper {
 
 	//カテゴリーごとのアイテム一覧表示
 	List<Items>findAllByCategory(Integer category);
-	
+
 	//特定ユーザーの購入履歴一覧表示
 	List<Items>findPurchasesByUserId(Integer userId);
-	
+
 	//特定ユーザーのすべての販売履歴
 	List<Items>findSalesByUserId(Integer userId);
-	
+
 	// アイテムIDで1件取得
 	Items findById(Integer itemId);
 
@@ -33,15 +33,15 @@ public interface ItemsMapper {
 
 	//アイテムに削除フラグを付与
 	void markForDelete(Integer item_id);
-	
+
 	/**
 	 * 購入情報を更新し、販売ステータスを販売終了にします。
 	 */
 	void updatePurchaseInfo(
-        @Param("itemId") Integer itemId, 
-        @Param("buyerId") Integer buyerId, 
-        @Param("purchaseDate") LocalDateTime purchaseDate
-    );
-	
+			@Param("itemId") Integer itemId, 
+			@Param("buyUser") Integer buyUser,  // ← buyerId → buyUser に変更
+			@Param("purchaseDate") LocalDateTime purchaseDate
+			);
+
 
 }

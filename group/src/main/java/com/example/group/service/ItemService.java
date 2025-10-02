@@ -75,6 +75,35 @@ public class ItemService {
         
 		itemMapper.update(item);
 	}
+	
+	@Transactional
+	public void completePurchase(int itemId, int buyerId) {
+	    // ① 対象アイテムを取得
+	    Items item = itemMapper.findById(itemId);
+	    if (item == null) {
+	        throw new IllegalArgumentException("Item not found: " + itemId);
+	    }
+	    if (!item.isSaleStatus()) {
+	        throw new IllegalStateException("This item is already sold.");
+	    }
+
+	    // ② 購入情報をセット
+	    item.setSaleStatus(false);              // 販売終了
+	    item.setBuyUser(buyerId);               // ← buyerId を buyUser に合わせる
+	    item.setPurchaseDate(LocalDateTime.now()); // ← purchaseAt → purchaseDate に修正
+	    item.setUpdatedAt(LocalDateTime.now()); // 更新日時
+
+
+	    // ③ DB更新
+	    itemMapper.updatePurchaseInfo(
+	    	    item.getItemId(),
+	    	    item.getBuyUser(),      // または item.getBuyerId() に統一するならこっち
+	    	    item.getPurchaseDate()
+	    	);
+	}
+
+	
+	
 
 	public void markForDelete(Integer itemId) {
 		itemMapper.markForDelete(itemId);
