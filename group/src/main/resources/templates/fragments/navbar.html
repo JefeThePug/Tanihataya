@@ -20,6 +20,7 @@
 				<div sec:authorize="isAuthenticated()" class="dropdown">
 					<button class="dropbtn">メニュー ▾</button>
 					<div class="dropdown-content">
+						<a class="username" th:text="${user.name}">Guest</a>
 						<a th:href="@{/info/{userid}(userid = ${user.userId})}">アカウント情報</a>
 						<a th:href="@{/list(type='buy')}">購入一覧</a>
 						<a th:href="@{/list(type='sell')}">出品一覧</a>

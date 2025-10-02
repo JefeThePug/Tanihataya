@@ -156,6 +156,12 @@ span.title {
 	color: var(--background);
 }
 
+.dropdown-content a.username:hover {
+    background-color: var(--background);
+    color: var(--text);
+    cursor: default;
+}
+
 .dropdown:hover .dropdown-content {
 	display: block;
 }
