@@ -1,6 +1,7 @@
 package com.example.group.controller;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +25,9 @@ public class DisplayController {
 	private final UserService userService;
 
 	@GetMapping
-	public String show(Model model, Authentication authentication) {
+	public String show(Model model) {
 		// トップ画面：カテゴリ一覧表示
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
 			Users user = userService.findByEmail(principal.getUsername());
 			model.addAttribute("user", user);
@@ -36,7 +38,8 @@ public class DisplayController {
 
 	// カテゴリ一覧表示
 	@GetMapping("/c/{category}")
-	public String showCategories(@PathVariable int category, Model model, Authentication authentication) {
+	public String showCategories(@PathVariable int category, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
 			Users user = userService.findByEmail(principal.getUsername());
 			model.addAttribute("user", user);
@@ -59,27 +62,27 @@ public class DisplayController {
 
 	// 出品/購入の一覧表示
 	@GetMapping("/list")
-	public String showList(@RequestParam String type, Model model, Authentication authentication) {
-	    Users user = null;
-	    if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
-	        user = userService.findByEmail(principal.getUsername());
-	        model.addAttribute("user", user);
-	    }
+	public String showList(@RequestParam String type, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Users user = null;
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
+			user = userService.findByEmail(principal.getUsername());
+			model.addAttribute("user", user);
+		}
+		if (user != null) {
+			int userId = user.getUsersId();
+			if ("buy".equals(type)) {
+				model.addAttribute("pageTitle", "タニハタ屋:購入");
+				model.addAttribute("header", "購入");
+				model.addAttribute("items", itemService.findPurchasesByUserId(userId));
+			} else if ("sell".equals(type)) {
+				model.addAttribute("pageTitle", "タニハタ屋:販売");
+				model.addAttribute("header", "販売");
+				model.addAttribute("items", itemService.findSalesByUserId(userId));
+			}
+		}
 
-	    if (user != null) {
-	        int userId = user.getUserId();
-	        if ("buy".equals(type)) {
-	            model.addAttribute("pageTitle", "タニハタ屋:購入");
-	            model.addAttribute("header", "購入");
-	            model.addAttribute("items", itemService.findPurchasesByUserId(userId));
-	        } else if ("sell".equals(type)) {
-	            model.addAttribute("pageTitle", "タニハタ屋:販売");
-	            model.addAttribute("header", "販売");
-	            model.addAttribute("items", itemService.findSalesByUserId(userId));
-	        }
-	    }
-
-	    return "list";
+		return "list";
 		//HTMLの例        
 		//        <form action="/list" method="get" style="display:inline;">
 		//        <input type="hidden" name="type" value="buy" />
