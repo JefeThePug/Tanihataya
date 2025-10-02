@@ -2,8 +2,6 @@ package com.example.group.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.validation.constraints.Pattern;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,8 +19,6 @@ public class Items {
 	private String name;
 
 	//商品カテゴリー(1~8の数字で管理)
-	@Pattern(regexp = "衣類|おもちゃ|電化製品|スポーツ|ペット|美容|書籍|その他", 
-			message = "カテゴリーは指定された値のいずれかで入力してください")
 	private String category;
 
 	//商品詳細

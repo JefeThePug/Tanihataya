@@ -9,11 +9,11 @@
 			<!-- Main image -->
 			<label>商品の写真</label>
 			<div class="main-image upload-box">
-				<input type="file" th:field="*{imagesPath}" accept="image/*"
+				<input type="file" th:field="*{images}" accept="image/*"
 					onchange="previewImage(event, 'mainPreview', 'mainDelete')">
-				<img id="mainPreview" alt="" th:if="${itemForm.existingImgSrcs.size() > 0}"
-					th:src="@{'/images/user_imgs/' + ${itemForm.existingImgSrcs[0]}}">
-				<img id="mainPreview" alt="" th:unless="${itemForm.existingImgSrcs.size() > 0}" th:src="">
+				<img id="mainPreview" alt="" th:if="${itemForm.existingImages.size() > 0}"
+					th:src="@{'/images/user_imgs/' + ${itemForm.existingImages[0]}}">
+				<img id="mainPreview" alt="" th:unless="${itemForm.existingImages.size() > 0}" th:src="">
 				<span class="placeholder">⊕商品の写真</span>
 				<i id="mainDelete" class="fas fa-trash-alt delete-icon"></i>
 			</div>
@@ -21,11 +21,11 @@
 			<!-- Smaller images -->
 			<div class="small-images">
 				<div class="upload-box" th:each="i : ${#numbers.sequence(1,4)}">
-					<input type="file" th:id="'image' + ${i}" th:field="*{imagesPath}" accept="image/*"
+					<input type="file" th:id="'image' + ${i}" th:field="*{images}" accept="image/*"
 						th:onchange="'previewImage(event, \'preview' + ${i} + '\', \'delete' + ${i} + '\')'">
-					<img th:id="'preview' + ${i}" alt="" th:if="${itemForm.existingImgSrcs.size() > i}"
-						th:src="@{'/images/user_imgs/' + ${itemForm.existingImgSrcs[i]}}">
-					<img th:id="'preview' + ${i}" alt="" th:unless="${itemForm.existingImgSrcs.size() > i}" th:src="">
+					<img th:id="'preview' + ${i}" alt="" th:if="${itemForm.existingImages.size() > i}"
+						th:src="@{'/images/user_imgs/' + ${itemForm.existingImages[i]}}">
+					<img th:id="'preview' + ${i}" alt="" th:unless="${itemForm.existingImages.size() > i}" th:src="">
 					<span class="placeholder">⊕</span>
 					<i th:id="'delete' + ${i}" class="fas fa-trash-alt delete-icon"></i>
 				</div>
