@@ -52,25 +52,25 @@
 	</select>
 
 	<!-- アイテムを追加 -->
-	<insert id="insertItem"
+	<insert id="insert"
 		parameterType="com.example.group.entity.Items" useGeneratedKeys="true"
 		keyProperty="itemId">
 		INSERT INTO items (
-		name, category, detail,
+		users_id, name, category, detail,
 		price, sale_status,
 		images_path,
 		created_at,updated_at
 		) VALUES (
-		#{name}, #{category},
+		#{usersId}, #{name}, #{category},
 		#{detail}, #{price},TRUE,
-		#{imagePaths}, #{createdAt}, {#updatedAt});
+		#{imagePaths}, #{createdAt}, #{updatedAt});
 	</insert>
 
 	<!--アイテムを更新 -->
 	<update id="update">
 		UPDATE items SET name=#{name}, category= #{category},
 		detail =#{detail},
-		price=#{price}, images_path=#{imagesPath},
+		price=#{price}, images_path=#{imagePaths},
 		updated_at={updatedAt} WHERE item_id =#{itemId};
 	</update>
 
