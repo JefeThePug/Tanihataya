@@ -1,9 +1,12 @@
 package com.example.group.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +22,7 @@ import com.example.group.form.RegisterUserGroup;
 import com.example.group.form.UserForm;
 import com.example.group.service.UserService;
 import com.example.group.service.security.UserDetailsImpl;
+import com.example.group.service.security.UserDetailsServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +32,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
 
 	private final UserService userService;
+	private final UserDetailsServiceImpl userDetailsService;
 
 	//ログイン画面を表示	
 	@GetMapping("/login")
@@ -69,13 +74,20 @@ public class UserController {
 	//新規登録をする
 	@PostMapping("/register")
 	public String register(@Validated(RegisterUserGroup.class) @ModelAttribute UserForm userForm,
-			BindingResult result, Model model) {
+			BindingResult result, Model model, HttpServletRequest request) {
 		if (result.hasErrors()) {
 			model.addAttribute("Message", "入力誤り");
 			return "user/register";
 		}
 		userService.insert(userForm);
-		return "redirect:/user/login"; // 登録完了後にログイン画面へ
+
+		// 自動ログイン
+		UserDetails userDetails = userDetailsService.loadUserByUsername(userForm.getEmail());
+		UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null,
+				userDetails.getAuthorities());
+		SecurityContextHolder.getContext().setAuthentication(authToken);
+		request.getSession(true).setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
+		return "redirect:/user/loginsuccess";
 	}
 
 	//ユーザー情報一覧
