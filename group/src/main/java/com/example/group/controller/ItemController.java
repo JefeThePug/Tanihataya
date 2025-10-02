@@ -88,13 +88,17 @@ public class ItemController {
 
 	// 出品登録/変更画面表示
 	@GetMapping("/add_item")
-	public String showAddItem(Model model) {
+	public String showAddItem(@RequestParam String type, @RequestParam Integer itemId, Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
 			Users user = userService.findByEmail(principal.getUsername());
 			model.addAttribute("user", user);
 		}
-		model.addAttribute("itemForm", new ItemForm());
+		if (type.equals("insert")) {
+			model.addAttribute("itemForm", new ItemForm());
+		} else if (type.equals("update")) {
+			model.addAttribute("itemForm", itemService.findById(itemId));
+		}
 
 		return "item/add_item";
 	}

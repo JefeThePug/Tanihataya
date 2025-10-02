@@ -23,7 +23,7 @@
 		</a>
 	</div>
 	<div th:if="${header} == '販売'" class="new-item">
-		<a th:href="@{/item/add_item(type='insert')}">
+		<a th:href="@{/item/add_item(itemId=0, type='insert')}">
 			<i class="fa-solid fa-circle-plus"></i>
 			新しい商品を販売する
 		</a>
