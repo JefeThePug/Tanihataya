@@ -89,16 +89,20 @@ public class ItemController {
 	// 出品登録/変更画面表示
 	@GetMapping("/add_item")
 	public String showAddItem(@RequestParam String type, @RequestParam Integer itemId, Model model) {
+		Users user = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
-			Users user = userService.findByEmail(principal.getUsername());
+			user = userService.findByEmail(principal.getUsername());
 			model.addAttribute("user", user);
 		}
 		if (type.equals("insert")) {
-			model.addAttribute("itemForm", new ItemForm());
+			ItemForm form = new ItemForm();
+			form.setUserId(user.getUsersId());
+			model.addAttribute("itemForm", form);
 		} else if (type.equals("update")) {
 			model.addAttribute("itemForm", itemService.findById(itemId));
 		}
+		model.addAttribute("itemId", itemId);
 
 		return "item/add_item";
 	}
@@ -106,6 +110,7 @@ public class ItemController {
 	// 出品処理  	
 	@PostMapping("/add_item")
 	public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
+		System.out.println("USER: " + itemForm.getUserId() + "\nItemId: " + itemForm.getItemId() + "\nNAME: " + itemForm.getName());
 		if ("insert".equals(type)) {//新規登録
 			itemService.insert(itemForm);
 		} else if ("update".equals(type)) {//変更登録

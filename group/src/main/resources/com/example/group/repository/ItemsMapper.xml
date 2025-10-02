@@ -56,15 +56,14 @@
 		parameterType="com.example.group.entity.Items" useGeneratedKeys="true"
 		keyProperty="itemId">
 		INSERT INTO items (
-		users_id, name, category, detail,
-		price, sale_status, buy_user,
-		purchase_date, images_path,
+		name, category, detail,
+		price, sale_status,
+		images_path,
 		created_at,updated_at
 		) VALUES (
-		#{usersId}, #{name}, #{category},
-		#{detail}, #{price},#{saleStatus}, #{buyUser},
-		#{purchaseDate},
-		#{imagesPath}, #{createdAt}, {#updatedAt});
+		#{name}, #{category},
+		#{detail}, #{price},TRUE,
+		#{imagePaths}, #{createdAt}, {#updatedAt});
 	</insert>
 
 	<!--アイテムを更新 -->

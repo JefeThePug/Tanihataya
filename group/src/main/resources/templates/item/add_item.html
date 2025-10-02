@@ -3,9 +3,10 @@
 
 <section th:fragment="content">
 	<h1>商品情報</h1>
-	<form action="@{/submit}" th:object="${itemForm}" method="post" enctype="multipart/form-data" class="product-form">
+	<form th:action="@{/item/add_item}" th:object="${itemForm}" method="post" enctype="multipart/form-data" class="product-form">
 		<input type="hidden" name="type" th:value="${type}" />
-		<input type="hidden" th:field="*{itemId}" th:value="${id}" />
+		<input type="hidden" th:field="*{itemId}" />
+		<input type="hidden" th:field="*{userId}" />
 		<div class="form-left">
 			<!-- Main image -->
 			<label>商品の写真</label>
