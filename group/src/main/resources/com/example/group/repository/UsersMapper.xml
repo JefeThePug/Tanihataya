@@ -20,8 +20,8 @@
 
 	<!-- ユーザー情報の登録 -->
 	<insert id="insert" parameterType="com.example.group.entity.Users">
-		INSERT INTO users
-		VALUES(#{userId},#{name},#{email},#{password},#{postcode},#{address},#{tel},#{isActive},CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
+		INSERT INTO users (name, email, password, postcode, address, tel, isActive, created_at, updated_at)
+		VALUES(#{name},#{email},#{password},#{postcode},#{address},#{tel},TRUE,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 	</insert>
 	
 	<!-- ユーザー情報の更新 -->
