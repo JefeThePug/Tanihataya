@@ -3,7 +3,7 @@
 
 <section th:fragment="content">
 	<h1>新規登録</h1>
-	<form th:action="@{/register}" th:object="${userForm}" method="post" class="form-right">
+	<form th:action="@{/user/register}" th:object="${userForm}" method="post" class="form-right">
 		<!-- エラーがあるときだけ表示 -->
 		<div th:if="${Message} != null" th:text="${Message}" style="color: blue;"></div>
 		<div th:if="${#fields.hasErrors('*')}">
