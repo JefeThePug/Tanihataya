@@ -79,7 +79,7 @@ public class ItemService {
 		item.setCreatedAt(LocalDateTime.now());
 		item.setUpdatedAt(LocalDateTime.now());
 
-		itemMapper.insertItem(item);
+		itemMapper.insert(item);
 	}
 
 	public void update(ItemForm form) {
