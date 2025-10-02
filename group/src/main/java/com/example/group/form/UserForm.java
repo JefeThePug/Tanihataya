@@ -3,6 +3,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import com.example.group.entity.Users;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -33,4 +35,18 @@ public class UserForm {
 			UpdateUserGroup.class })
 	@NotBlank(message = "電話番号は必須です", groups = UpdateUserGroup.class)
 	private String tel;
+
+	private boolean isActive;
+	
+	  public UserForm(Users user) {
+	        if (user != null) {
+	            this.userId = user.getUsersId();  // Users のフィールド名に合わせる
+	            this.name = user.getName();
+	            this.email = user.getEmail();
+	            this.password = user.getPassword();
+	            this.postcode = user.getPostcode();
+	            this.address = user.getAddress();
+	            this.tel = user.getTel();
+	        }
+	    }
 }
