@@ -14,7 +14,7 @@
 					<h2 th:text="${item.name}">タイトル</h2>
 					<p>¥<span th:text="${item.price}">00000</span></p>
 					<p th:if="${header} == '販売'">
-						<a th:href="@{/add_item/{itemId}(itemId = ${item.itemId})}">
+						<a th:href="@{/item/add_item(itemId = ${item.itemId}, type='update')}">
 							商品編集
 						</a>
 					</p>
@@ -23,7 +23,7 @@
 		</a>
 	</div>
 	<div th:if="${header} == '販売'" class="new-item">
-		<a th:href="@{/add_item}">
+		<a th:href="@{/item/add_item(itemId=0, type='insert')}">
 			<i class="fa-solid fa-circle-plus"></i>
 			新しい商品を販売する
 		</a>

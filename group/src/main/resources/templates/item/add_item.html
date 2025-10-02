@@ -2,18 +2,21 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	<form action="@{/submit}" th:object="${itemForm}" method="post" enctype="multipart/form-data" class="product-form">
+	<h1>商品情報</h1>
+	<form th:action="@{/item/add_item}" th:object="${itemForm}" method="post" enctype="multipart/form-data" class="product-form">
 		<input type="hidden" name="type" th:value="${type}" />
-		<input type="hidden" th:field="*{itemId}" th:value="${id}" />
+		<input type="hidden" th:field="*{itemId}" />
+		<input type="hidden" th:field="*{userId}" />
 		<div class="form-left">
 			<!-- Main image -->
 			<label>商品の写真</label>
 			<div class="main-image upload-box">
-				<input type="file" th:field="*{imagesPath}" accept="image/*"
+				<input type="file" th:field="*{images}" accept="image/*" required
 					onchange="previewImage(event, 'mainPreview', 'mainDelete')">
-				<img id="mainPreview" alt="" th:if="${itemForm.existingImgSrcs.size() > 0}"
-					th:src="@{'/images/user_imgs/' + ${itemForm.existingImgSrcs[0]}}">
-				<img id="mainPreview" alt="" th:unless="${itemForm.existingImgSrcs.size() > 0}" th:src="">
+				<img id="mainPreview" alt="" th:src="${itemForm.existingImages != null 
+					               and itemForm.existingImages.size() > 0} 
+					              ? @{'/images/user_imgs/' + ${itemForm.existingImages[0]}} 
+					              : ''">
 				<span class="placeholder">⊕商品の写真</span>
 				<i id="mainDelete" class="fas fa-trash-alt delete-icon"></i>
 			</div>
@@ -21,11 +24,12 @@
 			<!-- Smaller images -->
 			<div class="small-images">
 				<div class="upload-box" th:each="i : ${#numbers.sequence(1,4)}">
-					<input type="file" th:id="'image' + ${i}" th:field="*{imagesPath}" accept="image/*"
+					<input type="file" th:id="'image' + ${i}" th:field="*{images}" accept="image/*"
 						th:onchange="'previewImage(event, \'preview' + ${i} + '\', \'delete' + ${i} + '\')'">
-					<img th:id="'preview' + ${i}" alt="" th:if="${itemForm.existingImgSrcs.size() > i}"
-						th:src="@{'/images/user_imgs/' + ${itemForm.existingImgSrcs[i]}}">
-					<img th:id="'preview' + ${i}" alt="" th:unless="${itemForm.existingImgSrcs.size() > i}" th:src="">
+					<img th:id="'preview' + ${i}" alt="" th:src="${itemForm.existingImages != null 
+						               and itemForm.existingImages.size() >= i} 
+						              ? @{'/images/user_imgs/' + ${itemForm.existingImages[i]}} 
+						              : ''">
 					<span class="placeholder">⊕</span>
 					<i th:id="'delete' + ${i}" class="fas fa-trash-alt delete-icon"></i>
 				</div>
@@ -42,18 +46,18 @@
 			</div>
 
 			<label>商品説明</label>
-			<textarea th:field="*{detail}" rows="4"></textarea>
+			<textarea th:field="*{detail}" rows="4" required></textarea>
 
 			<label>カテゴリー</label>
 			<div class="category-options">
-				<label><input type="radio" th:field="*{category}" value="clothing">衣類</label>
-				<label><input type="radio" th:field="*{category}" value="toys">おもちゃ</label>
-				<label><input type="radio" th:field="*{category}" value="electronics">電気製品</label>
-				<label><input type="radio" th:field="*{category}" value="sports">スポーツ品</label>
-				<label><input type="radio" th:field="*{category}" value="pets">ペット品</label>
-				<label><input type="radio" th:field="*{category}" value="beauty">美容品</label>
-				<label><input type="radio" th:field="*{category}" value="books">書籍</label>
-				<label><input type="radio" th:field="*{category}" value="other">その他</label>
+				<label><input type="radio" th:field="*{category}" value="clothing" required>衣類</label>
+				<label><input type="radio" th:field="*{category}" value="toys" required>おもちゃ</label>
+				<label><input type="radio" th:field="*{category}" value="electronics" required>電気製品</label>
+				<label><input type="radio" th:field="*{category}" value="sports" required>スポーツ品</label>
+				<label><input type="radio" th:field="*{category}" value="pets" required>ペット品</label>
+				<label><input type="radio" th:field="*{category}" value="beauty" required>美容品</label>
+				<label><input type="radio" th:field="*{category}" value="books" required>書籍</label>
+				<label><input type="radio" th:field="*{category}" value="other" required>その他</label>
 			</div>
 			<button type="submit">登録</button>
 		</div>

@@ -1,7 +1,11 @@
 package com.example.group.form;
 
 
+import java.util.List;
+
 import jakarta.validation.constraints.Pattern;
+
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +28,8 @@ public class ItemForm {
 
 	private Integer price;
 
-	private String[] imagesPath;
+	private List<MultipartFile> existingImages;
+	
+	private List<MultipartFile> images;
 
 }

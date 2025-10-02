@@ -25,7 +25,7 @@ public interface ItemsMapper {
 	Items findById(Integer itemId);
 
 	//アイテムを追加
-	void insertItem(Items items);
+	void insert(Items items);
 
 	//アイテムを更新
 	//引数ItemFromからItemsに変更　9/30(田辺)
