@@ -38,8 +38,9 @@
 
 	<select id="findById"
 		resultType="com.example.group.entity.Items">
-		SELECT <include refid="Base_Column_List" />
-		FROM items 
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM items
 		WHERE item_id = #{itemId};
 	</select>
 
@@ -55,7 +56,8 @@
 		) VALUES (
 		#{usersId}, #{name}, #{category},
 		#{detail}, #{price},#{saleStatus}, #{buyUser},
-		#{purchaseDate}, #{imagesPath}, #{createdAt}, {#updatedAt});
+		#{purchaseDate},
+		#{imagesPath}, #{createdAt}, {#updatedAt});
 	</insert>
 
 	<!--アイテムを更新 -->
@@ -73,15 +75,15 @@
 		WHERE item_id = #{itemId};
 	</update>
 
-	<!-- -->
+	<!-- 購入時のItemテーブル関連の更新-->
 	<update id="updatePurchaseInfo">
-		UPDATE items SET
-		sale_status = false,
-		buy_user = #{buyerId},
+		UPDATE items
+		SET sale_status = false,
+		buy_user = #{buyUser},
 		purchase_date = #{purchaseDate},
 		updated_at = NOW()
-		WHERE
-		item_id = #{itemId};
+		WHERE item_id = #{itemId};
 	</update>
+
 
 </mapper>
