@@ -1,5 +1,7 @@
 package com.example.group.controller;
 
+import java.security.Principal;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
@@ -99,12 +101,23 @@ public class UserController {
 	}
 
 	// ユーザー情報の変更画面
-	@GetMapping("/update/{userid}")
-	public String showUserUpdate(@PathVariable int userid, Model model) {
-		model.addAttribute("isEdit", true);
-		model.addAttribute("pageTitle", "ユーザー情報");
-		model.addAttribute("user", userService.findById(userid));
-		return "user/register";
+	@GetMapping("/update")
+	public String showUserUpdate(Model model, Principal principal) {
+	    // Principal からログインユーザーを取得
+	    String email = principal.getName();
+	    // ログイン中のユーザー情報をDBから取得
+	    Users user = userService.findByEmail(email);
+	    if (user == null) {
+	        throw new IllegalArgumentException("ログインユーザーが見つかりません");
+	    }
+	    // Users → UserForm に変換
+	    UserForm form = new UserForm(user);
+	    model.addAttribute("user", user);
+	    model.addAttribute("isEdit", true);
+	    model.addAttribute("userForm", form);
+	    model.addAttribute("pageTitle", "ユーザー情報");
+
+	    return "user/register";
 	}
 
 	//ユーザー情報の変更
