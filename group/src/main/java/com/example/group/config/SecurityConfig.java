@@ -16,7 +16,7 @@ public class SecurityConfig {
 		http.formLogin(form -> form
 				.loginPage("/user/login") // ログイン画面のURL
 				.loginProcessingUrl("/authenticate") // ユーザー名とパスワードを送信するURL
-			    .usernameParameter("email")   // フォームのemailをusernameとして渡す
+				.usernameParameter("email") // フォームのemailをusernameとして渡す
 				.defaultSuccessUrl("/user/loginsuccess", true) // 認証成功後のリダイレクト先URL
 				.failureUrl("/user/login?failure") // 認証失敗後のリダイレクト先URL
 				.permitAll() // ログイン画面は未認証でもアクセス可能
@@ -31,14 +31,16 @@ public class SecurityConfig {
 						"/user/register",
 						"/css/**",
 						"/js/**",
-						"/images/**").permitAll() // 誰でもアクセス可能なURL
+						"/images/**")
+				.permitAll() // 誰でもアクセス可能なURL
 				.requestMatchers(
 						"/purchases",
 						"/item/purchase",
 						"/item/purchase/success",
 						"/item/add_item",
 						"/user/info",
-						"/user/update").authenticated() // ログイン必須のURL
+						"/user/update")
+				.authenticated() // ログイン必須のURL
 				.anyRequest().authenticated() // その他は全て認証必須
 		).exceptionHandling(ex -> ex
 				.accessDeniedPage("/error") // エラー発生時に表示する画面
