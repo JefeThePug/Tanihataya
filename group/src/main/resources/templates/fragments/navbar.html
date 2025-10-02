@@ -21,8 +21,8 @@
 					<button class="dropbtn">メニュー ▾</button>
 					<div class="dropdown-content">
 						<a th:href="@{/info/{userid}(userid = ${user.userId})}">アカウント情報</a>
-						<a th:href="@{/purchases}">購入一覧</a>
-						<a th:href="@{/solditems}">出品一覧</a>
+						<a th:href="@{/list(type='buy')}">購入一覧</a>
+						<a th:href="@{/list(type='sell')}">出品一覧</a>
 						<form th:action="@{/logout}" method="post">
 							<button type="submit" class="logout-btn">ログアウト</button>
 						</form>

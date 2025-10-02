@@ -59,23 +59,27 @@ public class DisplayController {
 
 	// 出品/購入の一覧表示
 	@GetMapping("/list")
-	public String showList(@RequestParam String type, @RequestParam int userId, Model model,
-			Authentication authentication) {
-		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
-			Users user = userService.findByEmail(principal.getUsername());
-			model.addAttribute("user", user);
-		}
+	public String showList(@RequestParam String type, Model model, Authentication authentication) {
+	    Users user = null;
+	    if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
+	        user = userService.findByEmail(principal.getUsername());
+	        model.addAttribute("user", user);
+	    }
 
-		if ("buy".equals(type)) {//購入検索
-			model.addAttribute("pageTitle", "タニハタ屋:購入");
-			model.addAttribute("header", "購入");
-			model.addAttribute("items", itemService.findPurchasesByUserId(userId));
-		} else if ("sell".equals(type)) {//販売検索
-			model.addAttribute("pageTitle", "タニハタ屋:販売");
-			model.addAttribute("header", "販売");
-			model.addAttribute("items", itemService.findSalesByUserId(userId));
-		}
-		return "list";
+	    if (user != null) {
+	        int userId = user.getUserId();
+	        if ("buy".equals(type)) {
+	            model.addAttribute("pageTitle", "タニハタ屋:購入");
+	            model.addAttribute("header", "購入");
+	            model.addAttribute("items", itemService.findPurchasesByUserId(userId));
+	        } else if ("sell".equals(type)) {
+	            model.addAttribute("pageTitle", "タニハタ屋:販売");
+	            model.addAttribute("header", "販売");
+	            model.addAttribute("items", itemService.findSalesByUserId(userId));
+	        }
+	    }
+
+	    return "list";
 		//HTMLの例        
 		//        <form action="/list" method="get" style="display:inline;">
 		//        <input type="hidden" name="type" value="buy" />
