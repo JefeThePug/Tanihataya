@@ -36,7 +36,7 @@ public class UserService {
         // フォームの生パスワードをハッシュ化
         String encodedPassword = passwordEncoder.encode(form.getPassword());
 
-        user.setUserId(form.getUserId());
+        user.setUsersId(form.getUserId());
         user.setName(form.getName());
         user.setEmail(form.getEmail());
         user.setPassword(encodedPassword); // ハッシュ化済みパスワード

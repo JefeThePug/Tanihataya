@@ -1,6 +1,7 @@
 package com.example.group.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -52,11 +53,12 @@ public class UserController {
 
 	// SecurityConfigのdefaultSuccessUrlで指定したURL
 	@GetMapping("loginsuccess")
-	public String loginSuccess(Model model) {
+	public String loginSuccess(Model model, HttpSession session) {
 		// ユーザー名
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl principal = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(principal.getUsername());//Detailsを通れたメアドを元にユーザーを取得
+		session.setAttribute("id", user.getUsersId());
 		model.addAttribute("pageTitle", "タニハタ屋");
 		model.addAttribute("user", user);//ユーザー情報を格納
 		return "index";

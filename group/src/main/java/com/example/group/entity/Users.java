@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 
 public class Users {
 
-	private Integer userId;
+	private Integer usersId;
 
 	private String name;
 
@@ -32,7 +32,7 @@ public class Users {
 	
 	@Override
     public String toString() {
-        return "User{id=" + this.userId + ", name='" + this.name + "', email='" + this.email + "'}";
+        return "User{id=" + this.usersId + ", name='" + this.name + "', email='" + this.email + "'}";
     }
 
 }

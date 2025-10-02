@@ -10,12 +10,12 @@
 	<!-- ユーザーキーで情報取得 -->
 	<select id="findById"
 		resultType="com.example.group.entity.Users">
-		SELECT * FROM users WHERE user_id = #{user_id};
+		SELECT * FROM users WHERE users_id = #{users_id};
 	</select>
 	
 	<!-- ユーザー名で取得 -->
 	<select id="findByName" resultType="com.example.group.entity.Users">
-	SELECT * FROM users WHERE user_id = #{user_name};
+	SELECT * FROM users WHERE name = #{user_name};
 	</select>
 
 	<!-- ユーザー情報の登録 -->
@@ -37,10 +37,10 @@
 	        isActive = #{isActive}, 
 	        updated_at = CURRENT_TIMESTAMP
 	    WHERE 
-	        id = #{id}
+	        usersId = #{id}
 	</update>
 	
 	<delete id = "delete" parameterType="com.example.group.entity.Users">
-	DELETE FROM users WHERE user_id = #{userId}
+	DELETE FROM users WHERE users_id = #{usersId}
 	</delete>
 </mapper>
