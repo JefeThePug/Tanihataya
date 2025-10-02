@@ -90,7 +90,7 @@ public class ItemController {
     // 出品登録/変更画面表示
     @GetMapping("/add_item")
     public String showAddItem(Model model) {
-
+    	model.addAttribute("itemForm", new ItemForm());
         
         return "item/add_item";
     }
