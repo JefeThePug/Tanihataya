@@ -109,7 +109,7 @@ public class UserController {
 
 	//ユーザー情報の変更
 	@PostMapping("/update")
-	public String UserUpdate(@Valid @ModelAttribute UserForm userForm) {
+	public String userUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
 		return "redirect:/user/info/" + userForm.getUserId();
 		//ユーザー情報一覧に戻る？
