@@ -34,7 +34,7 @@ public class Items {
 	private Integer buyUser;
 	
 	// 画像パス配列に変更 9/29(月)
-    private String[] imagePaths;
+    private String imagePaths;
 	
     //商品登録日時
 	private LocalDateTime createdAt;
