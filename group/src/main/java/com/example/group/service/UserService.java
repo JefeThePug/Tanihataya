@@ -47,7 +47,20 @@ public class UserService {
         userMapper.insert(user);
     }
 
+    //update
     public void update(UserForm user) {
+        // フォームの生パスワードをハッシュ化
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+
+  	        if (user != null) {
+  	          user.setUsersId(user.getUsersId());
+  	          user.setName(user.getName());
+  	          user.setEmail(user.getEmail());
+  	          user.setPassword(encodedPassword);
+  	          user.setPostcode(user.getPostcode());
+  	          user.setAddress (user.getAddress());
+  	          user.setTel(user.getTel());
+  	        }
         userMapper.update(user);
     }
 

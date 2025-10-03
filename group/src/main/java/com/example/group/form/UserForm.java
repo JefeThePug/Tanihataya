@@ -5,12 +5,15 @@ import jakarta.validation.constraints.Size;
 
 import com.example.group.entity.Users;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserForm {
+
 	private Integer usersId;
 
 	private String name;
@@ -38,17 +41,18 @@ public class UserForm {
 
 	private boolean isActive;
 	
-	
-	//引数Usersのコンストラクタ
-	  public UserForm(Users user) {
-	        if (user != null) {
-	            this.usersId = user.getUsersId();  
-	            this.name = user.getName();
-	            this.email = user.getEmail();
-	            this.password = user.getPassword();
-	            this.postcode = user.getPostcode();
-	            this.address = user.getAddress();
-	            this.tel = user.getTel();
-	        }
-	    }
+	   // 引数Usersのコンストラクタ
+    public UserForm(Users user) {
+        if (user != null) {
+            this.usersId = user.getUsersId();
+            this.name = user.getName();
+            this.email = user.getEmail();
+            this.password = user.getPassword(); // パスワードはそのまま
+            this.postcode = user.getPostcode();
+            this.address = user.getAddress();
+            this.tel = user.getTel();
+            this.isActive = user.isActive();
+        }
+    }
+    
 }

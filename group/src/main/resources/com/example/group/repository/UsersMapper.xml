@@ -10,12 +10,12 @@
 	<!-- ユーザーキーで情報取得 -->
 	<select id="findById"
 		resultType="com.example.group.entity.Users">
-		SELECT * FROM users WHERE users_id = #{users_id};
+		SELECT * FROM users WHERE users_id = #{usersId};
 	</select>
 	
 	<!-- ユーザー名で取得 -->
 	<select id="findByName" resultType="com.example.group.entity.Users">
-	SELECT * FROM users WHERE name = #{user_name};
+	SELECT * FROM users WHERE name = #{name};
 	</select>
 
 	<!-- ユーザー情報の登録 -->
