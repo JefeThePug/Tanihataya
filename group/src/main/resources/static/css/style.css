@@ -64,20 +64,9 @@ span.title {
 
 /* 一般ボタン */
 .navbar-right .btn {
-	background: var(--highlight);
-	border: 1px solid var(--light-text);
-	border-radius: 6px;
-	color: var(--text);
-	cursor: pointer;
 	margin-left: 12px;
 	padding: 8px 16px;
-	text-decoration: none;
-	transition: all 0.2s ease-in-out;
-}
-
-.navbar-right .btn:hover {
-	background: var(--light-text, --highlight);
-	color: var(--background);
+	background-color: var(--background);
 }
 
 /* メインボタン */
@@ -405,9 +394,6 @@ h1 {
 }
 
 /* 新しい商品のフォーム */
-/*form {*/
-/*	margin-top: 4rem;*/
-/*}*/
 
 .product-form {
 	display: flex;
@@ -569,14 +555,34 @@ table {
 	margin-right: auto;
 }
 
+table.padded {
+	padding: 2rem;
+}
+
+th.right {
+	text-align: right;
+	padding-right: 1.5em;
+}
+
 .btn {
 	background-color: var(--select);
+	border: 1px solid var(--light-text);
+	border-radius: 6px;
 	padding: 0.75rem !important;
 	color: var(--text);
+	cursor: pointer;
+	text-decoration: none;
+	transition: all 0.2s ease-in-out;
+}
+
+.btn-container {
+	padding: 1rem;
 }
 
 .btn:hover {
 	background-color: var(--strong-select);
+/*	background: var(--light-text, --highlight);*/
+	color: var(--background);
 }
 
 .secondary {
