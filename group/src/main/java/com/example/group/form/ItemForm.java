@@ -1,6 +1,7 @@
 package com.example.group.form;
 
 
+import java.io.File;
 import java.util.List;
 
 import jakarta.validation.constraints.Pattern;
@@ -27,8 +28,12 @@ public class ItemForm {
 	private String detail;
 
 	private Integer price;
+	
+	private boolean saleStatus;
+	
+	private Integer buyUser;
 
-	private List<MultipartFile> existingImages;
+	private List<File> existingImages;
 	
 	private List<MultipartFile> images;
 

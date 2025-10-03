@@ -26,6 +26,34 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 	private final ItemsMapper itemMapper;
 
+	private List<ItemForm> entitiesToForm(List<Items> items) {
+		List<ItemForm> forms = new ArrayList<>();
+		for (Items item : items) {
+			ItemForm form = new ItemForm();
+			form.setItemId(item.getItemId());
+			form.setUserId(item.getUserId());
+			form.setName(item.getName());
+			form.setCategory(item.getCategory());
+			form.setDetail(item.getDetail());
+			form.setPrice(item.getPrice());
+			form.setSaleStatus(item.isSaleStatus());
+			form.setBuyUser(item.getBuyUser());
+			List<File> imgs = new ArrayList<>();
+			File uploadDir = new File("/path/to/uploadDir");
+			for (String path : item.getImagePaths().split(",")) {
+				File file = new File(uploadDir, path.trim());
+				if (file.exists()) {
+					imgs.add(file);
+				} else {
+					System.out.println("File not found: " + file.getAbsolutePath());
+				}
+			}
+			form.setExistingImages(imgs);
+			forms.add(form);
+		}
+		return forms;
+	}
+
 	// --- 検索系メソッド ---
 	public List<Items> findAllByCategory(Integer category) {
 		return itemMapper.findAllByCategory(category);
