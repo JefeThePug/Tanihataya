@@ -45,5 +45,5 @@ public class Items {
 	private LocalDateTime updatedAt;
 	
 	// 【追加】購入日時 9/30(火) by田辺
-	private LocalDateTime purchaseDate; 
+	private LocalDateTime purchaseAt; 
 }

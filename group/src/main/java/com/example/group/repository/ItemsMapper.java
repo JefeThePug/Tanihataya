@@ -40,7 +40,7 @@ public interface ItemsMapper {
 	void updatePurchaseInfo(
 			@Param("itemId") Integer itemId, 
 			@Param("buyUser") Integer buyUser,  
-			@Param("purchaseDate") LocalDateTime purchaseDate
+			@Param("purchaseAt") LocalDateTime purchaseAt
 			);
 
 
