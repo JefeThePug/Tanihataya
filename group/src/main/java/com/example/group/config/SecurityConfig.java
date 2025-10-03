@@ -24,6 +24,15 @@ public class SecurityConfig {
 				.logoutSuccessUrl("/user/login?logout") // ログアウト成功後のリダイレクト先URL
 		).authorizeHttpRequests(authz -> authz
 				.requestMatchers(
+						"/info/*",
+						"/purchases",
+						"/item/purchase",
+						"/item/purchase/success",
+						"/item/add_item",
+						"/user/info",
+						"/user/update")
+				.authenticated() // ログイン必須のURL
+				.requestMatchers(
 						"/",
 						"/c/*",
 						"/item/*",
@@ -33,15 +42,6 @@ public class SecurityConfig {
 						"/js/**",
 						"/images/**")
 				.permitAll() // 誰でもアクセス可能なURL
-				.requestMatchers(
-						"/info/*",
-						"/purchases",
-						"/item/purchase",
-						"/item/purchase/success",
-						"/item/add_item",
-						"/user/info",
-						"/user/update")
-				.authenticated() // ログイン必須のURL
 				.anyRequest().authenticated() // その他は全て認証必須
 		).exceptionHandling(ex -> ex
 				.accessDeniedPage("/error") // エラー発生時に表示する画面

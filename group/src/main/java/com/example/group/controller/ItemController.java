@@ -1,5 +1,6 @@
 package com.example.group.controller;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,7 +46,16 @@ public class ItemController {
 
 	// 詳細画面
 	@GetMapping("/{itemId}")
-	public String showItemDetail(@PathVariable int itemId, Model model) {
+	public String showItemDetail(@PathVariable int itemId, Model model, Principal principal) {
+		//user情報（principal）があれば登録
+		if (principal != null) {
+		 // Principal からログインユーザーを取得
+	    String email = principal.getName();
+	    // ログイン中のユーザー情報をDBから取得
+	    Users user = userService.findByEmail(email);
+		    model.addAttribute("user", user);
+		    }
+	    
 		//アイテムIDでアイテムを1件取得
 		Items items = itemService.findById(itemId);
 		model.addAttribute("item", items);
