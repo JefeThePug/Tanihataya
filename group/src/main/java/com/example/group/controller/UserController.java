@@ -124,7 +124,7 @@ public class UserController {
 	@PostMapping("/update")
 	public String userUpdate(@Valid @ModelAttribute UserForm userForm) {
 		userService.update(userForm);
-		return "redirect:/user/info/" + userForm.getUserId();
+		return "redirect:/user/info/" + userForm.getUsersId();
 		//ユーザー情報一覧に戻る？
 	}
 

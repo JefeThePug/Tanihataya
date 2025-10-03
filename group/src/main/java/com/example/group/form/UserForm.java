@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class UserForm {
-	private Integer userId;
+	private Integer usersId;
 
 	private String name;
 
@@ -38,9 +38,11 @@ public class UserForm {
 
 	private boolean isActive;
 	
+	
+	//引数Usersのコンストラクタ
 	  public UserForm(Users user) {
 	        if (user != null) {
-	            this.userId = user.getUsersId();  // Users のフィールド名に合わせる
+	            this.usersId = user.getUsersId();  
 	            this.name = user.getName();
 	            this.email = user.getEmail();
 	            this.password = user.getPassword();

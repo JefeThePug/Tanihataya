@@ -37,7 +37,7 @@
 	        isActive = #{isActive}, 
 	        updated_at = CURRENT_TIMESTAMP
 	    WHERE 
-	        usersId = #{usersId}
+	        users_id = #{usersId}
 	</update>
 	
 	<delete id = "delete" parameterType="com.example.group.entity.Users">
