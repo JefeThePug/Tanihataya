@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 	private final ItemsMapper itemMapper;
 
-	private List<ItemForm> entitiesToForm(List<Items> items) {
+	public List<ItemForm> entitiesToForm(List<Items> items) {
 		List<ItemForm> forms = new ArrayList<>();
 		for (Items item : items) {
 			ItemForm form = new ItemForm();
