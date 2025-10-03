@@ -1,5 +1,8 @@
 package com.example.group.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -101,7 +104,10 @@ public class ItemController {
 			form.setUserId(user.getUsersId());
 			model.addAttribute("itemForm", form);
 		} else if (type.equals("update")) {
-			model.addAttribute("itemForm", itemService.findById(itemId));
+			List<Items> items = new ArrayList<>();
+			items.add(itemService.findById(itemId));
+			ItemForm form = itemService.entitiesToForm(items).get(0);
+			model.addAttribute("itemForm", form);
 		}
 		model.addAttribute("itemId", itemId);
 
@@ -111,7 +117,8 @@ public class ItemController {
 	// 出品処理  	
 	@PostMapping("/add_item")
 	public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
-		System.out.println("USER: " + itemForm.getUserId() + "\nItemId: " + itemForm.getItemId() + "\nNAME: " + itemForm.getName());
+		System.out.println("USER: " + itemForm.getUserId() + "\nItemId: " + itemForm.getItemId() + "\nNAME: "
+				+ itemForm.getName());
 		if ("insert".equals(type)) {//新規登録
 			itemService.insert(itemForm);
 		} else if ("update".equals(type)) {//変更登録
