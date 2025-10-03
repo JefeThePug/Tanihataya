@@ -38,17 +38,7 @@ public class ItemService {
 			form.setPrice(item.getPrice());
 			form.setSaleStatus(item.isSaleStatus());
 			form.setBuyUser(item.getBuyUser());
-			List<File> imgs = new ArrayList<>();
-			File uploadDir = new File("/path/to/uploadDir");
-			for (String path : item.getImagePaths().split(",")) {
-				File file = new File(uploadDir, path.trim());
-				if (file.exists()) {
-					imgs.add(file);
-				} else {
-					System.out.println("File not found: " + file.getAbsolutePath());
-				}
-			}
-			form.setExistingImages(imgs);
+			form.setExistingImages(item.getImagePaths().split(","));
 			forms.add(form);
 		}
 		return forms;
@@ -176,7 +166,7 @@ public class ItemService {
 		// ③ DB更新
 		itemMapper.updatePurchaseInfo(
 				item.getItemId(),
-				item.getBuyUser(), 
+				item.getBuyUser(),
 				item.getPurchaseAt());
 	}
 

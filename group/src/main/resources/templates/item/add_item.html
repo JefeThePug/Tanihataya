@@ -3,7 +3,8 @@
 
 <section th:fragment="content">
 	<h1>商品情報</h1>
-	<form th:action="@{/item/add_item}" th:object="${itemForm}" method="post" enctype="multipart/form-data" class="product-form">
+	<form th:action="@{/item/add_item}" th:object="${itemForm}" method="post" enctype="multipart/form-data"
+		class="product-form">
 		<input type="hidden" name="type" th:value="${type}" />
 		<input type="hidden" th:field="*{itemId}" />
 		<input type="hidden" th:field="*{userId}" />
@@ -12,26 +13,37 @@
 			<label>商品の写真</label>
 			<div class="main-image upload-box">
 				<input type="file" th:field="*{images}" accept="image/*" required
-					onchange="previewImage(event, 'mainPreview', 'mainDelete')">
-				<img id="mainPreview" alt="" th:src="${itemForm.existingImages != null 
-					               and itemForm.existingImages.size() > 0} 
-					              ? @{'/images/user_imgs/' + ${itemForm.existingImages[0]}} 
-					              : ''">
-				<span class="placeholder">⊕商品の写真</span>
-				<i id="mainDelete" class="fas fa-trash-alt delete-icon"></i>
+					onchange="previewImage(event, 'mainPreview', 'mainDelete', 'plusMain')">
+				<img id="mainPreview" th:src="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
+				             ? @{/images/user_imgs/{path}(path=${itemForm.existingImages[0]})} 
+				             : ''" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
+				               ? 'display:block;' 
+				               : 'display:none;'" />
+				<span id="plusMain" class="placeholder" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
+				                ? 'display:none;' 
+				                : 'display:block;'">⊕商品の写真</span>
+				<i id="mainDelete" class="fas fa-trash-alt delete-icon" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
+				             ? 'display:block;' 
+				             : 'display:none;'" onclick="removeImage('images', 'mainPreview', 'mainDelete', 'plusMain')"></i>
 			</div>
 
 			<!-- Smaller images -->
 			<div class="small-images">
 				<div class="upload-box" th:each="i : ${#numbers.sequence(1,4)}">
 					<input type="file" th:id="'image' + ${i}" th:field="*{images}" accept="image/*"
-						th:onchange="'previewImage(event, \'preview' + ${i} + '\', \'delete' + ${i} + '\')'">
-					<img th:id="'preview' + ${i}" alt="" th:src="${itemForm.existingImages != null 
-						               and itemForm.existingImages.size() >= i} 
-						              ? @{'/images/user_imgs/' + ${itemForm.existingImages[i]}} 
-						              : ''">
-					<span class="placeholder">⊕</span>
-					<i th:id="'delete' + ${i}" class="fas fa-trash-alt delete-icon"></i>
+						th:onchange="'previewImage(event, \'preview' + ${i} + '\', \'delete' + ${i} + '\', \'plus' + ${i} + '\')'">
+					<img th:id="'preview' + ${i}" th:src="${itemForm.existingImages != null and itemForm.existingImages.length > i} 
+						? @{/images/user_imgs/{path}(path=${itemForm.existingImages[i]})} 
+						: ''" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > i} 
+							? 'display:block;' 
+							: 'display:none;'" alt="">
+
+					<span th:id="'plus' + ${i}" class="placeholder" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > i} 
+								? 'display:none;' 
+								: 'display:block;'">⊕</span>
+					<i th:id="'delete' + ${i}" class="fas fa-trash-alt delete-icon" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > i} 
+								? 'display:block;' 
+								: 'display:none;'" th:onclick="|removeImage('images', 'preview${i}', 'delete${i}', 'plus${i}')|"></i>
 				</div>
 			</div>
 		</div>
@@ -64,12 +76,11 @@
 	</form>
 
 	<script>
-		function previewImage(event, previewId, deleteId) {
+		function previewImage(event, previewId, deleteId, plusId) {
 			const input = event.target;
 			const preview = document.getElementById(previewId);
 			const deleteIcon = document.getElementById(deleteId);
-			const parentBox = input.closest('.upload-box');
-			const placeholder = parentBox ? parentBox.querySelector('.placeholder') : null;
+			const placeholder = document.getElementById(plusId);
 
 			if (input.files && input.files[0]) {
 				const reader = new FileReader();
@@ -85,7 +96,7 @@
 					if (deleteIcon) {
 						deleteIcon.style.display = "block";
 						// アイコンが表示されたときにクリック処理を割り当てる
-						deleteIcon.onclick = () => removeImage(input.id, previewId, deleteId);
+						//deleteIcon.onclick = () => removeImage(input.id, previewId, deleteId);
 					}
 				};
 				reader.readAsDataURL(input.files[0]);
@@ -93,10 +104,11 @@
 		}
 
 		// 画像を削除する関数
-		function removeImage(inputId, previewId, deleteId) {
+		function removeImage(inputId, previewId, deleteId, plusId) {
 			const input = document.getElementById(inputId);
 			const preview = document.getElementById(previewId);
 			const deleteIcon = document.getElementById(deleteId);
+			const placeholder = document.getElementById(plusId);
 
 			// 1. ファイル入力をリセット（重要なステップ！）
 			input.value = '';
@@ -107,11 +119,9 @@
 			if (deleteIcon) {
 				deleteIcon.style.display = "none";
 			}
-			// 4. プレースホルダーのテキストやアイコンを復元
-			const parentBox = input.closest('.upload-box');
-			const placeholder = parentBox ? parentBox.querySelector('.placeholder') : null;
+			
 			if (placeholder) {
-				const defaultText = (inputId === 'mainImage') ? '⊕商品の写真' : '⊕';
+				const defaultText = '⊕';
 				placeholder.textContent = defaultText;
 				placeholder.style.display = "block";
 			}

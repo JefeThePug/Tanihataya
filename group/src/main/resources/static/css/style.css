@@ -443,7 +443,7 @@ h1 {
 }
 
 .upload-box img {
-	display: none;
+/*	display: none;*/
 	height: 100%;
 	object-fit: contain;
 	width: 100%;
