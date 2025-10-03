@@ -81,6 +81,7 @@ public class UserController {
 			model.addAttribute("Message", "入力誤り");
 			return "user/register";
 		}
+		
 		userService.insert(userForm);
 
 		// 自動ログイン
