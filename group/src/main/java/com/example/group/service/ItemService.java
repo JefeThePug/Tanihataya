@@ -142,14 +142,14 @@ public class ItemService {
 		// ② 購入情報をセット
 		item.setSaleStatus(false); // 販売終了
 		item.setBuyUser(buyerId); // ← buyerId を buyUser に合わせる
-		item.setPurchaseDate(LocalDateTime.now()); // ← purchaseAt → purchaseDate に修正
+		item.setPurchaseAt(LocalDateTime.now()); // ← purchaseAt → purchaseDate に修正
 		item.setUpdatedAt(LocalDateTime.now()); // 更新日時
 
 		// ③ DB更新
 		itemMapper.updatePurchaseInfo(
 				item.getItemId(),
 				item.getBuyUser(), // または item.getBuyerId() に統一するならこっち
-				item.getPurchaseDate());
+				item.getPurchaseAt());
 	}
 
 	public void markForDelete(Integer itemId) {
