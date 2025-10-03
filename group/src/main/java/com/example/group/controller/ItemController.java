@@ -44,8 +44,9 @@ public class ItemController {
 	@GetMapping("/{itemId}")
 	public String showItemDetail(@PathVariable int itemId, Model model) {
 		//アイテムIDでアイテムを1件取得
-		model.addAttribute("items", itemService.findById(itemId));
-		return "item";
+		Items items = itemService.findById(itemId);
+		model.addAttribute("item", items);
+		return "item/item";
 	}
 
 	/*
