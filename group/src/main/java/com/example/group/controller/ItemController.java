@@ -76,7 +76,7 @@ public class ItemController {
 		model.addAttribute("user", user);//購入ユーザー情報登録
 	    
 		Items item = itemService.findById(itemId);//itemの情報
-		Users seller = userService.findById(item.getUserId());//出品者の情報
+		Users seller = userService.findById(item.getUsersId());//出品者の情報
 		Payment payment = new Payment();
 
 //		// Items.imagePaths が String[] の場合
@@ -116,7 +116,7 @@ public class ItemController {
 		model.addAttribute("user", user);
 
 		Items item = itemService.findById(itemId);//itemの情報
-		Users seller = userService.findById(item.getUserId());//出品者の情報
+		Users seller = userService.findById(item.getUsersId());//出品者の情報
 
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
