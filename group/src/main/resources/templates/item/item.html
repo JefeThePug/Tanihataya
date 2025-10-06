@@ -1,52 +1,53 @@
 <!DOCTYPE html>
-<html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>商品詳細</title>
+</head>
+<body th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
 	
 	<h1 class="heading">商品詳細</h1>
 
-	   <!-- 商品名 -->
-	   <h2 th:text="${item.name}">商品名</h2>
+	<!-- 商品名 -->
+	<h2 th:text="${item.name}">商品名</h2>
 
-	   <!-- 商品画像（複数枚ある場合はループで表示） -->
-	   <div class="img-gallery">
-	       <div th:each="imgName : ${#strings.listSplit(item.imagePaths, ',')}">
-	           <img th:src="@{'/images/user_imgs/' + ${imgName}}" th:alt="${item.name}" />
-	       </div>
-	   </div>
+	<!-- 商品画像（複数枚ある場合はループで表示） -->
+	<div class="img-gallery">
+	    <div th:each="imgName : ${#strings.listSplit(item.imagePaths, ',')}">
+	        <img th:src="@{'/images/user_imgs/' + ${imgName}}" th:alt="${item.name}" />
+	    </div>
+	</div>
 
-	       <!-- 価格 -->
-	       <p class="price">¥<span th:text="${item.price}">0000</span></p>
+	<!-- 価格 -->
+	<p class="price">¥<span th:text="${item.price}">0000</span></p>
 
-	       <!-- 販売状況 -->
-	       <p th:if="${!item.saleStatus}" class="sold">SOLD OUT</p>
+	<!-- 販売状況 -->
+	<p th:if="${!item.saleStatus}" class="sold">SOLD OUT</p>
 
-	       <!-- 商品説明 -->
-	       <div class="description">
-	           <h3>商品説明</h3>
-	           <p th:text="${item.detail}">ここに商品説明が入ります。</p>
-	       </div>
+	<!-- 商品説明 -->
+	<div class="description">
+	    <h3>商品説明</h3>
+	    <p th:text="${item.detail}">ここに商品説明が入ります。</p>
+	</div>
 
-	       <!-- アクションボタン -->
-	       <div class="actions">
-	           <!-- 出品者側からアクセスしたとき -->
-	           <a th:if="${header eq '販売'}"
-	              th:href="@{/add_item/{itemId}(itemId=${item.itemId})}"
-	              class="btn-edit">
-	               商品を編集する
-	           </a>
-
-	           <!-- 購入者側からアクセスしたとき -->
-	           <a th:if="${item.saleStatus}"
-	              th:href="@{/buy/{itemId}(itemId=${item.itemId})}"
-	              class="btn-buy">
-	               購入する
-	           </a>
-	       </div>
-	   </div>
-
-	<!-- HTMLはここに… -->
+	<!-- アクションボタン -->
+	<div class="actions">
+	    <!-- 出品者側からアクセスしたとき -->
+	    <a th:if="${header eq '販売'}"
+	       th:href="@{/add_item/{itemId}(itemId=${item.itemId})}"
+	       class="btn-edit">
+	        商品を編集する
+	    </a>
+	    
+	    <!-- 出品者以外 && 販売中 のときだけ購入ボタン表示 -->
+	    <a th:if="${item.saleStatus and (user != null) and (item.userId ne user.usersId)}"
+	       th:href="@{/buy/{itemId}(itemId=${item.itemId})}"
+	       class="btn-buy">
+	        購入する
+	    </a>
+	</div>
 
 </section>
-
+</body>
 </html>
