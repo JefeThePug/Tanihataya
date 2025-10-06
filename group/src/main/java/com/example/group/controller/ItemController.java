@@ -68,6 +68,7 @@ public class ItemController {
 	 * @author 田辺
 	 * showPurchaseSuccessメソッドを大幅に変更しました　9/29(月曜日)
 	 */
+
 	// 購入画面表示（例： GET /item/purchase?itemId=1 ）
 	@GetMapping("/purchase")
 	public String showPurchase(@RequestParam int itemId, Model model, Principal principal) {
@@ -76,10 +77,11 @@ public class ItemController {
 		model.addAttribute("user", user);//購入ユーザー情報登録
 	    
 		Items item = itemService.findById(itemId);//itemの情報
+		System.out.println(item);
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
 		Payment payment = new Payment();
 
-//		// Items.imagePaths が String[] の場合
+		// Items.imagePaths が String[] の場合
 //		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
 //		model.addAttribute("images", images);
 
@@ -94,7 +96,7 @@ public class ItemController {
 
 	// 購入処理情報を送信
 	@PostMapping("/purchase")
-	public String purchase(@RequestParam int itemId, RedirectAttributes redirectAttributes){
+	public String purchase(@RequestParam int itemId, @ModelAttribute("purchaseForm") Payment purchaseForm, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());
@@ -127,7 +129,7 @@ public class ItemController {
 
 	// 出品登録/変更画面表示
 	@GetMapping("/add_item")
-	public String showAddItem(@RequestParam Integer itemId, @RequestParam String type, Model model) {
+	public String showAddItem(@RequestParam String type, @RequestParam Integer itemId, Model model) {
 		Users user = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
@@ -145,7 +147,6 @@ public class ItemController {
 			model.addAttribute("itemForm", form);
 		}
 		model.addAttribute("itemId", itemId);
-	    model.addAttribute("type", type);
 
 		return "item/add_item";
 	}
@@ -153,7 +154,8 @@ public class ItemController {
 	// 出品処理  	
 	@PostMapping("/add_item")
 	public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
-		System.out.println("type = " + type);
+		System.out.println("USER: " + itemForm.getUserId() + "\nItemId: " + itemForm.getItemId() + "\nNAME: "
+				+ itemForm.getName());
 		if ("insert".equals(type)) {//新規登録
 			itemService.insert(itemForm);
 		} else if ("update".equals(type)) {//変更登録

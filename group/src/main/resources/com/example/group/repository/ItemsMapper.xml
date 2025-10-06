@@ -4,7 +4,7 @@
 
 	<sql id="Base_Column_List">
 		item_id as itemId,
-		users_id as userId,
+		users_id,
 		name,
 		category,
 		detail,
