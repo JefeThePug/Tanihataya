@@ -53,7 +53,7 @@ public class UserController {
 	}
 
 	// SecurityConfigのdefaultSuccessUrlで指定したURL
-	@GetMapping("loginsuccess")
+	@GetMapping("/loginsuccess")
 	public String loginSuccess(Model model) {
 		// ユーザー名
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
