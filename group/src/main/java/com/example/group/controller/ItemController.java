@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -77,7 +79,6 @@ public class ItemController {
 		model.addAttribute("user", user);//購入ユーザー情報登録
 	    
 		Items item = itemService.findById(itemId);//itemの情報
-		System.out.println(item);
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
 		Payment payment = new Payment();
 
@@ -85,7 +86,6 @@ public class ItemController {
 //		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
 //		model.addAttribute("images", images);
 
-		
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
 		model.addAttribute("purchaseForm",payment);
@@ -96,7 +96,7 @@ public class ItemController {
 
 	// 購入処理情報を送信
 	@PostMapping("/purchase")
-	public String purchase(@RequestParam int itemId, @ModelAttribute("purchaseForm") Payment purchaseForm, RedirectAttributes redirectAttributes) {
+	public String purchase(@RequestParam int itemId, @Valid @ModelAttribute("purchaseForm") Payment purchaseForm, RedirectAttributes redirectAttributes) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());

@@ -2,7 +2,7 @@ package com.example.group.entity;
 
 import java.util.Date;
 
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Max;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ public class Payment {
 	
 	private String name;
 	
-	 @Size(max = 3)
+	 @Max(3)
 	private Integer securityCode;
 
 	private Date expDate;

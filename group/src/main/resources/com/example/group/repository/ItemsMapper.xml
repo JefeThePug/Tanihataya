@@ -71,7 +71,7 @@
 		UPDATE items SET name=#{name}, category= #{category},
 		detail =#{detail},
 		price=#{price}, images_path=#{imagePaths},
-		updated_at={updatedAt} WHERE item_id =#{itemId};
+		updated_at=#{updatedAt} WHERE item_id =#{itemId};
 	</update>
 
 	<!-- アイテムに販売状況を変更　販売終了へ -->
