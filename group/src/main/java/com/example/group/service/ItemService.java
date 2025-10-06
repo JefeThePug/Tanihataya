@@ -114,41 +114,51 @@ public class ItemService {
 		item.setCategory(Integer.parseInt(form.getCategory()));
 		item.setDetail(form.getDetail());
 		item.setPrice(form.getPrice());
+		item.setUpdatedAt(LocalDateTime.now());
 
-		File uploadDir = new File("src/main/resources/static/images/user_imgs");
-		if (!uploadDir.exists()) {
-			uploadDir.mkdirs();
-		}
 		List<String> imgPaths = new ArrayList<>();
-		for (String oldFile : item.getImagePaths().split(",")) {
-			Path oldPath = Paths.get(uploadDir.getAbsolutePath(), oldFile);
-			try {
-				Files.deleteIfExists(oldPath);
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to save uploaded file", e);
-			}
-		}
 		for (MultipartFile file : form.getImages()) {
 			if (file != null && !file.isEmpty()) {
 				String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
-				Path path = Paths.get(uploadDir.getAbsolutePath(), filename);
-				try {
-					file.transferTo(path);
-					imgPaths.add(filename);
-				} catch (IOException e) {
-					throw new RuntimeException("Failed to save uploaded file", e);
-				}
+				imgPaths.add(filename);
 			}
 		}
 		item.setImagePaths(String.join(",", imgPaths));
 
 		// 更新日時をシステム側で設定
-		item.setUpdatedAt(LocalDateTime.now());
 
 		// ※注意: saleStatusやbuyUserの更新が必要な場合は、別途Formに持たせるか、
 		//         このServiceでDBから既存データを取得して設定する必要があります。
 
 		itemMapper.update(item);
+
+		File uploadDir = new File("src/main/resources/static/images/user_imgs");
+		if (!uploadDir.exists()) {
+			uploadDir.mkdirs();
+		}
+		if (form.getExistingImages() != null) {
+			for (String oldFile : form.getExistingImages()) {
+				Path oldPath = Paths.get(uploadDir.getAbsolutePath(), oldFile);
+				try {
+					Files.deleteIfExists(oldPath);
+				} catch (IOException e) {
+					throw new RuntimeException("Failed to save uploaded file", e);
+				}
+			}
+		}
+		if (form.getImages() != null) {
+			for (int i = 0; i < form.getImages().size(); i++) {
+				MultipartFile file = form.getImages().get(i);
+				if (file != null && !file.isEmpty()) {
+					Path path = Paths.get(uploadDir.getAbsolutePath(), imgPaths.get(i));
+					try {
+						file.transferTo(path);
+					} catch (IOException e) {
+						throw new RuntimeException("Failed to save uploaded file", e);
+					}
+				}
+			}
+		}
 	}
 
 	@Transactional
