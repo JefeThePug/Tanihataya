@@ -29,7 +29,7 @@ public class SecurityConfig {
 						"/purchase/success",
 						"/item/purchase",
 						"/item/purchase/success",
-						"item/success",
+						"/item/success",
 						"/item/add_item",
 						"/user/info",
 						"/user/update")
