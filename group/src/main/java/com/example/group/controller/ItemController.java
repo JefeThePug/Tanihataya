@@ -1,5 +1,6 @@
 package com.example.group.controller;
 
+import java.beans.PropertyEditorSupport;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,16 +97,40 @@ public class ItemController {
 
 		return "item/purchase";// 表示したいテンプレートに合わせる
 	}
-
+	
+	//クレカ
+	@InitBinder("purchaseForm")
+	public void initBinder(WebDataBinder binder) {
+	    binder.registerCustomEditor(String.class, "cardNumber", new PropertyEditorSupport() {
+	        @Override
+	        public void setAsText(String text) {
+	            if (text != null) {
+	                // スペースとハイフンを除去
+	                setValue(text.replaceAll("[\\s-]", ""));
+	            } else {
+	                setValue(null);
+	            }
+	        }
+	    });
+	}
+	
 	// 購入処理情報を送信
 	@PostMapping("/purchase")
-	public String purchase(@RequestParam int itemId, @Valid @ModelAttribute("purchaseForm") Payment purchaseForm, RedirectAttributes redirectAttributes) {
+	public String purchase(
+		    @RequestParam int itemId,
+		    @Valid @ModelAttribute("purchaseForm") Payment purchaseForm,
+		    BindingResult bindingResult,
+		    Model model,
+		    Principal principal,
+		    RedirectAttributes redirectAttributes) {
+
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());
 		 redirectAttributes.addFlashAttribute("user", user);
 
 		Items item = itemService.findById(itemId);//itemの情報
+		itemService.completePurchase(itemId, user.getUsersId());
 		 redirectAttributes.addFlashAttribute("itemid", itemId);
 		
 		return "redirect:/item/purchase/success";
