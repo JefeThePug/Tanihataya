@@ -14,10 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.group.entity.Items;
-import com.example.group.entity.Payment;
 import com.example.group.entity.Users;
 import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
@@ -71,63 +69,40 @@ public class ItemController {
 
 	// 購入画面表示（例： GET /item/purchase?itemId=1 ）
 	@GetMapping("/purchase")
-	public String showPurchase(@RequestParam int itemId, Model model, Principal principal) {
-	    String email = principal.getName();
-	    Users user = userService.findByEmail(email);
-		model.addAttribute("user", user);//購入ユーザー情報登録
-	    
-		Items item = itemService.findById(itemId);//itemの情報
-		Users seller = userService.findById(item.getUserId());//出品者の情報
-		Payment payment = new Payment();
+	public String showPurchase(@RequestParam int itemId, Model model) {
+		Items item = itemService.findById(itemId);
+		Users seller = userService.findById(item.getUsersId());
 
-//		// Items.imagePaths が String[] の場合
-//		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
-//		model.addAttribute("images", images);
+		// Items.imagePaths が String[] の場合
+		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
 
-		
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
-		model.addAttribute("purchaseForm",payment);
-		
+		model.addAttribute("images", images);
 
-		return "item/purchase";// 表示したいテンプレートに合わせる
+		return "item/purchase"; // 表示したいテンプレートに合わせる
 	}
 
 	// 購入処理情報を送信
 	@PostMapping("/purchase")
-	public String purchase(@RequestParam int itemId, RedirectAttributes redirectAttributes){
+	public String purchase(@RequestParam int itemId, Model model) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());
-		 redirectAttributes.addFlashAttribute("user", user);
-
-		Items item = itemService.findById(itemId);//itemの情報
-		 redirectAttributes.addFlashAttribute("itemid", itemId);
-		
+		model.addAttribute("user", user);
 		return "redirect:/item/purchase/success";
 		//purchase/successのURLへアクセス
 	}
 
 	// 購入完了画面
 	@GetMapping("/purchase/success")
-	public String showPurchaseSuccess(@ModelAttribute("itemid") int itemId, Model model) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
-		Users user = userService.findByEmail(userDetails.getUsername());
-		model.addAttribute("user", user);
-
-		Items item = itemService.findById(itemId);//itemの情報
-		Users seller = userService.findById(item.getUserId());//出品者の情報
-
-		model.addAttribute("item", item);
-		model.addAttribute("seller", seller);
-
+	public String showPurchaseSuccess() {
 		return "item/success";
 	}
 
 	// 出品登録/変更画面表示
 	@GetMapping("/add_item")
-	public String showAddItem(@RequestParam String type, @RequestParam Integer itemId, Model model) {
+	public String showAddItem(@RequestParam Integer itemId, @RequestParam String type, Model model) {
 		Users user = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
@@ -145,6 +120,7 @@ public class ItemController {
 			model.addAttribute("itemForm", form);
 		}
 		model.addAttribute("itemId", itemId);
+	    model.addAttribute("type", type);
 
 		return "item/add_item";
 	}
@@ -152,8 +128,7 @@ public class ItemController {
 	// 出品処理  	
 	@PostMapping("/add_item")
 	public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
-		System.out.println("USER: " + itemForm.getUserId() + "\nItemId: " + itemForm.getItemId() + "\nNAME: "
-				+ itemForm.getName());
+		System.out.println("type = " + type);
 		if ("insert".equals(type)) {//新規登録
 			itemService.insert(itemForm);
 		} else if ("update".equals(type)) {//変更登録

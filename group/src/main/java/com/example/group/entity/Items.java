@@ -13,13 +13,13 @@ public class Items {
 	private Integer itemId;
 
 	//出品者のID
-	private Integer userId;
+	private Integer usersId;
 
 	//出品者の名前
 	private String name;
 
 	//商品カテゴリー(1~8の数字で管理)
-	private String category;
+	private Integer category;
 
 	//商品詳細
 	private String detail;
@@ -46,4 +46,23 @@ public class Items {
 	
 	// 【追加】購入日時 9/30(火) by田辺
 	private LocalDateTime purchaseAt; 
+	
+	@Override
+	public String toString() {
+	    return "Items{" +
+	            "itemId=" + itemId +
+	            ", userId=" + usersId +
+	            ", name='" + name + '\'' +
+	            ", category='" + category + '\'' +
+	            ", detail='" + detail + '\'' +
+	            ", price=" + price +
+	            ", saleStatus=" + saleStatus +
+	            ", buyUser=" + buyUser +
+	            ", imagePaths='" + imagePaths + '\'' +
+	            ", createdAt=" + createdAt +
+	            ", updatedAt=" + updatedAt +
+	            ", purchaseAt=" + purchaseAt +
+	            '}';
+	}
+
 }

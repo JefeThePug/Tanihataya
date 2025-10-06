@@ -146,9 +146,9 @@ span.title {
 }
 
 .dropdown-content a.username:hover {
-    background-color: var(--background);
-    color: var(--text);
-    cursor: default;
+	background-color: var(--background);
+	color: var(--text);
+	cursor: default;
 }
 
 .dropdown:hover .dropdown-content {
@@ -443,7 +443,7 @@ h1 {
 }
 
 .upload-box img {
-/*	display: none;*/
+	/*	display: none;*/
 	height: 100%;
 	object-fit: contain;
 	width: 100%;
@@ -581,7 +581,7 @@ th.right {
 
 .btn:hover {
 	background-color: var(--strong-select);
-/*	background: var(--light-text, --highlight);*/
+	/*	background: var(--light-text, --highlight);*/
 	color: var(--background);
 }
 
@@ -589,6 +589,136 @@ th.right {
 	padding: 0.25rem 0.75rem !important;
 }
 
+/* 商品詳細ページ */
+.product-detail {
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+	margin: 0 auto;
+	max-width: 1200px;
+	padding: 2rem;
+}
+
+.product-detail h2 {
+	color: var(--text);
+	font-size: 2rem;
+	font-weight: 600;
+	margin: 0;
+	text-align: left;
+}
+
+/* 画像ギャラリー */
+.img-gallery {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: 100px 1fr;
+	max-width: 800px;
+}
+
+/* サムネイル一覧（左側） */
+.gallery-thumbnails {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.thumbnail {
+	border: 2px solid transparent;
+	border-radius: 8px;
+	cursor: pointer;
+	height: 100px;
+	overflow: hidden;
+	transition: all 0.2s ease;
+	width: 100px;
+}
+
+.thumbnail img {
+	display: block;
+	height: 100%;
+	object-fit: cover;
+	width: 100%;
+}
+
+.thumbnail:hover {
+	border-color: var(--select);
+	transform: scale(1.05);
+}
+
+.thumbnail.active {
+	border-color: var(--strong-select);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* メイン画像（右側） */
+.gallery-main {
+	background: white;
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 12px;
+	height: 500px;
+	overflow: hidden;
+	position: relative;
+}
+
+.gallery-main img {
+	display: block;
+	height: 100%;
+	object-fit: contain;
+	width: 100%;
+}
+
+/* 価格表示 */
+.price {
+	color: var(--strong-select);
+	font-size: 2rem;
+	font-weight: 700;
+	margin: 1rem 0;
+	text-align: left;
+}
+
+/* SOLD OUTバッジ */
+.sold-bar {
+	background: rgba(255, 0, 0, 0.1);
+	border: 2px solid red;
+	border-radius: 8px;
+	color: red;
+	display: inline-block;
+	font-size: 1.2rem;
+	font-weight: 700;
+	margin: 1rem 0;
+	padding: 0.5rem 1.5rem;
+}
+
+/* 商品説明 */
+.description {
+	background: white;
+	border-radius: 8px;
+	margin: 2rem 0;
+	padding: 1.5rem;
+	text-align: left;
+}
+
+.description h3 {
+	border-bottom: 2px solid var(--select);
+	color: var(--text);
+	font-size: 1.3rem;
+	margin: 0 0 1rem 0;
+	padding-bottom: 0.5rem;
+}
+
+.description p {
+	color: var(--light-text);
+	line-height: 1.8;
+	margin: 0;
+	white-space: pre-wrap;
+}
+
+/* アクションボタン */
+.actions {
+	display: flex;
+	gap: 1rem;
+	justify-content: flex-start;
+	margin: 2rem 0;
+}
 
 /* ブラウザウィンドウのサイズ設定 */
 @media screen and (max-width: 600px) {
@@ -602,6 +732,39 @@ th.right {
 		left: 18%;
 		width: 64%;
 	}
+
+	.img-gallery {
+		grid-template-columns: 1fr;
+		grid-template-rows: auto auto;
+	}
+
+	.gallery-thumbnails {
+		flex-direction: row;
+		order: 2;
+		overflow-x: auto;
+		padding-bottom: 0.5rem;
+	}
+
+	.gallery-main {
+		height: 400px;
+		order: 1;
+	}
+
+	.thumbnail {
+		flex-shrink: 0;
+	}
+
+	.product-detail h2 {
+		font-size: 1.5rem;
+	}
+
+	.price {
+		font-size: 1.5rem;
+	}
+
+	.actions {
+		flex-direction: column;
+	}
 }
 
 @media screen and (max-width: 360px) {
@@ -614,5 +777,18 @@ th.right {
 	.heading::after {
 		left: 20%;
 		width: 60%;
+	}
+
+	.product-detail {
+		padding: 1rem;
+	}
+
+	.gallery-main {
+		height: 300px;
+	}
+
+	.thumbnail {
+		height: 80px;
+		width: 80px;
 	}
 }
