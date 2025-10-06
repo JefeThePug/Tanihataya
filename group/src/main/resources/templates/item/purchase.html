@@ -19,8 +19,8 @@
 		</tr>
 	</table>
 
-	<form th:action="@{/item/success}" method="post" th:object="${purchaseForm}">
-
+	<form th:action="@{purchase}" method="post" th:object="${purchaseForm}">
+		<input type="hidden" name="itemId" th:value="${item.itemId}" />
 		<h3>お支払い方法</h3>
 		<label>
 			<input type="radio" name="paymentMethod" value="credit" onclick="toggleCreditForm(true)" required />
@@ -36,27 +36,27 @@
 		</label>
 
 		<div id="creditCardForm" style="display:none; margin-top: 1em;">
-			<h4>クレジットカード情報</h4>
-			<label>カード番号:
-				<input type="text" name="cardNumber" th:field="*{cardNumber}" pattern="\d{13,16}"
-					placeholder="1234 5678 9012 3456" />
-			</label><br />
-			<label>有効期限:
-				<input type="month" name="expiryDate" th:field="*{expiryDate}" />
-			</label><br />
-			<label>セキュリティコード:
-				<input type="text" name="securityCode" th:field="*{securityCode}" pattern="\d{3,4}" placeholder="123" />
-			</label>
-		</div>
+		       <h4>クレジットカード情報</h4>
+		       <label>カード番号:
+		           <input type="number" name="cardNumber" th:field="*{cardNumber}" placeholder="1234 5678 9012 3456" />
+		       </label><br />
+		       <label>有効期限:
+		           <input type="month" name="expDate" th:field="*{expDate}" />
+		       </label><br />
+		       <label>セキュリティコード:
+		           <input type="number" name="securityCode" th:field="*{securityCode}" placeholder="123" />
+		       </label>
+		   </div>
 
 		<h3>支払金額</h3>
-		<p th:text="${paymentAmount} + ' 円'">0 円</p>
-
-		<div style="margin-top: 1em;">
+		<p th:unless="${paymentAmount == null}"
+		   th:text="|${paymentAmount} 円|">0 円</p>
+		   		<div style="margin-top: 1em;">
 			<button type="submit">確定</button>
 		</div>
 
 	</form>
+	
 	<script>
 		function toggleCreditForm(show) {
 			const form = document.getElementById('creditCardForm');

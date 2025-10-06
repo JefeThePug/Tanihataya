@@ -26,8 +26,10 @@ public class SecurityConfig {
 				.requestMatchers(
 						"/info/*",
 						"/purchases",
+						"/purchase/success",
 						"/item/purchase",
 						"/item/purchase/success",
+						"item/success",
 						"/item/add_item",
 						"/user/info",
 						"/user/update")

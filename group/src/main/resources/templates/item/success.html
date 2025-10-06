@@ -6,7 +6,7 @@
 	<div class="container purchase-success">
 
 		<!-- 購入メッセージ -->
-		<h2 th:text="${seller.userName} + 'さんから購入しました！'"></h2>
+		<h2 th:text="${seller.name} + 'さんから購入しました！'"></h2>
 
 		<!-- 商品情報 -->
 		<div class="item-detail">
@@ -26,7 +26,7 @@
 
 		<!-- トップページに戻る -->
 		<div style="margin-top:20px;">
-			<a th:href="@{/list}" class="btn btn-primary">トップに戻る</a>
+			<a th:href="@{/}" class="btn btn-primary">トップに戻る</a>
 		</div>
 
 	</div>

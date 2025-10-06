@@ -42,7 +42,7 @@
 	    
 	    <!-- 出品者以外 && 販売中 のときだけ購入ボタン表示 -->
 	    <a th:if="${item.saleStatus and (user != null) and (item.userId ne user.usersId)}"
-	       th:href="@{/buy/{itemId}(itemId=${item.itemId})}"
+	       th:href="@{/item/purchase(itemId=${item.itemId})}"
 	       class="btn-buy">
 	        購入する
 	    </a>
