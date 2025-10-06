@@ -612,6 +612,7 @@ th.right {
 	gap: 1rem;
 	grid-template-columns: 100px 1fr;
 	max-width: 800px;
+	margin: 0 auto;
 }
 
 /* サムネイル一覧（左側） */
