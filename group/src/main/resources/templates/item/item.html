@@ -2,48 +2,76 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	
+
 	<h1 class="heading">商品詳細</h1>
 
 	<!-- 商品名 -->
 	<h2 th:text="${item.name}">商品名</h2>
 
+	<p th:if="${!item.saleStatus}" class="sold-bar">SOLD</p>
 	<!-- 商品画像（複数枚ある場合はループで表示） -->
 	<div class="img-gallery">
-	    <div th:each="imgName : ${#strings.listSplit(item.imagePaths, ',')}">
-	        <img th:src="@{'/images/user_imgs/' + ${imgName}}" th:alt="${item.name}" />
-	    </div>
+		<!-- サムネイル一覧（左側） -->
+		<div class="gallery-thumbnails">
+			<div th:each="imgName, iterStat : ${#strings.listSplit(item.imagePaths, ',')}" class="thumbnail"
+				th:classappend="${iterStat.index == 0} ? 'active' : ''" th:attr="data-index=${iterStat.index}"
+				onclick="changeMainImage(this)">
+				<img th:src="@{'/images/user_imgs/' + ${imgName}}" th:alt="${item.name}" />
+			</div>
+		</div>
+
+		<!-- メイン画像（右側） -->
+		<div class="gallery-main">
+			<img id="mainImage" th:src="@{'/images/user_imgs/' + ${#strings.listSplit(item.imagePaths, ',')[0]}}"
+				th:alt="${item.name}" />
+			<div th:unless="${item.saleStatus}" class="sold">SOLD</div>
+		</div>
 	</div>
+
 
 	<!-- 価格 -->
 	<p class="price">¥<span th:text="${item.price}">0000</span></p>
 
 	<!-- 販売状況 -->
-	<p th:if="${!item.saleStatus}" class="sold">SOLD OUT</p>
+	<p th:if="${!item.saleStatus}" class="sold-bar">SOLD</p>
 
 	<!-- 商品説明 -->
 	<div class="description">
-	    <h3>商品説明</h3>
-	    <p th:text="${item.detail}">ここに商品説明が入ります。</p>
+		<h3>商品説明</h3>
+		<p th:text="${item.detail}">ここに商品説明が入ります。</p>
 	</div>
 
 	<!-- アクションボタン -->
 	<div class="actions">
-	    <!-- 出品者側からアクセスしたとき -->
-	    <a th:if="${header eq '販売'}"
-	       th:href="@{/add_item/{itemId}(itemId=${item.itemId})}"
-	       class="btn-edit">
-	        商品を編集する
-	    </a>
-	    
-	    <!-- 出品者以外 && 販売中 のときだけ購入ボタン表示 -->
-	    <a th:if="${item.saleStatus and (user != null) and (item.usersId ne user.usersId)}"
-	       th:href="@{/item/purchase(itemId=${item.itemId})}"
-	       class="btn-buy">
-	        購入する
-	    </a>
-	</div>
+		<!-- 出品者側からアクセスしたとき -->
+		<a th:if="${header eq '販売'}" th:href="@{/add_item/{itemId}(itemId=${item.itemId})}" class="btn-edit">
+			商品を編集する
+		</a>
 
+		<!-- 出品者以外 && 販売中 のときだけ購入ボタン表示 -->
+		<a th:if="${item.saleStatus and (user != null) and (item.usersId ne user.usersId)}"
+			th:href="@{/item/purchase(itemId=${item.itemId})}" class="btn-buy">
+			購入する
+		</a>
+	</div>
+	<script>
+		// サムネイルをクリックしたときにメイン画像を変更
+		function changeMainImage(thumbnail) {
+			// すべてのサムネイルからactiveクラスを削除
+			const thumbnails = document.querySelectorAll('.thumbnail');
+			thumbnails.forEach(t => t.classList.remove('active'));
+
+			// クリックされたサムネイルにactiveクラスを追加
+			thumbnail.classList.add('active');
+
+			// メイン画像を変更
+			const mainImage = document.getElementById('mainImage');
+			const thumbnailImg = thumbnail.querySelector('img');
+			mainImage.src = thumbnailImg.src;
+			mainImage.alt = thumbnailImg.alt;
+		}
+	</script>
 </section>
 </body>
+
 </html>

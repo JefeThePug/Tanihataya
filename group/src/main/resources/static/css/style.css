@@ -443,7 +443,6 @@ h1 {
 }
 
 .upload-box img {
-	/*	display: none;*/
 	height: 100%;
 	object-fit: contain;
 	width: 100%;
@@ -686,6 +685,7 @@ th.right {
 	font-weight: 700;
 	margin: 1rem 0;
 	padding: 0.5rem 1.5rem;
+	width: 100%;
 }
 
 /* 商品説明 */
