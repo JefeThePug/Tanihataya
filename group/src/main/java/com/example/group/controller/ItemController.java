@@ -175,6 +175,7 @@ public class ItemController {
 			model.addAttribute("itemForm", form);
 		}
 		model.addAttribute("itemId", itemId);
+		model.addAttribute("type", type);
 
 		return "item/add_item";
 	}
