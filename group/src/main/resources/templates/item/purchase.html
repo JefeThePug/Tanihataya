@@ -38,19 +38,21 @@
 		<div id="creditCardForm" style="display:none; margin-top: 1em;">
 			<h4>クレジットカード情報</h4>
 					       <label>カード番号:
-					           <input type="number" name="cardNumber" th:field="*{cardNumber}" placeholder="1234 5678 9012 3456" />
+					           <input type="text" name="cardNumber" th:field="*{cardNumber}" placeholder="1234 5678 9012 3456" />
+							   <div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" style="color:red"></div>
 					       </label><br />
 					       <label>有効期限:
 					           <input type="month" name="expDate" th:field="*{expDate}" />
 					       </label><br />
 					       <label>セキュリティコード:
 					           <input type="number" name="securityCode" th:field="*{securityCode}" placeholder="123" />
+							   <div th:if="${#fields.hasErrors('securityCode')}" th:errors="*{securityCode}" style="color:red"></div>
 					       </label>
 					   </div>
 					   
 		<h3>支払金額</h3>
-		<p th:unless="${paymentAmount == null}"
-			   th:text="|${paymentAmount} 円|">0 円</p>
+		<p th:unless="${item.price == null}"
+			   th:text="|${item.price} 円|">0 円</p>
 			   		<div style="margin-top: 1em;">
 			<button type="submit">確定</button>
 		</div>

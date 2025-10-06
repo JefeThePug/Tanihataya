@@ -2,7 +2,9 @@ package com.example.group.entity;
 
 import java.util.Date;
 
-import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Pattern;
+
+import org.hibernate.validator.constraints.CreditCardNumber;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,12 +17,13 @@ public class Payment {
 	
 	private Integer userId;
 	
-	private Integer cardNumber;
+	@CreditCardNumber(message = "正しいカード番号を入力してください")
+	private String cardNumber;
 	
 	private String name;
 	
-	 @Max(3)
-	private Integer securityCode;
+	@Pattern(regexp = "\\d{3}", message = "セキュリティコードは3桁の数字で入力してください")
+	private String securityCode;
 
 	private Date expDate;
 }
