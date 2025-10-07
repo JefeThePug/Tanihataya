@@ -4,9 +4,9 @@
 <mapper namespace="com.example.group.repository.PaymentMapper">
 	<!-- クレジットカード情報の登録 -->
 	<insert id="insertPayment"
-		parameterType="com.example.group.Entity.Payment">
-		INSERT INTO payments (user_id,card_number,name,security_code,exp_date) 
-		VALUES (#{userId},#{cardNumber},#{name},#{securityCode},#{expDate})
+		parameterType="com.example.group.entity.Payment">
+		INSERT INTO payments (users_id,card_number,card_name,security_code,exp_date) 
+		VALUES (#{userId},#{cardNumber},#{name},#{securityCode},now())
 	</insert>
 
 	<!-- クレジットカード情報の削除 -->
@@ -18,17 +18,17 @@
 
     <!-- カード情報の更新 -->
 	<update id="updatePayment"
-		parameterType="com.example.group.Entity.Payment">
+		parameterType="com.example.group.entity.Payment">
 		UPDATE payments
 		SET
 		card_number = #{cardNumber},
-		name = #{name},
+		card_name = #{name},
 		security_code = #{securityCode},
 		exp_date = #{expDate}
 		WHERE
 		card_id = #{cardId}
 		AND
-		user_id = #{userId}
+		users_id = now()
 	</update>
 
 </mapper>
