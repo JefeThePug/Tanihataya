@@ -41,13 +41,13 @@ public class ItemController {
 
 	private final ItemService itemService; //finalに変更
 	private final UserService userService; //finalに変更
-	private final PurchaseService pyamentService;
+	private final PurchaseService paymentService;
 	 
 	// コンストラクタインジェクション（Lombokの@RequiredArgsConstructorでも可）
-	public ItemController(ItemService itemService, UserService userService,PurchaseService pyamentService) {
+	public ItemController(ItemService itemService, UserService userService,PurchaseService paymentService) {
 		this.itemService = itemService;
 		this.userService = userService;
-		this.pyamentService = pyamentService;
+		this.paymentService = paymentService;
 	}
 
 	/**
@@ -138,7 +138,7 @@ public class ItemController {
 		
 		 if (Boolean.TRUE.equals(purchaseForm.getSaveCardInfo())) {
 		        // 保存処理を実行（paymentRepositoryなどでインサート）
-			 	pyamentService.insertPayment(purchaseForm);
+			 	paymentService.insertPayment(purchaseForm);
 		    }
 		return "redirect:/item/purchase/success";
 		//purchase/successのURLへアクセス

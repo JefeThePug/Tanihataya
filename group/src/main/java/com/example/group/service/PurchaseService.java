@@ -25,9 +25,7 @@ public class PurchaseService {
 
     //クレジット情報を削除
     public void deletePaymentByUserId(Payment payment) {
-    	Payment pay = new Payment();
     	Users user = new Users();
-    	
     	paymentMapper.deletePaymentByUserId(user.getUsersId());
     }
 
