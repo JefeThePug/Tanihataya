@@ -2,7 +2,7 @@ package com.example.group.form;
 
 
 
-import java.util.Date;
+import java.time.YearMonth;
 
 import jakarta.validation.constraints.Size;
 
@@ -24,7 +24,7 @@ public class PaymentForm {
 	@Size(max = 3)
 	private String securityCode;
 
-	private Date expDate;
+	private YearMonth expDate;
 
 	//クレジット登録フラグ
 	private boolean saveCardInfo;

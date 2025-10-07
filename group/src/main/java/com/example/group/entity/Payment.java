@@ -1,6 +1,6 @@
 package com.example.group.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Pattern;
@@ -28,18 +28,24 @@ public class Payment {
 	@Pattern(regexp = "\\d{3}", message = "セキュリティコードは3桁の数字で入力してください")
 	private String securityCode;
 
-	private Date expDate;
+	private LocalDate  expDate;
 	
 	 @Transient
 	 private boolean saveCardInfo;
-
-	public Payment(PaymentForm form) { 
-		this.cardId = form.getCardId(); 
-		this.userId = form.getUserId(); 
-		this.cardNumber = form.getCardNumber(); 
-		this.name = form.getName(); 
-		this.securityCode = form.getSecurityCode();
-		this.expDate = form.getExpDate(); 
-		this.saveCardInfo = form.isSaveCardInfo(); 
-	}
+	 
+	 public Payment(PaymentForm form) {
+		    this.cardId = form.getCardId();
+		    this.userId = form.getUserId();
+		    this.cardNumber = form.getCardNumber();
+		    this.name = form.getName();
+		    this.securityCode = form.getSecurityCode();
+		    this.expDate = form.getExpDate() != null ? form.getExpDate().atEndOfMonth() : null;
+		    this.saveCardInfo = form.isSaveCardInfo();
+		}
+	 
+	 
+	//年月で保存できるように加工
+	 public LocalDate getExpDateAsDate() {
+		    return expDate;
+		}
 }
