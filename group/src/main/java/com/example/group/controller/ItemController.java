@@ -167,35 +167,48 @@ public class ItemController {
 	// 出品登録/変更画面表示
 	@GetMapping("/add_item")
 	public String showAddItem(@RequestParam String type, @RequestParam Integer itemId, Model model) {
+		// メニューバー用に認証済みユーザーを取得する
 		Users user = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof UserDetailsImpl principal) {
 			user = userService.findByEmail(principal.getUsername());
+			// ユーザーが null でなければ、モデルに追加する
 			model.addAttribute("user", user);
 		}
+		// type が insert の場合、空のフォームで add_item HTML ページを表示する
 		if (type.equals("insert")) {
 			ItemForm form = new ItemForm();
 			form.setUserId(user.getUsersId());
 			model.addAttribute("itemForm", form);
-		} else if (type.equals("update")) {
+		} 
+		// type が update の場合、
+		else if (type.equals("update")) {
+			// アイテムIDに基づいて、完全なアイテム情報を取得する
 			Items item = itemService.findById(itemId);
+			// アイテムの usersId が認証済みユーザーの usersId と一致しない場合、
+			// アクセスを拒否してエラーページにリダイレクトする
 			if (item == null || !item.getUsersId().equals(user.getUsersId())) {
 				throw new org.springframework.security.access.AccessDeniedException("この商品を更新する権限がありません。");
 			}
+			// エンティティからフォームへの変換メソッドに渡すために、
+			// （1つのアイテムを含む）新しいアイテムのリストを作成する
 			List<Items> items = new ArrayList<>();
 			items.add(item);
+			// そのリストから返された単一のフォームを取得し、モデルに渡す
 			ItemForm form = itemService.entitiesToForm(items).get(0);
 			model.addAttribute("itemForm", form);
 		}
+		// POST リクエスト用に itemId と type をモデルに送る
 		model.addAttribute("itemId", itemId);
 		model.addAttribute("type", type);
 
-		return "item/add_item";
+		return "item/add_item"; // add_item.htmlを表示
 	}
 
 	// 出品処理  	
 	@PostMapping("/add_item")
 	public String addItem(@RequestParam String type, @ModelAttribute ItemForm itemForm) {
+		// type に基づいて、itemForm の内容を使って更新（UPDATE）または挿入（INSERT）を行う
 		if ("insert".equals(type)) {//新規登録
 			itemService.insert(itemForm);
 		} else if ("update".equals(type)) {//変更登録
