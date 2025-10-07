@@ -18,8 +18,8 @@
 	
 	<!--ユーザーIDによるカード情報の取得 -->
 	<select id="findById"
-		resultType="com.example.group.entity.Items">
-		SELECT users_id,card_number,card_name
+		resultType="com.example.group.entity.Payment">
+		SELECT *
 		FROM payments WHERE users_id = #{userId};
 	</select>
 	
