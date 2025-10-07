@@ -4,6 +4,7 @@
 <body>
 	<div th:fragment="navbar">
 		<nav class="navbar">
+			<!--メニューバーの左側　ウェブページのタイトルとロゴ-->
 			<div class="navbar-left">
 				<a th:href="@{/}">
 					<span class="title">タニハタ屋</span>
@@ -11,26 +12,31 @@
 				</a>
 			</div>
 
+			<!--メニューバーの右側　ログイン／登録ボタン、またはユーザーのドロップダウンメニュー-->
 			<div class="navbar-right">
+				<!--ユーザーがログインしていない場合-->
 				<div sec:authorize="isAnonymous()">
 					<a th:href="@{/user/login}" class="btn">ログイン</a>
 					<a th:href="@{/user/register}" class="btn btn-primary">新規登録</a>
 				</div>
 
+				<!--ユーザーがログインした場合-->
 				<div sec:authorize="isAuthenticated()" class="dropdown">
 					<button class="dropbtn">メニュー ▾</button>
 					<div class="dropdown-content">
+						<!--ユーザー名を表示-->
 						<a class="username" th:text="${user.name}">Guest</a>
+						<!--リンク-->
 						<a th:href="@{/user/info/{userid}(userid = ${user.usersId})}">アカウント情報</a>
 						<a th:href="@{/list(type='buy')}">購入一覧</a>
 						<a th:href="@{/list(type='sell')}">出品一覧</a>
+						<!--ログアウトボタン-->
 						<form th:action="@{/logout}" method="post">
 							<button type="submit" class="logout-btn">ログアウト</button>
 						</form>
 					</div>
 				</div>
 			</div>
-
 		</nav>
 	</div>
 </body>
