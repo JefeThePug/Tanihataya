@@ -7,7 +7,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -117,48 +119,67 @@ public class ItemService {
 		item.setUpdatedAt(LocalDateTime.now());
 
 		List<String> imgPaths = new ArrayList<>();
-		for (MultipartFile file : form.getImages()) {
+		List<String> toDelete = new ArrayList<>();
+		Map<String, MultipartFile> toSave = new LinkedHashMap<>();
+		
+		if (form.getDeleteImages() != null) {
+			for (int i = 0; i < form.getDeleteImages().length; i++) {
+				if (form.getDeleteImages()[i]) {
+					toDelete.add(form.getExistingImages()[i]);
+				}
+			}
+		}
+		int newImageSize = 0;
+		for (int i = form.getImages().size() - 1; i >= 0; i--) {
+			MultipartFile file = form.getImages().get(i);
+			if (file != null && !file.isEmpty()) {
+				newImageSize = i + 1;
+				break;
+			}
+		}
+		int numImages = Math.max(newImageSize,
+				(form.getExistingImages() == null) ? 0 : form.getExistingImages().length);
+
+		for (int i = 0; i < numImages; i++) {
+			MultipartFile file = form.getImages().get(i);
 			if (file != null && !file.isEmpty()) {
 				String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
 				imgPaths.add(filename);
+				toSave.put(filename, file);
+			} else if (i < form.getDeleteImages().length && !form.getDeleteImages()[i]) {
+				imgPaths.add(form.getExistingImages()[i]);
 			}
 		}
+
 		item.setImagePaths(String.join(",", imgPaths));
-
-		// 更新日時をシステム側で設定
-
-		// ※注意: saleStatusやbuyUserの更新が必要な場合は、別途Formに持たせるか、
-		//         このServiceでDBから既存データを取得して設定する必要があります。
-
 		itemMapper.update(item);
 
 		File uploadDir = new File("src/main/resources/static/images/user_imgs");
 		if (!uploadDir.exists()) {
 			uploadDir.mkdirs();
 		}
-		if (form.getExistingImages() != null) {
-			for (String oldFile : form.getExistingImages()) {
-				Path oldPath = Paths.get(uploadDir.getAbsolutePath(), oldFile);
-				try {
-					Files.deleteIfExists(oldPath);
-				} catch (IOException e) {
-					throw new RuntimeException("Failed to save uploaded file", e);
-				}
+
+		for (String oldFile : toDelete) {
+			Path oldPath = Paths.get(uploadDir.getAbsolutePath(), oldFile);
+			try {
+				Files.deleteIfExists(oldPath);
+			} catch (IOException e) {
+				throw new RuntimeException("Failed to save uploaded file", e);
 			}
 		}
-		if (form.getImages() != null) {
-			for (int i = 0; i < form.getImages().size(); i++) {
-				MultipartFile file = form.getImages().get(i);
-				if (file != null && !file.isEmpty()) {
-					Path path = Paths.get(uploadDir.getAbsolutePath(), imgPaths.get(i));
-					try {
-						file.transferTo(path);
-					} catch (IOException e) {
-						throw new RuntimeException("Failed to save uploaded file", e);
-					}
-				}
-			}
-		}
+		
+		for (Map.Entry<String, MultipartFile> entry : toSave.entrySet()) {
+	        String filename = entry.getKey();
+	        MultipartFile file = entry.getValue();
+	        Path path = Paths.get(uploadDir.getAbsolutePath(), filename);
+	        try {
+	            file.transferTo(path);
+	        } catch (IOException e) {
+	            throw new RuntimeException("Failed to save uploaded file: " + filename, e);
+	        }
+	    }
+		
+		uploadDir.setLastModified(System.currentTimeMillis());
 	}
 
 	@Transactional
