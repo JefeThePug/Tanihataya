@@ -19,7 +19,7 @@ public class ItemForm {
 
 	private String name;
 
-	@Pattern(regexp = "衣類|おもちゃ|電化製品|スポーツ|ペット|美容|書籍|その他", message = "カテゴリーは指定された値のいずれかで入力してください")
+	@Pattern(regexp = "\\d", message = "カテゴリーは指定された値のいずれかで入力してください")
 	private String category;
 
 	private String detail;
@@ -30,10 +30,14 @@ public class ItemForm {
 
 	private Integer buyUser;
 
+	// 表示用にデータベースに既に保存されている画像
 	private String[] existingImages;
 	
+	// 更新時にユーザーが既存の画像を削除または置き換えた場合に、
+	// 削除対象としてマークするフラグ
 	private Boolean[] deleteImages;
 
+	// フォームにユーザーがアップロードした画像ファイル
 	private List<MultipartFile> images;
 
 }

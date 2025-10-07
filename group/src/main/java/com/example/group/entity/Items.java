@@ -26,43 +26,24 @@ public class Items {
 
 	//価格
 	private Integer price;
-	
+
 	//販売状況フラグ
 	private boolean saleStatus;
 
 	//購入者のuserId String→Integerに変更しました 9/30(火)
 	private Integer buyUser;
-	
+
 	// 画像パス配列に変更 9/29(月)
-    private String imagePaths;
-	
-    //商品登録日時
+	private String imagePaths;
+
+	//商品登録日時
 	private LocalDateTime createdAt;
 
 	/**
 	 * 販売者が商品情報を更新した時間
 	 */
 	private LocalDateTime updatedAt;
-	
-	// 【追加】購入日時 9/30(火) by田辺
-	private LocalDateTime purchaseAt; 
-	
-	@Override
-	public String toString() {
-	    return "Items{" +
-	            "itemId=" + itemId +
-	            ", userId=" + usersId +
-	            ", name='" + name + '\'' +
-	            ", category='" + category + '\'' +
-	            ", detail='" + detail + '\'' +
-	            ", price=" + price +
-	            ", saleStatus=" + saleStatus +
-	            ", buyUser=" + buyUser +
-	            ", imagePaths='" + imagePaths + '\'' +
-	            ", createdAt=" + createdAt +
-	            ", updatedAt=" + updatedAt +
-	            ", purchaseAt=" + purchaseAt +
-	            '}';
-	}
 
+	// 【追加】購入日時 9/30(火) by田辺
+	private LocalDateTime purchaseAt;
 }

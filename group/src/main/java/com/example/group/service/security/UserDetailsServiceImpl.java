@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 	    List<Users> users = userMapper.findByEmail(email);
 	    if (users == null || users.isEmpty()) {
-	        throw new UsernameNotFoundException("User with email " + email + " does not exist");
+	        throw new UsernameNotFoundException("メールアドレス " + email + " のユーザーは存在しません");
 	    }
 	    Users user = users.get(0);
 	    return new UserDetailsImpl(user);
