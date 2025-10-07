@@ -28,6 +28,9 @@ import lombok.RequiredArgsConstructor;
 public class ItemService {
 	private final ItemsMapper itemMapper;
 
+	/*
+	 * Items オブジェクトのリストを ItemForm オブジェクトのリストに変換する
+	 */
 	public List<ItemForm> entitiesToForm(List<Items> items) {
 		List<ItemForm> forms = new ArrayList<>();
 		for (Items item : items) {
@@ -40,6 +43,7 @@ public class ItemService {
 			form.setPrice(item.getPrice());
 			form.setSaleStatus(item.isSaleStatus());
 			form.setBuyUser(item.getBuyUser());
+			// 保存した画像パスの文字列をカンマで分割して、パスの String 配列を作る
 			form.setExistingImages(item.getImagePaths().split(","));
 			forms.add(form);
 		}
@@ -80,8 +84,11 @@ public class ItemService {
 		item.setUpdatedAt(LocalDateTime.now());
 
 		List<String> imgPaths = new ArrayList<>();
+		// ItemForm はユーザーがアップロードした MultipartFileのList を返す
 		for (MultipartFile file : form.getImages()) {
 			if (file != null && !file.isEmpty()) {
+				// 各画像にランダムな接頭辞を付けて、
+				// ユーザーが同じ名前のファイルをアップロードしても問題にならないようにする
 				String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
 				imgPaths.add(filename);
 			}
@@ -90,6 +97,7 @@ public class ItemService {
 
 		itemMapper.insert(item);
 
+		// SQL の INSERT が成功した場合に、ファイルを保存する
 		File uploadDir = new File("src/main/resources/static/images/user_imgs");
 		if (!uploadDir.exists()) {
 			uploadDir.mkdirs();
@@ -97,11 +105,12 @@ public class ItemService {
 		for (int i = 0; i < form.getImages().size(); i++) {
 			MultipartFile file = form.getImages().get(i);
 			if (file != null && !file.isEmpty()) {
+				// データベースに送信したのと同じファイル名で画像を保存する
 				Path path = Paths.get(uploadDir.getAbsolutePath(), imgPaths.get(i));
 				try {
 					file.transferTo(path);
 				} catch (IOException e) {
-					throw new RuntimeException("Failed to save uploaded file", e);
+					throw new RuntimeException("アップロードされたファイルの保存に失敗しました", e);
 				}
 			}
 		}
@@ -118,10 +127,14 @@ public class ItemService {
 		item.setPrice(form.getPrice());
 		item.setUpdatedAt(LocalDateTime.now());
 
+		// 保存および削除する画像ファイルとパス名を格納するための
+		// List と Map を作成する
 		List<String> imgPaths = new ArrayList<>();
 		List<String> toDelete = new ArrayList<>();
 		Map<String, MultipartFile> toSave = new LinkedHashMap<>();
-		
+
+		// フォームで既存の画像を削除すべきと示している場合、
+		// その画像を削除対象のパスのリストに追加する
 		if (form.getDeleteImages() != null) {
 			for (int i = 0; i < form.getDeleteImages().length; i++) {
 				if (form.getDeleteImages()[i]) {
@@ -129,6 +142,10 @@ public class ItemService {
 				}
 			}
 		}
+
+		// ユーザーがアップロードしたファイルのリストの有効な長さを取得する
+		// （フォームは常に5件返すが、未アップロードのファイルは空なので、
+		//  最後の非空ファイルを確認する）
 		int newImageSize = 0;
 		for (int i = form.getImages().size() - 1; i >= 0; i--) {
 			MultipartFile file = form.getImages().get(i);
@@ -137,49 +154,62 @@ public class ItemService {
 				break;
 			}
 		}
+
+		// 既存の画像リストと新規アップロード画像リストのどちらが長いかを判定する
 		int numImages = Math.max(newImageSize,
 				(form.getExistingImages() == null) ? 0 : form.getExistingImages().length);
 
+		// 各画像スロットごとに…
 		for (int i = 0; i < numImages; i++) {
 			MultipartFile file = form.getImages().get(i);
+
+			// ユーザーが画像をアップロードしている場合、
 			if (file != null && !file.isEmpty()) {
+				// INSERT と同様の名前を付け、データベース用の画像パスリスト"imgPaths"にパスを保存し、
+				// 保存用の画像マップ"toSave"にパスとファイルを登録する
 				String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
 				imgPaths.add(filename);
 				toSave.put(filename, file);
-			} else if (i < form.getDeleteImages().length && !form.getDeleteImages()[i]) {
+			}
+			// それ以外の場合、既存の画像がまだ存在して変更されていない場合は、
+			else if (i < form.getDeleteImages().length && !form.getDeleteImages()[i]) {
+				// 既存の画像パスをそのままデータベースに追加する
 				imgPaths.add(form.getExistingImages()[i]);
 			}
 		}
 
+		// パスのListをカンマで区切った1つの文字列に結合する
 		item.setImagePaths(String.join(",", imgPaths));
+		// データベースを更新する
 		itemMapper.update(item);
 
+		// SQL の UPDATE が成功した場合に、ファイルを保存および削除する
 		File uploadDir = new File("src/main/resources/static/images/user_imgs");
 		if (!uploadDir.exists()) {
 			uploadDir.mkdirs();
 		}
 
+		// toDelete にあるパスのファイルをすべて削除する
 		for (String oldFile : toDelete) {
 			Path oldPath = Paths.get(uploadDir.getAbsolutePath(), oldFile);
 			try {
 				Files.deleteIfExists(oldPath);
 			} catch (IOException e) {
-				throw new RuntimeException("Failed to save uploaded file", e);
+				throw new RuntimeException("ファイルの削除に失敗しました", e);
 			}
 		}
-		
+
+		// toSaveのMapにある各ファイルを指定されたファイル名で保存する
 		for (Map.Entry<String, MultipartFile> entry : toSave.entrySet()) {
-	        String filename = entry.getKey();
-	        MultipartFile file = entry.getValue();
-	        Path path = Paths.get(uploadDir.getAbsolutePath(), filename);
-	        try {
-	            file.transferTo(path);
-	        } catch (IOException e) {
-	            throw new RuntimeException("Failed to save uploaded file: " + filename, e);
-	        }
-	    }
-		
-		uploadDir.setLastModified(System.currentTimeMillis());
+			String filename = entry.getKey();
+			MultipartFile file = entry.getValue();
+			Path path = Paths.get(uploadDir.getAbsolutePath(), filename);
+			try {
+				file.transferTo(path);
+			} catch (IOException e) {
+				throw new RuntimeException("アップロードされたファイルの保存に失敗しました" + filename, e);
+			}
+		}
 	}
 
 	@Transactional
