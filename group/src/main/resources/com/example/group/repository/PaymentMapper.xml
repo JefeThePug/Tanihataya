@@ -15,7 +15,14 @@
 		payments
 		WHERE user_id = #{userId}
 	</delete>
-
+	
+	<!--ユーザーIDによるカード情報の取得 -->
+	<select id="findById"
+		resultType="com.example.group.entity.Items">
+		SELECT users_id,card_number,card_name
+		FROM payments WHERE users_id = #{userId};
+	</select>
+	
     <!-- カード情報の更新 -->
 	<update id="updatePayment"
 		parameterType="com.example.group.entity.Payment">
@@ -26,9 +33,7 @@
 		security_code = #{securityCode},
 		exp_date = #{expDate}
 		WHERE
-		card_id = #{cardId}
-		AND
-		users_id = now()
+		users_id = #{userId}
 	</update>
 
 </mapper>
