@@ -3,12 +3,12 @@
 
 :root {
 	/* 色名　*/
-	--light-text: #606c38ff;
-	--text: #283618ff;
 	--background: #fefae0ff;
 	--highlight: #AFB38C;
+	--light-text: #606c38ff;
 	--select: #dda15eff;
 	--strong-select: #bc6c25ff;
+	--text: #283618ff;
 }
 
 * {
@@ -62,14 +62,14 @@ span.title {
 	font-weight: 400;
 }
 
-/* 一般ボタン */
+/* メニューバーのボタン */
 .navbar-right .btn {
+	background-color: var(--background);
 	margin-left: 12px;
 	padding: 8px 16px;
-	background-color: var(--background);
 }
 
-/* メインボタン */
+/* メニューバーのメインボタン */
 .navbar-right .btn-primary {
 	background: var(--light-text);
 	border: none;
@@ -81,7 +81,7 @@ span.title {
 	background: var(--text);
 }
 
-/* ログアウトボタン */
+/* メニューバーのログアウトボタン */
 .logout-btn {
 	background: none;
 	border: none;
@@ -394,7 +394,6 @@ h1 {
 }
 
 /* 新しい商品のフォーム */
-
 .product-form {
 	display: flex;
 	flex-wrap: wrap;
@@ -547,7 +546,6 @@ h1 {
 	background-color: var(--strong-select);
 }
 
-
 /* 一般のフォーム */
 table {
 	margin-left: auto;
@@ -559,17 +557,17 @@ table.padded {
 }
 
 th.right {
-	text-align: right;
 	padding-right: 1.5em;
+	text-align: right;
 }
 
 .btn {
 	background-color: var(--select);
 	border: 1px solid var(--light-text);
 	border-radius: 6px;
-	padding: 0.75rem !important;
 	color: var(--text);
 	cursor: pointer;
+	padding: 0.75rem !important;
 	text-decoration: none;
 	transition: all 0.2s ease-in-out;
 }
@@ -580,7 +578,6 @@ th.right {
 
 .btn:hover {
 	background-color: var(--strong-select);
-	/*	background: var(--light-text, --highlight);*/
 	color: var(--background);
 }
 
@@ -611,8 +608,8 @@ th.right {
 	display: grid;
 	gap: 1rem;
 	grid-template-columns: 100px 1fr;
-	max-width: 800px;
 	margin: 0 auto;
+	max-width: 800px;
 }
 
 /* サムネイル一覧（左側） */
@@ -675,7 +672,7 @@ th.right {
 	text-align: left;
 }
 
-/* SOLD OUTバッジ */
+/* SOLDバッジ */
 .sold-bar {
 	background: rgba(255, 0, 0, 0.1);
 	border: 2px solid red;

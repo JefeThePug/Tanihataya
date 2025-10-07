@@ -29,10 +29,4 @@ public class Users {
 	private LocalDateTime createdAt;
 
 	private LocalDateTime updatedAt;
-	
-	@Override
-    public String toString() {
-        return "User{id=" + this.usersId + ", name='" + this.name + "', email='" + this.email + "'}";
-    }
-
 }
