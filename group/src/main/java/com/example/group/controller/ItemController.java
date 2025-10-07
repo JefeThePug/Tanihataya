@@ -178,8 +178,12 @@ public class ItemController {
 			form.setUserId(user.getUsersId());
 			model.addAttribute("itemForm", form);
 		} else if (type.equals("update")) {
+			Items item = itemService.findById(itemId);
+			if (item == null || !item.getUsersId().equals(user.getUsersId())) {
+				throw new org.springframework.security.access.AccessDeniedException("この商品を更新する権限がありません。");
+			}
 			List<Items> items = new ArrayList<>();
-			items.add(itemService.findById(itemId));
+			items.add(item);
 			ItemForm form = itemService.entitiesToForm(items).get(0);
 			model.addAttribute("itemForm", form);
 		}
