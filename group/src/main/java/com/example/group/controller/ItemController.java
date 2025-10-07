@@ -26,6 +26,7 @@ import com.example.group.entity.Items;
 import com.example.group.entity.Payment;
 import com.example.group.entity.Users;
 import com.example.group.form.ItemForm;
+import com.example.group.form.PaymentForm;
 import com.example.group.service.ItemService;
 import com.example.group.service.PurchaseService;
 import com.example.group.service.UserService;
@@ -122,7 +123,7 @@ public class ItemController {
 	@PostMapping("/purchase")
 	public String purchase(
 		    @RequestParam int itemId,
-		    @Valid @ModelAttribute("purchaseForm") Payment purchaseForm,
+		    @Valid @ModelAttribute("purchaseForm") PaymentForm purchaseForm,
 		    BindingResult bindingResult,
 		    Model model,
 		    Principal principal,
@@ -136,11 +137,11 @@ public class ItemController {
 		Items item = itemService.findById(itemId);//itemの情報
 		itemService.completePurchase(itemId, user.getUsersId());
 		 redirectAttributes.addFlashAttribute("itemid", itemId);
-		
-		 if (Boolean.TRUE.equals(purchaseForm.getSaveCardInfo())) {
-		        // 保存処理を実行（paymentRepositoryなどでインサート）
-			 	paymentService.insertPayment(purchaseForm);
+		 
+		  if (purchaseForm.isSaveCardInfo()) {
+		        paymentService.insertPayment(purchaseForm);
 		    }
+		  
 		return "redirect:/item/purchase/success";
 		//purchase/successのURLへアクセス
 	}

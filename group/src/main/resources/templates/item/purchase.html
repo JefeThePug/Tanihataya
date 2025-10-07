@@ -37,10 +37,14 @@
 
 		<div id="creditCardForm" style="display:none; margin-top: 1em;">
 			<h4>クレジットカード情報</h4>
+				<input type="hidden" name="userId" th:value="${user.usersId}" />
 					       <label>カード番号:
 					           <input type="text" name="cardNumber" th:field="*{cardNumber}" placeholder="1234 5678 9012 3456" />
 							   <div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" style="color:red"></div>
 					       </label><br />
+						   <label>カード名義:
+						       <input type="text" name="name" th:field="*{name}" />
+						   </label><br />
 					       <label>有効期限:
 					           <input type="month" name="expDate" th:field="*{expDate}" />
 					       </label><br />

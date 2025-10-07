@@ -13,21 +13,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentForm {
 
-private Integer cardId;
-	
+	private Integer cardId;
+
 	private Integer userId;
-	
-	private Integer cardNumber;
-	
+
+	private String cardNumber;
+
 	private String name;
-	
-	 @Size(max = 3)
-	private Integer securityCode;
+
+	@Size(max = 3)
+	private String securityCode;
 
 	private Date expDate;
+
+	//クレジット登録フラグ
+	private boolean saveCardInfo;
 	
-	
+	public boolean isSaveCardInfo() {
+		return saveCardInfo;
+	}
+	public void setSaveCardInfo(boolean saveCardInfo) {
+		this.saveCardInfo = saveCardInfo;
+	}
 
 
-	
 }
