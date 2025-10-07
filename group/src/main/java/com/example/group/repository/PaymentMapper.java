@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.example.group.entity.Payment;
 
 @Mapper
-public interface PyamentMapper {
+public interface PaymentMapper {
 	/**
      * クレジット情報の登録
      */

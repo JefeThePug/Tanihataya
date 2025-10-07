@@ -27,6 +27,7 @@ import com.example.group.entity.Payment;
 import com.example.group.entity.Users;
 import com.example.group.form.ItemForm;
 import com.example.group.service.ItemService;
+import com.example.group.service.PurchaseService;
 import com.example.group.service.UserService;
 import com.example.group.service.security.UserDetailsImpl;
 
@@ -40,11 +41,13 @@ public class ItemController {
 
 	private final ItemService itemService; //finalに変更
 	private final UserService userService; //finalに変更
-
+	private final PurchaseService pyamentService;
+	 
 	// コンストラクタインジェクション（Lombokの@RequiredArgsConstructorでも可）
-	public ItemController(ItemService itemService, UserService userService) {
+	public ItemController(ItemService itemService, UserService userService,PurchaseService pyamentService) {
 		this.itemService = itemService;
 		this.userService = userService;
+		this.pyamentService = pyamentService;
 	}
 
 	/**
@@ -98,7 +101,7 @@ public class ItemController {
 		return "item/purchase";// 表示したいテンプレートに合わせる
 	}
 	
-	//クレカ
+	//クレカ情報のハイフン等を削除
 	@InitBinder("purchaseForm")
 	public void initBinder(WebDataBinder binder) {
 	    binder.registerCustomEditor(String.class, "cardNumber", new PropertyEditorSupport() {
@@ -133,6 +136,10 @@ public class ItemController {
 		itemService.completePurchase(itemId, user.getUsersId());
 		 redirectAttributes.addFlashAttribute("itemid", itemId);
 		
+		 if (Boolean.TRUE.equals(purchaseForm.getSaveCardInfo())) {
+		        // 保存処理を実行（paymentRepositoryなどでインサート）
+			 	pyamentService.insertPayment(purchaseForm);
+		    }
 		return "redirect:/item/purchase/success";
 		//purchase/successのURLへアクセス
 	}

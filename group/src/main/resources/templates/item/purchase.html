@@ -48,7 +48,12 @@
 					           <input type="number" name="securityCode" th:field="*{securityCode}" placeholder="123" />
 							   <div th:if="${#fields.hasErrors('securityCode')}" th:errors="*{securityCode}" style="color:red"></div>
 					       </label>
+					   <label><br />
+					     <input type="checkbox" name="saveCardInfo" th:field="*{saveCardInfo}" />
+					     クレジットカードの情報を保存する
+					   </label>
 					   </div>
+					   
 					   
 		<h3>支払金額</h3>
 		<p th:unless="${item.price == null}"

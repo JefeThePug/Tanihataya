@@ -26,4 +26,7 @@ public class Payment {
 	private String securityCode;
 
 	private Date expDate;
+	
+	//カード登録するかのif
+	private Boolean saveCardInfo;
 }
