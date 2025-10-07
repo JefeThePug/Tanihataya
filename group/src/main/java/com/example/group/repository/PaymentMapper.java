@@ -19,6 +19,5 @@ public interface PaymentMapper {
     /**
      * クレジット情報の更新
      */
-    void updatePayment(Payment payment); 
-	
+    void updatePayment(Payment payment); 	
 }

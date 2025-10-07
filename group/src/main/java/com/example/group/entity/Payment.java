@@ -27,6 +27,4 @@ public class Payment {
 
 	private Date expDate;
 	
-	//カード登録するかのif
-	private Boolean saveCardInfo;
 }

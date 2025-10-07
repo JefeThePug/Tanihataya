@@ -115,6 +115,7 @@ public class ItemController {
 	            }
 	        }
 	    });
+	    
 	}
 	
 	// 購入処理情報を送信
