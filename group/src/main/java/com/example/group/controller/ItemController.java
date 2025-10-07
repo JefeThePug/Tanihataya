@@ -88,7 +88,9 @@ public class ItemController {
 	    
 		Items item = itemService.findById(itemId);//itemの情報
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
-		Payment payment = new Payment();
+		Payment payment = paymentService.findById(user.getUsersId());
+		
+		System.out.println(payment);
 
 		// Items.imagePaths が String[] の場合
 //		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
@@ -138,8 +140,14 @@ public class ItemController {
 		itemService.completePurchase(itemId, user.getUsersId());
 		 redirectAttributes.addFlashAttribute("itemid", itemId);
 		 
+		 //クレジット登録チェックがあれば保存
 		  if (purchaseForm.isSaveCardInfo()) {
-		        paymentService.insertPayment(purchaseForm);
+			  //既にクレジット登録あればupdate、なければinsert
+			  if(paymentService.findById(user.getUsersId())!=null){
+				  paymentService.updatePayment(new Payment(purchaseForm)); 
+			  }else{
+				  paymentService.insertPayment(new Payment(purchaseForm));
+			  }
 		    }
 		  
 		return "redirect:/item/purchase/success";
