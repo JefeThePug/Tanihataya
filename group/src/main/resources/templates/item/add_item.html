@@ -3,46 +3,55 @@
 
 <section th:fragment="content">
 	<h1>商品情報</h1>
+
 	<form th:action="@{/item/add_item}" th:object="${itemForm}" method="post" enctype="multipart/form-data"
 		class="product-form">
+		<!-- リクエスト間で受け渡すための非表示情報 -->
 		<input type="hidden" name="type" th:value="${type}" />
 		<input type="hidden" th:field="*{itemId}" />
 		<input type="hidden" th:field="*{userId}" />
 
+		<!-- データベースから取得した既存画像を格納する非表示フィールドと、
+			フォームで変更・削除された場合に画像を削除対象としてマークするフラグの配列 -->
 		<th:block th:if="${itemForm.existingImages != null}">
 			<div th:each="img, stat : ${itemForm.existingImages}">
 				<input type="hidden" th:name="|existingImages[${stat.index}]|" th:value="${img}" />
 				<input type="hidden" th:name="|deleteImages[${stat.index}]|" th:id="|deleteImages_${stat.index}|"
 					value="false" />
-				<!--				<input type="checkbox" th:name="|deleteImages[${stat.index}]|"-->
-				<!--					th:id="|deleteImages_${stat.index}|" value="true" style="position: absolute; left: -9999px;">-->
 			</div>
 		</th:block>
 
-
 		<div class="form-left">
-			<!-- Main image -->
+			<!-- メイン画像 -->
 			<label>商品の写真</label>
 			<div class="main-image upload-box">
+				<!-- ユーザーから画像ファイルを受け取るフィールド：
+					ファイルが追加されると、以下の JavaScript 関数 'previewImage' が実行される -->
 				<input type="file" th:field="*{images}" accept="image/*" required data-main="true"
 					onchange="previewImage(event, 'mainPreview', 'mainDelete', 'plusMain', 'deleteImages_0')">
+				<!-- 既存の画像がある場合やユーザーがアップロードした場合に表示されるプレビュー画像用フィールド。
+					画像が存在する場合はプレースホルダーを非表示にし、存在しない場合はプレースホルダーを表示する -->
 				<img id="mainPreview" th:src="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
 				             ? @{/images/user_imgs/{path}(path=${itemForm.existingImages[0]})} 
 				             : ''" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
 				               ? 'display:block;' 
 				               : 'display:none;'" />
+				<!-- 画像をアップロードするようユーザーに案内するプレースホルダー。画像が存在する場合は非表示 -->
 				<span id="plusMain" class="placeholder" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
 				                ? 'display:none;' 
 				                : 'display:block;'">⊕商品の写真</span>
+				<!-- ユーザーがフィールドから画像を削除するためのゴミ箱アイコン（FontAwesome）。
+					クリックすると、以下の JavaScript 関数 'removeImage' が実行される -->
 				<i id="mainDelete" class="fas fa-trash-alt delete-icon" th:style="${itemForm.existingImages != null and itemForm.existingImages.length > 0} 
 				             ? 'display:block;' 
 				             : 'display:none;'"
 					onclick="removeImage('images', 'mainPreview', 'mainDelete', 'plusMain', 'deleteImages_0')"></i>
 			</div>
 
-			<!-- Smaller images -->
+			<!-- 小さめの画像4つ -->
 			<div class="small-images">
 				<div class="upload-box" th:each="i : ${#numbers.sequence(1,4)}">
+					<!-- 上記と同じスタイルですが、Thymeleaf のループを使用して、変数 i を 1 から 4 まで回し、フィールドを埋める -->
 					<input type="file" th:id="'image' + ${i}" th:field="*{images}" accept="image/*"
 						th:onchange="'previewImage(event, \'preview' + ${i} + '\', \'delete' + ${i} + '\', \'plus' + ${i} + '\', \'deleteImages_' + ${i} + '\')'">
 					<img th:id="'preview' + ${i}" th:src="${itemForm.existingImages != null and itemForm.existingImages.length > i} 
@@ -62,6 +71,7 @@
 			</div>
 		</div>
 
+		<!-- 商品名、価格、説明、カテゴリ用の入力フィールド -->
 		<div class="form-right">
 			<label>タイトル</label>
 			<input type="text" th:field="*{name}" required>
@@ -89,19 +99,21 @@
 		</div>
 	</form>
 
+	<!-- JavaScript -->
 	<script>
+		// プレビュー画像を表示する関数
 		function previewImage(event, previewId, deleteId, plusId, checkboxId) {
-			const input = event.target;
-			const preview = document.getElementById(previewId);
-			const deleteIcon = document.getElementById(deleteId);
-			const placeholder = document.getElementById(plusId);
-			const deleteCheckbox = document.getElementById(checkboxId);
+			const input = event.target; // イベントが発生した input[type="file"] 要素を取得
+			const preview = document.getElementById(previewId); // プレビュー用の img タグを取得
+			const deleteIcon = document.getElementById(deleteId); // 削除用のゴミ箱アイコンを取得
+			const placeholder = document.getElementById(plusId); // 画像が無いときのプレースホルダーを取得
+			const deleteCheckbox = document.getElementById(checkboxId); // 画像削除用チェックボックスを取得
 
-			if (input.files && input.files[0]) {
-				const reader = new FileReader();
+			if (input.files && input.files[0]) { // ファイルが選択されているか確認
+				const reader = new FileReader(); // ファイルを読み込むためのオブジェクトを作成
 				reader.onload = function (e) {
-					preview.src = e.target.result;
-					preview.style.display = "block";
+					preview.src = e.target.result; // 選択した画像をプレビューに表示
+					preview.style.display = "block"; // img タグを表示
 
 					// プレースホルダーを非表示にし、削除アイコンを表示
 					if (placeholder) {
@@ -110,12 +122,11 @@
 					}
 					if (deleteIcon) {
 						deleteIcon.style.display = "block";
-						// アイコンが表示されたときにクリック処理を割り当てる
-						//deleteIcon.onclick = () => removeImage(input.id, previewId, deleteId);
 					}
 				};
-				reader.readAsDataURL(input.files[0]);
+				reader.readAsDataURL(input.files[0]); // ファイルをブラウザで表示できる形式に変換して読み込む
 
+				// チェックボックスを true にして削除対象にする
 				if (deleteCheckbox) {
 					deleteCheckbox.value = 'true';
 				}
@@ -124,45 +135,54 @@
 
 		// 画像を削除する関数
 		function removeImage(inputId, previewId, deleteId, plusId, checkboxId) {
-			const input = document.getElementById(inputId);
-			const preview = document.getElementById(previewId);
-			const deleteIcon = document.getElementById(deleteId);
-			const placeholder = document.getElementById(plusId);
-			const deleteCheckbox = document.getElementById(checkboxId);
+			const input = document.getElementById(inputId); // ファイル入力フィールド
+			const preview = document.getElementById(previewId); // プレビュー画像
+			const deleteIcon = document.getElementById(deleteId); // ゴミ箱アイコン
+			const placeholder = document.getElementById(plusId); // プレースホルダー
+			const deleteCheckbox = document.getElementById(checkboxId); // 削除用チェックボックス
+			// メイン画像の入力フィールド
 			const mainFileInput = document.querySelector('input[type="file"][data-main="true"]');
 
-			// 1. ファイル入力をリセット（重要なステップ！）
+			// ファイル入力をリセット
 			input.value = '';
-			// 2. プレビュー画像を消去
+			// プレビュー画像を消去
 			preview.src = "";
 			preview.style.display = "none";
-			// 3. ゴミ箱アイコンを非表示にする
+			// ゴミ箱アイコンを非表示にする
 			if (deleteIcon) {
 				deleteIcon.style.display = "none";
 			}
 
 			if (placeholder) {
+				// メイン画像かそれ以外かでプレースホルダーを切替
 				const defaultText = (input === mainFileInput) ? '⊕商品の写真' : '⊕';
 				placeholder.textContent = defaultText;
+				// プレースホルダーを表示
 				placeholder.style.display = "block";
 			}
 
+			// 削除対象としてチェックボックスに値を設定
 			if (deleteCheckbox) {
 				deleteCheckbox.value = 'true';
 			}
 
+			// メイン画像の場合
 			if (mainFileInput && deleteId === 'mainDelete') {
 				if (!mainFileInput.hasAttribute('required')) {
+					// 必須属性を再設定
 					mainFileInput.setAttribute('required', '');
 				}
 			}
 		}
 
+		// DOM読み込み後の初期処理
 		document.addEventListener("DOMContentLoaded", () => {
+			// メイン画像の入力
 			const mainFileInput = document.querySelector('input[type="file"][data-main="true"]');
+			// 既存画像削除チェックボックス
 			const deleteCheckbox0 = document.getElementById('deleteImages_0');
 
-			// Remove "required" if existingImages[0] exists
+			// 既存画像がある場合、required 属性を解除
 			if (mainFileInput && deleteCheckbox0) {
 				mainFileInput.removeAttribute('required');
 			}
