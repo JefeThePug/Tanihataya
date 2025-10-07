@@ -178,6 +178,8 @@ public class ItemService {
 	            throw new RuntimeException("Failed to save uploaded file: " + filename, e);
 	        }
 	    }
+		
+		uploadDir.setLastModified(System.currentTimeMillis());
 	}
 
 	@Transactional
