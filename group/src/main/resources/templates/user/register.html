@@ -2,14 +2,15 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	
+	<!-- 登録か更新かに応じて異なるヘッダーを表示する -->
 	<h1 th:text="${isEdit} ? '登録変更' : '新規登録'"></h1>
-	
-	<form th:action="${isEdit} ? @{/user/update} : @{/user/register}" th:object="${userForm}" method="post" class="form-right">
+
+	<form th:action="${isEdit} ? @{/user/update} : @{/user/register}" th:object="${userForm}" method="post"
+		class="form-right">
 		<!-- エラーがあるときだけ表示 -->
 		<div th:if="${Message} != null" th:text="${Message}" style="color: blue;"></div>
 		<table>
-			
+			<!-- 入力内容が正しくない場合のエラーメッセージ用スペースを含む、ユーザー用の入力フォーム -->
 			<tr>
 				<th>名前<span style="color:red;">*</span></th>
 				<td>
@@ -60,7 +61,6 @@
 			</tr>
 		</table>
 	</form>
-
 </section>
 
 </html>

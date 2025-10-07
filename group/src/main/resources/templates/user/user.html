@@ -2,40 +2,42 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	
-    <h1>ユーザー情報</h1>
-    <table class="padded">
-      <tr>
-        <th class="right">名前</th>
-        <td th:text="${user.name}">名前</td>
-      </tr>
-      <tr>
-        <th class="right">メールアドレス</th>
-        <td th:text="${user.email}">メールアドレス</td>
-      </tr>
-      <tr>
-        <th class="right">郵便番号</th>
-        <td th:text="${user.postcode}">郵便番号</td>
-      </tr>
-      <tr>
-        <th class="right">住所</th>
-        <td th:text="${user.address}">住所</td>
-      </tr>
-      <tr>
-        <th class="right">電話番号</th>
-        <td th:text="${user.tel}">電話番号</td>
-      </tr>
-      </tr>
-    </table>
-	
-    <div class="btn-container" style="text-align: center;">
+	<h1>ユーザー情報</h1>
+
+	<!-- 現在保存されているユーザー情報をここに表示 -->
+	<table class="padded">
+		<tr>
+			<th class="right">名前</th>
+			<td th:text="${user.name}">名前</td>
+		</tr>
+		<tr>
+			<th class="right">メールアドレス</th>
+			<td th:text="${user.email}">メールアドレス</td>
+		</tr>
+		<tr>
+			<th class="right">郵便番号</th>
+			<td th:text="${user.postcode}">郵便番号</td>
+		</tr>
+		<tr>
+			<th class="right">住所</th>
+			<td th:text="${user.address}">住所</td>
+		</tr>
+		<tr>
+			<th class="right">電話番号</th>
+			<td th:text="${user.tel}">電話番号</td>
+		</tr>
+		</tr>
+	</table>
+	<!-- 出品一覧と購入一覧を表示するボタン -->
+	<div class="btn-container" style="text-align: center;">
 		<a th:href="@{/list(type='sell')}" class="btn">出品一覧</a>
 		<a th:href="@{/list(type='buy')}" class="btn">購入一覧</a>
-    </div>
-	
-	<div class="btn-container" style="text-align: center;">
-	  <a th:href="@{/user/update}" class="btn">ユーザー情報を変更</a>
 	</div>
-	
-  </section>
+	<!-- ユーザー情報を更新するボタン -->
+	<div class="btn-container" style="text-align: center;">
+		<a th:href="@{/user/update}" class="btn">ユーザー情報を変更</a>
+	</div>
+
+</section>
+
 </html>
