@@ -11,7 +11,7 @@
 		<!-- 商品情報 -->
 		<div class="item-detail">
 			<h3 th:text="${item.name}"></h3>
-			<p th:text="'カテゴリ: ' + ${item.category}"></p>
+			<p th:text="'カテゴリ: ' + ${catname}"></p>
 			<p th:text="'価格: ' + ${item.price} + '円'"></p>
 			<p th:text="${item.detail}"></p>
 		</div>

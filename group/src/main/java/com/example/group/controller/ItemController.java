@@ -139,18 +139,17 @@ public class ItemController {
 	@PostMapping("/purchase")
 	public String purchase(
 		    @RequestParam int itemId,
-		    @Valid @ModelAttribute("purchaseForm") PaymentForm purchaseForm,
+		    @Valid @ModelAttribute PaymentForm purchaseForm,
 		    BindingResult bindingResult,
 		    Model model,
 		    Principal principal,
 		    RedirectAttributes redirectAttributes) {
-
+		//ユーザー情報
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());
-		 redirectAttributes.addFlashAttribute("user", user);
+		redirectAttributes.addFlashAttribute("user", user);
 
-		Items item = itemService.findById(itemId);//itemの情報
 		itemService.completePurchase(itemId, user.getUsersId());
 		 redirectAttributes.addFlashAttribute("itemid", itemId);
 		 
@@ -179,8 +178,21 @@ public class ItemController {
 		Items item = itemService.findById(itemId);//itemの情報
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
 
+		String cat = switch (item.getCategory()) {
+		case 1 -> "衣類";
+		case 2 -> "おもちゃ";
+		case 3 -> "電化製品";
+		case 4 -> "スポーツ";
+		case 5 -> "ペット";
+		case 6 -> "美容";
+		case 7 -> "書籍";
+		default -> "その他";
+		};
+		System.out.println(item);
+		System.out.println(cat);
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
+		model.addAttribute("catname", cat);
 
 		return "item/success";
 	}
