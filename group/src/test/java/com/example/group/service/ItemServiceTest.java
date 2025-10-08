@@ -41,7 +41,7 @@ class ItemServiceTest {
 
 	@BeforeEach
 	void setup() {
-		// Make a Lists of 5 files
+		// Make a Lists of 5 files / 5つのファイルのリストを作成
 		fullFiles = new ArrayList<>();
 		oneFile = new ArrayList<>();
 		for (int i = 0; i < 5; i++) {
@@ -58,7 +58,7 @@ class ItemServiceTest {
 				oneFile.add(emptyFile);
 			}
 		}
-		// Setup ItemForm with example values
+		// Setup ItemForm with example values / ItemFormにサンプル値を設定
 		form = new ItemForm();
 		form.setItemId(1);
 		form.setUserId(2);
@@ -71,7 +71,7 @@ class ItemServiceTest {
 		form.setExistingImages(new String[] { "a.jpg", "b.jpg" });
 		form.setDeleteImages(new Boolean[] { false, false });
 		form.setImages(oneFile);
-		// Setup Items entity
+		// Setup Items entity / Itemsにサンプル値を設定
 		item = new Items();
 		item.setItemId(1);
 		item.setUsersId(42);
@@ -85,21 +85,22 @@ class ItemServiceTest {
 		item.setCreatedAt(LocalDateTime.now());
 		item.setUpdatedAt(LocalDateTime.now());
 		item.setPurchaseAt(null);
-		//Make List of (one) Items
+		//Make List of (one) Items / （1つの）Itemsのリストを作成
 		items = new ArrayList<>();
 		items.add(item);
 	}
 
+	// @Nested は、テストを整理のために内部クラスに格納していても、@Test が実行されるようにするために使用
 	@Nested
 	@DisplayName("Entities to Form Conversion Tests")
 	class EntitiesToFormTests {
 		@Test
 		void testEntitiesToForm() {
-			// Given
+			// Given 前提
 
-			// When
+			// When 操作
 			final List<ItemForm> result = itemService.entitiesToForm(items);
-			// Then
+			// Then 期待結果
 			assertEquals(1, result.size());
 			ItemForm formResult = result.get(0);
 			assertEquals("Test Item", formResult.getName());
@@ -112,12 +113,14 @@ class ItemServiceTest {
 	class FindByIdTests {
 		@Test
 		void testFindById() {
-			// Given
+			// Given 前提
+			// 		itemMapper に対して、findById が 1 の ID で呼ばれたときにモックの item を返すよう指示
 			when(itemMapper.findById(1)).thenReturn(item);
-			// When
+			// When 操作
 			Items result = itemService.findById(1);
-			// Then
+			// Then 期待結果
 			assertEquals(1, result.getItemId());
+			//		findById が一度だけ呼ばれ、引数が 1 であったことを確認
 			verify(itemMapper).findById(1);
 		}
 	}
@@ -127,26 +130,34 @@ class ItemServiceTest {
 	class InsertTests {
 		@Test
 		void testInsert() throws IOException {
-			// Given
+			// Given 前提
 			form.setImages(fullFiles);
-			// When
+			// When 操作
+			// 		Create an ArgumentCaptor to capture the Items object passed to the mapper
+			// 		マッパーに渡される Items オブジェクトを取得するための ArgumentCaptor を作成
 			ArgumentCaptor<Items> captor = ArgumentCaptor.forClass(Items.class);
 			itemService.insert(form);
-			// Then
-			//		Capture the Items object passed to the mapper
+			// Then 期待結果
+			//		Capture the actual Items object passed to the mapper during verification
+			// 		検証時にマッパーに渡された実際の Items オブジェクトを取得
 			verify(itemMapper).insert(captor.capture());
+			//		Get the captured Items object for inspection in assertions
+			//		取得した Items オブジェクトを取り出し、アサーションで確認する
 			Items inserted = captor.getValue();
 			//		Check that form values were transferred correctly
+			//		フォームの値がエンティティに正しく転送されているか確認
 			assertEquals("Coffee Mug", inserted.getName(), "Name should match form");
 			assertEquals(2, inserted.getUsersId(), "UserId should match form");
 			assertEquals(3, inserted.getCategory(), "Category should match form");
 			//		Check that all 5 mocked files were included in the image paths
+			//		5つのモックファイルすべてが画像パスに含まれていることを確認
 			for (int i = 0; i < fullFiles.size(); i++) {
 				String filename = fullFiles.get(i).getOriginalFilename();
 				assertTrue(inserted.getImagePaths().contains(filename),
 						"Image paths should contain " + filename);
 			}
 			//		Check initial sale status, buy user, and purchase date
+			//		挿入されたアイテムの初期の販売状況、購入者、購入日時を確認
 			assertTrue(inserted.isSaleStatus(), "New item should be marked as for sale");
 			assertNull(inserted.getBuyUser(), "New item should have no buyer yet");
 			assertNull(inserted.getPurchaseAt(), "New item should have no purchase date");
@@ -154,12 +165,12 @@ class ItemServiceTest {
 
 		@Test
 		void testInsertWithOneFile() throws IOException {
-			// Given
+			// Given 前提
 			form.setImages(oneFile);
-			// When
+			// When 操作
 			ArgumentCaptor<Items> captor = ArgumentCaptor.forClass(Items.class);
 			itemService.insert(form);
-			// Then
+			// Then 期待結果
 			verify(itemMapper).insert(captor.capture());
 			Items inserted = captor.getValue();
 			//		Image paths should have only one image path
@@ -175,10 +186,13 @@ class ItemServiceTest {
 	}
 
 	/* The `Update` method is not unit tested because it interacts with the file system.
+	 *  >`Update` メソッドはファイルシステムに関わるため、単体テストは行っていません。
 	 * Testing it fully would require either:
-	 *   - An integration test with temporary files
-	 *   - Heavy mocking of java.nio.file.Files
+	 *  > 完全にテストするには以下のいずれかが必要です：
+	 *   - An integration test with temporary files / 一時ファイルを使用した統合テスト
+	 *   - Heavy mocking of java.nio.file.Files / java.nio.file.Files の大規模なモック
 	 * Unit tests for ItemService focus on methods that contain business logic without external side effects.
+	 *  > ItemService の単体テストは、外部副作用のないビジネスロジックを含むメソッドに焦点を当てています。
 	 */
 
 	@Nested
@@ -186,15 +200,15 @@ class ItemServiceTest {
 	class CompletePurchaseTests {
 		@Test
 		void testCompletePurchaseSuccess() {
-			// Given
+			// Given 前提
 			Items existing = new Items();
 			existing.setItemId(10);
 			existing.setSaleStatus(true);
 			when(itemMapper.findById(10)).thenReturn(existing);
-			// When
+			// When 操作
 			ArgumentCaptor<LocalDateTime> dateCaptor = ArgumentCaptor.forClass(LocalDateTime.class);
 			itemService.completePurchase(10, 42);
-			// Then
+			// Then 期待結果
 			verify(itemMapper).updatePurchaseInfo(eq(10), eq(42), dateCaptor.capture());
 			assertNotNull(dateCaptor.getValue(), "Purchase date should not be null");
 			//		And check item object was updated correctly
@@ -205,11 +219,11 @@ class ItemServiceTest {
 
 		@Test
 		void testCompletePurchaseItemNotFound() {
-			// Given
+			// Given 前提
 			when(itemMapper.findById(99)).thenReturn(null);
 
-			// When
-			// Then
+			// When 操作
+			// Then 期待結果
 			IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
 					() -> itemService.completePurchase(99, 1));
 			assertEquals("Item not found: 99", ex.getMessage());
@@ -217,14 +231,14 @@ class ItemServiceTest {
 
 		@Test
 		void testCompletePurchaseAlreadySold() {
-			// Given
+			// Given 前提
 			Items existing = new Items();
 			existing.setItemId(5);
 			existing.setSaleStatus(false);
 			when(itemMapper.findById(5)).thenReturn(existing);
 
-			// When
-			// Then
+			// When 操作
+			// Then 期待結果
 			IllegalStateException ex = assertThrows(IllegalStateException.class,
 					() -> itemService.completePurchase(5, 1));
 			assertEquals("This item is already sold.", ex.getMessage());
