@@ -23,7 +23,7 @@ public class Payment {
 	@CreditCardNumber(message = "正しいカード番号を入力してください")
 	private String cardNumber;
 
-	private String name;
+	private String cardName;
 
 	@Pattern(regexp = "\\d{3}", message = "セキュリティコードは3桁の数字で入力してください")
 	private String securityCode;
@@ -37,7 +37,7 @@ public class Payment {
 		    this.cardId = form.getCardId();
 		    this.userId = form.getUserId();
 		    this.cardNumber = form.getCardNumber();
-		    this.name = form.getName();
+		    this.cardName = form.getCardName();
 		    this.securityCode = form.getSecurityCode();
 		    this.expDate = form.getExpDate() != null ? form.getExpDate().atEndOfMonth() : null;
 		    this.saveCardInfo = form.isSaveCardInfo();

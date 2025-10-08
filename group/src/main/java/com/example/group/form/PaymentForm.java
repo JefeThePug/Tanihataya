@@ -19,7 +19,7 @@ public class PaymentForm {
 
 	private String cardNumber;
 
-	private String name;
+	private String cardName;
 
 	@Size(max = 3)
 	private String securityCode;

@@ -6,7 +6,7 @@
 	<insert id="insertPayment"
 		parameterType="com.example.group.entity.Payment">
 		INSERT INTO payments (users_id,card_number,card_name,security_code,exp_date) 
-		VALUES (#{userId},#{cardNumber},#{name},#{securityCode},now())
+		VALUES (#{userId},#{cardNumber},#{cardName},#{securityCode},now())
 	</insert>
 
 	<!-- クレジットカード情報の削除 -->
@@ -29,7 +29,7 @@
 		UPDATE payments
 		SET
 		card_number = #{cardNumber},
-		card_name = #{name},
+		card_name = #{cardName},
 		security_code = #{securityCode},
 		exp_date = #{expDate}
 		WHERE

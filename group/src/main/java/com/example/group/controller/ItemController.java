@@ -2,6 +2,7 @@ package com.example.group.controller;
 
 import java.beans.PropertyEditorSupport;
 import java.security.Principal;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,9 +89,22 @@ public class ItemController {
 	    
 		Items item = itemService.findById(itemId);//itemの情報
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
-		Payment payment = paymentService.findById(user.getUsersId());
+		PaymentForm paymentForm = new PaymentForm();
 		
-		System.out.println(payment);
+		Payment payment = paymentService.findById(user.getUsersId());
+	    if (payment != null) {
+	        // 例えばコピーコンストラクタやsetterを使って値をコピー
+	        paymentForm.setUserId(payment.getUserId());
+	        paymentForm.setCardNumber(payment.getCardNumber());
+	        paymentForm.setCardName(payment.getCardName());
+	        paymentForm.setExpDate(payment.getExpDate() != null ? YearMonth.from(payment.getExpDate()) : null);
+	        paymentForm.setSecurityCode(payment.getSecurityCode());
+	        paymentForm.setSaveCardInfo(payment.isSaveCardInfo());
+	    } else {
+	        // 新規なら最低限userIdはセット
+	        paymentForm.setUserId(user.getUsersId());
+	    }
+
 
 		// Items.imagePaths が String[] の場合
 //		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
@@ -98,7 +112,7 @@ public class ItemController {
 
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
-		model.addAttribute("purchaseForm",payment);
+		model.addAttribute("purchaseForm",paymentForm);
 		
 
 		return "item/purchase";// 表示したいテンプレートに合わせる
