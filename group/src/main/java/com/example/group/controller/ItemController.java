@@ -90,7 +90,7 @@ public class ItemController {
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
 		UpdateUserForm updateForm = new UpdateUserForm();
 		
-		updateForm.setUserId(user.getUsersId());
+		updateForm.setUsersId(user.getUsersId());
 		updateForm.setName(user.getName());
 		updateForm.setPostcode(user.getPostcode());
 		updateForm.setAddress(user.getAddress());
@@ -100,7 +100,8 @@ public class ItemController {
 		Payment payment = paymentService.findById(user.getUsersId());
 		//元のクレカがある場合クレカ情報をセット
 		if (payment != null) {
-			updateForm.setUserId(payment.getUserId());
+			updateForm.setUserId(user.getUsersId());
+			updateForm.setCardId(payment.getCardId());
 			updateForm.setCardNumber(payment.getCardNumber());
 			updateForm.setCardName(payment.getCardName());
 			updateForm.setExpDate(payment.getExpDate() != null ? YearMonth.from(payment.getExpDate()) : null);
@@ -154,6 +155,9 @@ public class ItemController {
 		itemService.completePurchase(itemId, user.getUsersId());
 		redirectAttributes.addFlashAttribute("itemid", itemId);
 
+		//住所のupdate
+		userService.addressupdate(updateForm);
+		System.out.println(updateForm);
 		//クレジット登録チェックがあれば保存
 		if (updateForm.isSaveCardInfo()) {
 			//既にクレジット登録あればupdate、なければinsert

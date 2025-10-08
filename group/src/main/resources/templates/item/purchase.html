@@ -37,7 +37,6 @@
 			</td>
 		</tr>
 	</table>
-
 		<input type="hidden" name="itemId" th:value="${item.itemId}" />
 		<h3>お支払い方法</h3>
 		<label>
@@ -55,7 +54,9 @@
 
 		<div id="creditCardForm" style="display:none; margin-top: 1em;">
 			<h4>クレジットカード情報</h4>
+			<input type="hidden" th:field="*{usersId}" />
 			<input type="hidden" th:field="*{userId}" />
+			<input type="hidden" th:field="*{cardId}" />
 			<label>カード番号:
 				<input type="text" name="cardNumber" th:field="*{cardNumber}" placeholder="1234 5678 9012 3456" />
 				<div th:if="${#fields.hasErrors('cardNumber')}" th:errors="*{cardNumber}" style="color:red"></div>
