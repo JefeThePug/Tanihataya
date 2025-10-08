@@ -157,7 +157,7 @@ public class ItemController {
 
 		//住所のupdate
 		userService.addressupdate(updateForm);
-		System.out.println(updateForm);
+
 		//クレジット登録チェックがあれば保存
 		if (updateForm.isSaveCardInfo()) {
 			//既にクレジット登録あればupdate、なければinsert
