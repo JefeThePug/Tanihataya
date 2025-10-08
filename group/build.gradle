@@ -43,5 +43,25 @@ dependencies {
 }
 
 tasks.named('test') {
-	useJUnitPlatform()
+    useJUnitPlatform()
+
+    // Add Mockito Java agent to avoid self-attaching warning
+    // 自己アタッチ警告を回避するためにMockito Javaエージェントを追加
+    doFirst {
+        // Find the Mockito jar in the test runtime classpath
+        // テスト実行時のクラスパスからMockitoのjarを探す
+        def mockitoAgent = configurations.testRuntimeClasspath.find { it.name.contains("mockito-core") }
+        
+        // If found, add it as a JVM argument
+        // 見つかった場合、JVM引数として追加
+        if (mockitoAgent != null) {
+            println "Adding Mockito Java agent: ${mockitoAgent.absolutePath}"
+            // Append the -javaagent argument for the JVM
+            // JVMに-javaagent引数を追加
+            jvmArgs += "-javaagent:${mockitoAgent.absolutePath}"
+        } else {
+            // 警告：MockitoのjarがtestRuntimeClasspathに見つかりません
+            println "Warning: Mockito jar not found in testRuntimeClasspath"
+        }
+    }
 }
