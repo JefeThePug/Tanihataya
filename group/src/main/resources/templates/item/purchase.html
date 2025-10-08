@@ -2,7 +2,8 @@
 <html xmlns="http://www.thymeleaf.org" th:insert="~{layout :: layout(contentFragment=~{::content})}">
 
 <section th:fragment="content">
-	<h2>購入確認画面</h2>
+	
+	<h1>購入確認画面</h1>
 
 	<table>
 		<tr>
@@ -63,7 +64,7 @@
 		<p th:unless="${item.price == null}"
 			   th:text="|${item.price} 円|">0 円</p>
 			   		<div style="margin-top: 1em;">
-			<button type="submit">確定</button>
+			<button type="submit" class="btn">確定</button>
 		</div>
 
 	</form>

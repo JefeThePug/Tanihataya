@@ -8,29 +8,60 @@
 		<!-- 購入メッセージ -->
 		<h1 th:text="${seller.name} + 'さんから購入しました！'"></h1>
 
-		<!-- 商品情報 -->
-		<div class="item-detail">
-			<h3 th:text="${item.name}"></h3>
-			<p th:text="'カテゴリ: ' + ${catname}"></p>
-			<p th:text="'価格: ' + ${item.price} + '円'"></p>
-			<p th:text="${item.detail}"></p>
-		</div>
 
 		<!-- 商品画像（複数枚表示） -->
-		<div class="item-images" style="display:flex; gap:10px; flex-wrap:wrap;">
-			<div th:each="img : ${images}">
-				<img th:src="@{${img}}" alt="商品画像"
-					style="max-width:200px; max-height:200px; object-fit:cover; border:1px solid #ccc;" />
+		<div class="img-gallery">
+			<!-- サムネイル一覧（左側） -->
+			<div class="gallery-thumbnails">
+				<div th:each="imgName, iterStat : ${#strings.listSplit(item.imagePaths, ',')}" class="thumbnail"
+					th:classappend="${iterStat.index == 0} ? 'active' : ''" th:attr="data-index=${iterStat.index}"
+					onclick="changeMainImage(this)">
+					<img th:src="@{'/images/user_imgs/' + ${imgName}}" th:alt="${item.name}" />
+				</div>
 			</div>
-		</div>
 
+				<!-- メイン画像（右側） -->
+				<div class="gallery-main">
+					<img id="mainImage" th:src="@{'/images/user_imgs/' + ${#strings.listSplit(item.imagePaths, ',')[0]}}"
+						th:alt="${item.name}" />
+					<div th:unless="${item.saleStatus}" class="sold">SOLD</div>
+				</div>
+			</div>
+
+
+			<!-- 商品情報 -->
+			<div class="item-detail">
+				<h3 th:text="${item.name}"></h3>
+				<p th:text="'カテゴリ: ' + ${catname}"></p>
+				<p th:text="'価格: ' + ${item.price} + '円'"></p>
+				<p th:text="${item.detail}"></p>
+			</div>
+
+			
 		<!-- トップページに戻る -->
 		<div style="margin-top:20px;">
 			<a th:href="@{/}" class="btn btn-primary">トップに戻る</a>
 		</div>
 
 	</div>
+	
+	<script>
+		// サムネイルをクリックしたときにメイン画像を変更
+		function changeMainImage(thumbnail) {
+			// すべてのサムネイルからactiveクラスを削除
+			const thumbnails = document.querySelectorAll('.thumbnail');
+			thumbnails.forEach(t => t.classList.remove('active'));
 
+			// クリックされたサムネイルにactiveクラスを追加
+			thumbnail.classList.add('active');
+
+			// メイン画像を変更
+			const mainImage = document.getElementById('mainImage');
+			const thumbnailImg = thumbnail.querySelector('img');
+			mainImage.src = thumbnailImg.src;
+			mainImage.alt = thumbnailImg.alt;
+		}
+	</script>
 </section>
 
 </html>

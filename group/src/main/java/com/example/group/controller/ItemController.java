@@ -149,7 +149,8 @@ public class ItemController {
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());
 		redirectAttributes.addFlashAttribute("user", user);
-
+		
+		//購入したフラグ登録
 		itemService.completePurchase(itemId, user.getUsersId());
 		 redirectAttributes.addFlashAttribute("itemid", itemId);
 		 
@@ -188,8 +189,7 @@ public class ItemController {
 		case 7 -> "書籍";
 		default -> "その他";
 		};
-		System.out.println(item);
-		System.out.println(cat);
+
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
 		model.addAttribute("catname", cat);
