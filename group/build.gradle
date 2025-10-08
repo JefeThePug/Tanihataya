@@ -44,4 +44,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+	// Add Mockito Java agent to avoid future warnings about self-attaching
+	// 将来の自己アタッチに関する警告を回避するためにMockitoのJavaエージェントを追加
+    jvmArgs += [
+        "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito') }}"
+    ]
 }
