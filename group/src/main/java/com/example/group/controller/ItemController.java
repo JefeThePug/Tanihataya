@@ -27,7 +27,7 @@ import com.example.group.entity.Items;
 import com.example.group.entity.Payment;
 import com.example.group.entity.Users;
 import com.example.group.form.ItemForm;
-import com.example.group.form.PaymentForm;
+import com.example.group.form.UpdateUserForm;
 import com.example.group.service.ItemService;
 import com.example.group.service.PurchaseService;
 import com.example.group.service.UserService;
@@ -44,7 +44,7 @@ public class ItemController {
 	private final ItemService itemService; //finalに変更
 	private final UserService userService; //finalに変更
 	private final PurchaseService paymentService;
-	 
+
 	// コンストラクタインジェクション（Lombokの@RequiredArgsConstructorでも可）
 	public ItemController(ItemService itemService, UserService userService,PurchaseService paymentService) {
 		this.itemService = itemService;
@@ -62,13 +62,13 @@ public class ItemController {
 	public String showItemDetail(@PathVariable int itemId, Model model, Principal principal) {
 		//user情報（principal）があれば登録
 		if (principal != null) {
-		 // Principal からログインユーザーを取得
-	    String email = principal.getName();
-	    // ログイン中のユーザー情報をDBから取得
-	    Users user = userService.findByEmail(email);
-		    model.addAttribute("user", user);
-		    }
-	    
+			// Principal からログインユーザーを取得
+			String email = principal.getName();
+			// ログイン中のユーザー情報をDBから取得
+			Users user = userService.findByEmail(email);
+			model.addAttribute("user", user);
+		}
+
 		//アイテムIDでアイテムを1件取得
 		Items items = itemService.findById(itemId);
 		model.addAttribute("item", items);
@@ -80,90 +80,90 @@ public class ItemController {
 	 * showPurchaseSuccessメソッドを大幅に変更しました　9/29(月曜日)
 	 */
 
-	// 購入画面表示（例： GET /item/purchase?itemId=1 ）
 	@GetMapping("/purchase")
 	public String showPurchase(@RequestParam int itemId, Model model, Principal principal) {
-	    String email = principal.getName();
-	    Users user = userService.findByEmail(email);
+		String email = principal.getName();
+		Users user = userService.findByEmail(email);
 		model.addAttribute("user", user);//購入ユーザー情報登録
-	    
+
 		Items item = itemService.findById(itemId);//itemの情報
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
-		PaymentForm paymentForm = new PaymentForm();
+		UpdateUserForm updateForm = new UpdateUserForm();
 		
+		updateForm.setUserId(user.getUsersId());
+		updateForm.setName(user.getName());
+		updateForm.setPostcode(user.getPostcode());
+		updateForm.setAddress(user.getAddress());
+		updateForm.setTel(user.getTel());
+		
+		//ユーザーのクレカ情報を取得
 		Payment payment = paymentService.findById(user.getUsersId());
-	    if (payment != null) {
-	        // 例えばコピーコンストラクタやsetterを使って値をコピー
-	        paymentForm.setUserId(payment.getUserId());
-	        paymentForm.setCardNumber(payment.getCardNumber());
-	        paymentForm.setCardName(payment.getCardName());
-	        paymentForm.setExpDate(payment.getExpDate() != null ? YearMonth.from(payment.getExpDate()) : null);
-	        paymentForm.setSecurityCode(payment.getSecurityCode());
-	        paymentForm.setSaveCardInfo(payment.isSaveCardInfo());
-	    } else {
-	        // 新規なら最低限userIdはセット
-	        paymentForm.setUserId(user.getUsersId());
-	    }
-
-
-		// Items.imagePaths が String[] の場合
-//		String[] images = item.getImagePaths().split(","); // ← 型を合わせることが重要
-//		model.addAttribute("images", images);
+		//元のクレカがある場合クレカ情報をセット
+		if (payment != null) {
+			updateForm.setUserId(payment.getUserId());
+			updateForm.setCardNumber(payment.getCardNumber());
+			updateForm.setCardName(payment.getCardName());
+			updateForm.setExpDate(payment.getExpDate() != null ? YearMonth.from(payment.getExpDate()) : null);
+			updateForm.setSecurityCode(payment.getSecurityCode());
+			updateForm.setSaveCardInfo(payment.isSaveCardInfo());
+		} else {
+			// 新規ならuserIdだけセット
+			updateForm.setUserId(user.getUsersId());
+		}
 
 		model.addAttribute("item", item);
 		model.addAttribute("seller", seller);
-		model.addAttribute("purchaseForm",paymentForm);
-		
+		model.addAttribute("updateUserForm",updateForm);
 
-		return "item/purchase";// 表示したいテンプレートに合わせる
+
+		return "item/purchase";
 	}
-	
+
 	//クレカ情報のハイフン等を削除
 	@InitBinder("purchaseForm")
 	public void initBinder(WebDataBinder binder) {
-	    binder.registerCustomEditor(String.class, "cardNumber", new PropertyEditorSupport() {
-	        @Override
-	        public void setAsText(String text) {
-	            if (text != null) {
-	                // スペースとハイフンを除去
-	                setValue(text.replaceAll("[\\s-]", ""));
-	            } else {
-	                setValue(null);
-	            }
-	        }
-	    });
-	    
+		binder.registerCustomEditor(String.class, "cardNumber", new PropertyEditorSupport() {
+			@Override
+			public void setAsText(String text) {
+				if (text != null) {
+					// スペースとハイフンを除去
+					setValue(text.replaceAll("[\\s-]", ""));
+				} else {
+					setValue(null);
+				}
+			}
+		});
+
 	}
-	
+
 	// 購入処理情報を送信
 	@PostMapping("/purchase")
 	public String purchase(
-		    @RequestParam int itemId,
-		    @Valid @ModelAttribute PaymentForm purchaseForm,
-		    BindingResult bindingResult,
-		    Model model,
-		    Principal principal,
-		    RedirectAttributes redirectAttributes) {
+			@RequestParam int itemId,
+			@Valid @ModelAttribute UpdateUserForm updateForm,
+			BindingResult bindingResult,
+			Principal principal,
+			RedirectAttributes redirectAttributes) {
 		//ユーザー情報
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
 		Users user = userService.findByEmail(userDetails.getUsername());
 		redirectAttributes.addFlashAttribute("user", user);
-		
+
 		//購入したフラグ登録
 		itemService.completePurchase(itemId, user.getUsersId());
-		 redirectAttributes.addFlashAttribute("itemid", itemId);
-		 
-		 //クレジット登録チェックがあれば保存
-		  if (purchaseForm.isSaveCardInfo()) {
-			  //既にクレジット登録あればupdate、なければinsert
-			  if(paymentService.findById(user.getUsersId())!=null){
-				  paymentService.updatePayment(new Payment(purchaseForm)); 
-			  }else{
-				  paymentService.insertPayment(new Payment(purchaseForm));
-			  }
-		    }
-		  
+		redirectAttributes.addFlashAttribute("itemid", itemId);
+
+		//クレジット登録チェックがあれば保存
+		if (updateForm.isSaveCardInfo()) {
+			//既にクレジット登録あればupdate、なければinsert
+			if(paymentService.findById(user.getUsersId())!=null){
+				paymentService.updatePayment(new Payment(updateForm)); 
+			}else{
+				paymentService.insertPayment(new Payment(updateForm));
+			}
+		}
+
 		return "redirect:/item/purchase/success";
 		//purchase/successのURLへアクセス
 	}
@@ -178,7 +178,7 @@ public class ItemController {
 
 		Items item = itemService.findById(itemId);//itemの情報
 		Users seller = userService.findById(item.getUsersId());//出品者の情報
-
+		//カテゴリ情報
 		String cat = switch (item.getCategory()) {
 		case 1 -> "衣類";
 		case 2 -> "おもちゃ";

@@ -44,33 +44,31 @@
 	<!-- アクションボタン -->
 	<!-- ログインしている場合のみボタンを表示 -->
 	<div th:if="${user != null}">
-	<!-- saleStatus が true の場合のみ表示 -->
-	<div th:if="${item.saleStatus}">
-	    
-	    <!-- 自分の出品であれば「商品変更」ボタン -->
-		<form method="get" th:if="${item.usersId eq user.usersId}"
-		      th:action="@{/item/add_item}">
-		    <input type="hidden" name="itemId" th:value="${item.itemId}" />
-			<input type="hidden" name="type" value="update" />
+		<!-- saleStatus が true の場合のみ表示 -->
+		<div th:if="${item.saleStatus}">
 
-		    <button type="submit" class="btn">商品変更</button>
-		</form>
+			<!-- 自分の出品であれば「商品変更」ボタン -->
+			<form method="get" th:if="${item.usersId eq user.usersId}" th:action="@{/item/add_item}">
+				<input type="hidden" name="itemId" th:value="${item.itemId}" />
+				<input type="hidden" name="type" value="update" />
 
-	    <!-- 他人の出品であれば「購入」ボタン -->
-		<form method="get" th:if="${user != null and item.usersId ne user.usersId}"
-		      th:action="@{/item/purchase}">
-			  <input type="hidden" name="itemId" th:value="${item.itemId}" />
-	        <button type="submit" class="btn">購入</button>
-	    </form>
+				<button type="submit" class="btn">商品変更</button>
+			</form>
 
+			<!-- 他人の出品であれば「購入」ボタン -->
+			<form method="get" th:if="${user != null and item.usersId ne user.usersId}" th:action="@{/item/purchase}">
+				<input type="hidden" name="itemId" th:value="${item.itemId}" />
+				<button type="submit" class="btn">購入</button>
+			</form>
+
+		</div>
 	</div>
-	</div>
-	
+
 	<!-- ログインしていなければメッセージだけ表示 -->
 	<div th:if="${user == null}">
-	  <p>購入や変更を行うにはログインしてください。</p>
+		<p>購入や変更を行うにはログインしてください。</p>
 	</div>
-	
+
 	<script>
 		// サムネイルをクリックしたときにメイン画像を変更
 		function changeMainImage(thumbnail) {

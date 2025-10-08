@@ -3,11 +3,12 @@ package com.example.group.entity;
 import java.time.LocalDate;
 
 import jakarta.persistence.Transient;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.CreditCardNumber;
 
-import com.example.group.form.PaymentForm;
+import com.example.group.form.UpdateUserForm;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,7 +34,7 @@ public class Payment {
 	 @Transient
 	 private boolean saveCardInfo;
 	 
-	 public Payment(PaymentForm form) {
+	 public Payment(@Valid UpdateUserForm form) {
 		    this.cardId = form.getCardId();
 		    this.userId = form.getUserId();
 		    this.cardNumber = form.getCardNumber();

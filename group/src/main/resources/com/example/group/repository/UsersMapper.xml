@@ -40,6 +40,20 @@
 	        users_id = #{usersId}
 	</update>
 	
+		<!-- ユーザー情報の更新 -->
+	<update id="addressupdate" parameterType="com.example.group.entity.Users">
+	 UPDATE users 
+	    SET 
+	        name = #{name}, 
+	        postcode = #{postcode}, 
+	        address = #{address}, 
+	        tel = #{tel}, 
+	        updated_at = CURRENT_TIMESTAMP
+	    WHERE 
+	        users_id = #{usersId}
+	</update>
+	
+	
 	<delete id = "delete" parameterType="com.example.group.entity.Users">
 	DELETE FROM users WHERE users_id = #{usersId}
 	</delete>

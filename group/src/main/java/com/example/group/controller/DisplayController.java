@@ -83,12 +83,6 @@ public class DisplayController {
 		}
 
 		return "list";
-		//HTMLの例        
-		//        <form action="/list" method="get" style="display:inline;">
-		//        <input type="hidden" name="type" value="buy" />
-		//        <input type="hidden" name="userId" value="${userid}" />
-		//        <button type="submit">購入一覧</button>
-		//    </form>
 	}
 
 }
