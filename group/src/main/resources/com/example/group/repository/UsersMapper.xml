@@ -40,7 +40,7 @@
 	        users_id = #{usersId}
 	</update>
 	
-		<!-- ユーザー情報の更新 -->
+		<!-- 住所の更新 -->
 	<update id="addressupdate" parameterType="com.example.group.entity.Users">
 	 UPDATE users 
 	    SET 

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.group.entity.Users;
+import com.example.group.form.UpdateUserForm;
 import com.example.group.form.UserForm;
 import com.example.group.repository.UsersMapper;
 
@@ -62,6 +63,11 @@ public class UserService {
   	          user.setTel(user.getTel());
   	        }
         userMapper.update(user);
+    }
+    
+    //update
+    public void addressupdate(UpdateUserForm user) {
+        userMapper.addressupdate(user);
     }
 
     public void delete(Integer userId) {

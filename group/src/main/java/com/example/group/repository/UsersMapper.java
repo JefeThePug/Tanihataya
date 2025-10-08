@@ -26,7 +26,7 @@ public interface UsersMapper {
 	//ユーザー情報の更新
 	void update(UserForm user);
 
-	//ユーザー情報の更新
+	//住所の更新
 	void addressupdate(UpdateUserForm user);
 	
 	//ユーザー情報の削除
