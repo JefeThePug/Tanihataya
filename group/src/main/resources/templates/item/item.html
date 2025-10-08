@@ -42,18 +42,40 @@
 	</div>
 
 	<!-- アクションボタン -->
-	<div class="actions">
-		<!-- 出品者側からアクセスしたとき -->
-		<a th:if="${header eq '販売'}" th:href="@{/add_item/{itemId}(itemId=${item.itemId})}" class="btn-edit">
-			商品を編集する
-		</a>
+	<!-- saleStatus が true の場合のみ表示 -->
+	<div th:if="${item.saleStatus}">
+	    
+	    <!-- 自分の出品であれば「商品変更」ボタン -->
+		<form method="get" th:if="${item.usersId eq user.usersId}"
+		      th:action="@{/item/add_item}">
+		    <input type="hidden" name="itemId" th:value="${item.itemId}" />
+			<input type="hidden" name="type" value="update" />
 
-		<!-- 出品者以外 && 販売中 のときだけ購入ボタン表示 -->
-		<a th:if="${item.saleStatus and (user != null) and (item.usersId ne user.usersId)}"
-			th:href="@{/item/purchase(itemId=${item.itemId})}" class="btn-buy">
-			購入する
-		</a>
+		    <button type="submit" class="btn">商品変更</button>
+		</form>
+
+	    <!-- 他人の出品であれば「購入」ボタン -->
+		<form method="get" th:if="${user != null and item.usersId ne user.usersId}"
+		      th:action="@{/item/purchase}">
+			  <input type="hidden" name="itemId" th:value="${item.itemId}" />
+	        <button type="submit" class="btn">購入</button>
+	    </form>
+
 	</div>
+<!--	<div class="actions">-->
+<!--		 出品者側からアクセスしたとき -->
+<!--		<a th:if="${header eq '販売'}" th:href="@{/add_item/{itemId}(itemId=${item.itemId})}" class="btn-edit">-->
+<!--			商品を編集する-->
+<!--		</a>-->
+
+<!--		 出品者以外 && 販売中 のときだけ購入ボタン表示 -->
+<!--		<a th:if="${item.saleStatus and (user != null) and (item.usersId ne user.usersId)}"-->
+<!--			th:href="@{/item/purchase(itemId=${item.itemId})}" class="btn-buy">-->
+<!--			購入する-->
+<!--		</a>-->
+<!--	</div>-->
+	
+	
 	<script>
 		// サムネイルをクリックしたときにメイン画像を変更
 		function changeMainImage(thumbnail) {
