@@ -40,7 +40,7 @@ class ItemServiceTest {
 	private List<Items> items;
 
 	@BeforeEach
-	void setup() {
+	void setUp() {
 		// Make a Lists of 5 files / 5つのファイルのリストを作成
 		fullFiles = new ArrayList<>();
 		oneFile = new ArrayList<>();
