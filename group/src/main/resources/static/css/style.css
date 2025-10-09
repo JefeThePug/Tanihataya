@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&family=Potta+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Potta+One&display=swap');
 
+
 :root {
 	/* 色名　*/
 	--background: #fefae0ff;
@@ -8,12 +9,13 @@
 	--light-text: #606c38ff;
 	--select: #dda15eff;
 	--strong-select: #bc6c25ff;
-	--text: #283618ff;
+	--text: #364222ff;
 }
 
 * {
 	box-sizing: border-box;
 }
+
 
 html,
 body {
@@ -22,6 +24,9 @@ body {
 	margin: 0;
 	text-align: center;
 	background-color: var(--background);
+	/*全体のスクロールバーデザインを追加*/
+	scrollbar-color: var(--highlight) var(--background);
+	scrollbar-width: thin; 
 }
 
 body {
@@ -224,6 +229,7 @@ section {
 
 /* h1 ヘディング */
 h1 {
+	color: var(--light-text);
 	display: block;
 	font-size: 38px;
 	margin: 0 auto;
@@ -235,7 +241,7 @@ h1 {
 }
 
 .heading::before {
-	background: var(--text);
+	background: var(--light-text);
 	content: '';
 	height: 3px;
 	left: 0;
@@ -669,7 +675,7 @@ th.right {
 	color: var(--strong-select);
 	font-size: 2rem;
 	font-weight: 700;
-	margin: 1rem 0;
+	margin: 1rem 10%;
 	text-align: left;
 }
 
@@ -691,9 +697,10 @@ th.right {
 .description {
 	background: white;
 	border-radius: 8px;
-	margin: 2rem 0;
+	margin: 2rem auto;
 	padding: 1.5rem;
 	text-align: left;
+	width: 80%;
 }
 
 .description h3 {
