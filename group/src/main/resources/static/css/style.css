@@ -26,7 +26,7 @@ body {
 	background-color: var(--background);
 	/*全体のスクロールバーデザインを追加*/
 	scrollbar-color: var(--highlight) var(--background);
-	scrollbar-width: thin; 
+	scrollbar-width: auto; 
 }
 
 body {
