@@ -86,8 +86,7 @@ class ItemServiceTest {
 		item.setUpdatedAt(LocalDateTime.now());
 		item.setPurchaseAt(null);
 		//Make List of (one) Items / （1つの）Itemsのリストを作成
-		items = new ArrayList<>();
-		items.add(item);
+		items = List.of(item);
 	}
 
 	// @Nested は、テストを整理のために内部クラスに格納していても、@Test が実行されるようにするために使用

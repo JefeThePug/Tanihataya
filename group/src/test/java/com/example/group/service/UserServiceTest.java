@@ -5,7 +5,6 @@ import static org.mockito.Mockito.*;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -64,8 +63,7 @@ class UserServiceTest {
 		user.setCreatedAt(LocalDateTime.now());
 		user.setUpdatedAt(LocalDateTime.now());
 		//Make List of (one) Users / （1つの）Usersのリストを作成
-		users = new ArrayList<>();
-		users.add(user);
+		users = List.of(user);
 	}
 
 	@Nested
